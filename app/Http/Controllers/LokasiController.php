@@ -56,7 +56,7 @@ class LokasiController extends Controller
             session()->flash('message', 'Gagal menambahkan lokasi. Silakan coba lagi.');
         }
 
-        return redirect('/lokasi/create');
+        return redirect()->route('lokasi.index');
     }
 
     /**
@@ -113,7 +113,7 @@ class LokasiController extends Controller
             session()->flash('message', 'Gagal memperbarui lokasi. Silakan coba lagi.');
         }
 
-        return redirect('/lokasi/' . $lokasi->id . '/edit');
+        return redirect()->route('lokasi.index');
     }
 
     /**
