@@ -26,14 +26,10 @@
                     <div class="flex space-x-4 mr-4">
                         @if (Route::has('login'))
                             @auth
-                                <a href="{{ url('/dashboard') }}"
-                                    class="rounded-full bg-blue-600 px-4 py-2 text-sm font-semibold text-white shadow-sm hover:bg-blue-500">
-                                    Dashboard
-                                </a>
                             @else
                                 <a href="{{ route('login') }}"
                                     class="rounded-full bg-white px-4 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50">
-                                    Login
+                                    Log in
                                 </a>
                                 @if (Route::has('register'))
                                     <a href="{{ route('register') }}"
