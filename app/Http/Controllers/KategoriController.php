@@ -52,7 +52,7 @@ class KategoriController extends Controller
             session()->flash('message', 'Gagal menambahkan kategori. Silakan coba lagi.');
         }
 
-        return redirect('/kategori/create');
+        return redirect()->route('kategori.index');
     }
 
     /**
@@ -109,7 +109,7 @@ class KategoriController extends Controller
             session()->flash('message', 'Gagal memperbarui kategori. Silakan coba lagi.');
         }
 
-        return redirect('/kategori/' . $kategori->id . '/edit');
+        return redirect()->route('kategori.index');
     }
 
     /**
