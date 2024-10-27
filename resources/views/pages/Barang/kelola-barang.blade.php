@@ -15,7 +15,7 @@
                                         <span style="max-height: 42px" class="input-group-text text-body"><i
                                                 class="fas fa-search" aria-hidden="true"></i></span>
                                         <input style="max-height: 42px;" type="text" class="form-control"
-                                            placeholder="Masukan Nama Produk" name="keyword">
+                                            placeholder="Masukan Nama Barang" name="keyword">
                                         <button class="btn btn-outline-secondary" type="submit">Cari</button>
                                     </div>
                                 </div>
@@ -30,7 +30,7 @@
                         @endif
                         <div class="d-flex justify-content-between">
                             <a href="{{ route('barang.create') }}">
-                                <div class="mt-2 text-white btn bg-gradient-success">Tambah Produk</div>
+                                <div class="mt-2 text-white btn bg-gradient-success">Tambah Barang</div>
                             </a>
                         </div>
                     </div>

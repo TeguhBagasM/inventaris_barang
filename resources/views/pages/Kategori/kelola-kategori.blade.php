@@ -9,17 +9,6 @@
                             <div>
                                 <h4 class="">Kelola Kategori</h4>
                             </div>
-                            {{-- <form action="" method="get">
-                                <div class="pe-md-3 d-flex align-items-center float-end">
-                                    <div class="input-group">
-                                        <span style="max-height: 42px" class="input-group-text text-body"><i
-                                                class="fas fa-search" aria-hidden="true"></i></span>
-                                        <input style="max-height: 42px;" type="text" class="form-control"
-                                            placeholder="Masukan Nama Produk" name="keyword">
-                                        <button class="btn btn-outline-secondary" type="submit">Cari</button>
-                                    </div>
-                                </div>
-                            </form> --}}
                         </div>
 
                         <hr class="bg-dark px-auto">

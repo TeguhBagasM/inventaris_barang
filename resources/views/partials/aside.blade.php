@@ -268,16 +268,12 @@
                         $level = auth()->user()->level; // Mengambil peran pengguna yang sedang login
                     @endphp
 
-
                     @if (auth()->user()->level == 'operator')
-                        <p class="text-xs font-weight-bold">Start to manage users and oversee their activities
-                            efficiently.</p>
+                    <p class="text-xs font-weight-bold">Mulai kelola pengguna dan pantau aktivitas mereka dengan efisien.</p>
                     @elseif(auth()->user()->level == 'admin')
-                        <p class="text-xs font-weight-bold">Start to manage the inventory and oversee borrowing
-                            activities efficiently.</p>
+                    <p class="text-xs font-weight-bold">Mulai kelola inventaris dan pantau aktivitas peminjaman dengan efisien.</p>
                     @else
-                        <p class="text-xs font-weight-bold">Start borrowing items and manage your borrowed goods
-                            seamlessly.</p>
+                    <p class="text-xs font-weight-bold">Mulai pinjam barang dan kelola barang pinjaman Anda dengan mudah.</p>
                     @endif
 
                 </div>
