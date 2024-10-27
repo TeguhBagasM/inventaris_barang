@@ -9,11 +9,7 @@
                         <div class="card-header pb-0">
                             <h4 class="">Edit Produk</h4>
                             <hr style="background-color: black">
-                            @if (Session::has('status'))
-                                <div class="alert alert-success text-white opacity-5" role="alert">
-                                    {{ Session::get('message') }}
-                                </div>
-                            @endif
+                            
                         </div>
 
                         <div class="card-body px-0 pt-0 pb-2 ps-4 me-4">
@@ -46,7 +42,8 @@
                                     @foreach ($kategori as $k)
                                         <div class="form-check form-check-inline">
                                             <input class="form-check-input" type="checkbox" name="kategori_id[]"
-                                                id="kategori_{{ $k->id }}" value="{{ $k->id }}">
+                                                id="kategori_{{ $k->id }}" value="{{ $k->id }}"
+                                                @if($barang->kategori->contains($k->id)) checked @endif>
                                             <label class="form-check-label" for="kategori_{{ $k->id }}">
                                                 {{ $k->nama }}
                                             </label>
@@ -58,11 +55,11 @@
                                     <input type="file" class="form-control" name="image" id="image"
                                         accept="image/*" onchange="previewImage(event)">
                                 </div>
-                                <div id="imagePreview" class="mb-3" style="display: none;">
-                                    <img src="#" class="rounded" alt="Preview"
+                                <div id="imagePreview" class="mb-3">
+                                    <img src="{{ asset($barang->gambar) }}" class="rounded" alt="Preview"
                                         style="max-width: 100%; max-height: 200px;">
                                 </div>
-                                <a href="{{ url()->previous() }}" class="btn bg-gradient-danger ">Back</a>
+                                <a href="{{ url()->previous() }}" class="btn bg-gradient-danger">Back</a>
                                 <button type="submit" class="btn btn-success float-end">Simpan Perubahan</button>
                             </form>
                         </div>
@@ -84,11 +81,18 @@
 
             if (file) {
                 reader.readAsDataURL(file);
-                document.getElementById('imagePreview').style.display = 'block'; // Tampilkan image preview
-            } else {
-                preview.src = "#";
-                document.getElementById('imagePreview').style.display = 'none'; // Sembunyikan image preview
+                document.getElementById('imagePreview').style.display = 'block';
             }
         }
+
+        // Tampilkan preview gambar saat halaman dimuat
+        document.addEventListener('DOMContentLoaded', function() {
+            const preview = document.querySelector('#imagePreview img');
+            if (preview.src) {
+                document.getElementById('imagePreview').style.display = 'block';
+            } else {
+                document.getElementById('imagePreview').style.display = 'none';
+            }
+        });
     </script>
 @endsection

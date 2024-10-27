@@ -14,8 +14,8 @@
                         <div class="card-body px-0 pt-0 pb-2">
                             <div class="row">
                                 <div class="col-md-4">
-                                    <img src="{{ asset('/storage/public/images/' . $barang->gambar) }}"
-                                        class="ms-3 img-fluid rounded" alt="Gambar Produk">
+                                    <img src="{{ asset($barang->gambar) }}"
+                                        class="ms-3 img-fluid rounded" alt="{{ $barang->nama }}">
                                 </div>
                                 <div class="col-md-8">
                                     <table class="table table-sm align-items-center mb-0">

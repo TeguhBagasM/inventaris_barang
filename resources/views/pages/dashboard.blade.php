@@ -91,7 +91,7 @@
                     <div class="row">
                         <div class="col-lg-6">
                             <div class="d-flex flex-column h-100 my-auto mt-5 mx-3">
-                                <p class="mb-1 pt-3 text-bold">STMIK Mardira Indonesia</p>
+                                <p class="mb-1 pt-3 text-bold">SMK Negeri 2 Cimahi</p>
                                 <h5 class="font-weight-bolder">Inventaris Barang</h5>
                                 <p class="mb-6">Aplikasi ini memungkinkan pengguna untuk mengelola stok barang dengan mudah, 
                                     memantau pergerakan barang, dan menghasilkan laporan inventaris secara real-time.</p>

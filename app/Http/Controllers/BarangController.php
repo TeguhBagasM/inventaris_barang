@@ -11,6 +11,7 @@ use App\Models\DetailPeminjaman;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Log;
 
 class BarangController extends Controller
 {
@@ -43,26 +44,25 @@ class BarangController extends Controller
         $request->validate([
             'nama' => 'required',
             'jumlah' => 'required|integer',
-            'lokasi_id' => 'required|exists:lokasis,id', // pastikan lokasi_id ada dalam tabel lokasis
-            'kategori_id' => 'required|array', // pastikan kategori_id adalah array
-            'kategori_id.*' => 'exists:kategoris,id', // pastikan semua nilai dalam array kategori_id ada dalam tabel kategoris
-            'image' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048', // validasi file gambar
+            'lokasi_id' => 'required|exists:lokasis,id',
+            'kategori_id' => 'required|array',
+            'kategori_id.*' => 'exists:kategoris,id',
+            'image' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
 
-        $newName = null; // inisialisasi $newName untuk penanganan gambar
+        $newName = null;
 
-        // Proses upload gambar
         if ($request->hasFile('image') && $request->file('image')->isValid()) {
             $newName = $request->nama . '-' . now()->timestamp . '.' . $request->file('image')->getClientOriginalExtension();
-            $request->file('image')->move(public_path('images'), $newName); // simpan gambar ke direktori public/images
+            // Simpan file ke storage/app/public/images
+            Storage::disk('public')->putFileAs('images', $request->file('image'), $newName);
         }
 
-        // Simpan data barang ke dalam tabel 'barangs'
         $barang = Barang::create([
             'nama' => $request->nama,
             'jumlah' => $request->jumlah,
-            'stok' => $request->jumlah, // asumsi stok adalah sama dengan jumlah
-            'gambar' => $newName, // simpan nama gambar jika ada
+            'stok' => $request->jumlah,
+            'gambar' => $newName ? 'storage/images/' . $newName : null, // Simpan path relatif
             'lokasi_id' => $request->lokasi_id,
         ]);
 
@@ -70,13 +70,13 @@ class BarangController extends Controller
 
         if ($barang) {
             session()->flash('status', 'success');
-            session()->flash('message', 'Produk berhasil ditambahkan.');
+            session()->flash('message', 'Barang berhasil ditambahkan.');
         } else {
             session()->flash('status', 'error');
-            session()->flash('message', 'Gagal menambahkan produk. Silakan coba lagi.');
+            session()->flash('message', 'Gagal menambahkan Barang. Silakan coba lagi.');
         }
 
-        return redirect('/barang/create');
+        return redirect()->route('barang.index');
     }
 
 
@@ -116,72 +116,86 @@ class BarangController extends Controller
             'lokasi_id' => 'required|exists:lokasis,id',
             'kategori_id' => 'required|array',
             'kategori_id.*' => 'exists:kategoris,id',
-            'image' => 'image|mimes:jpeg,png,jpg,gif|max:2048',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
-
-        // Handle image upload and deletion
-        if ($request->hasFile('image') && $request->file('image')->isValid()) {
-            // Upload new image
-            $newName = $request->nama . '-' . now()->timestamp . '.' . $request->file('image')->getClientOriginalExtension();
-            $request->file('image')->storeAs('public/images', $newName);
-
-            // Delete old image if exists
-            if ($barang->gambar && Storage::exists('public/images/' . $barang->gambar)) {
-                Storage::delete('public/images/' . $barang->gambar);
+    
+        try {
+            $updateData = [
+                'nama' => $request->nama,
+                'jumlah' => $request->jumlah,
+                'stok' => $request->jumlah,
+                'lokasi_id' => $request->lokasi_id,
+            ];
+    
+            // Handle image upload if there's a new image
+            if ($request->hasFile('image') && $request->file('image')->isValid()) {
+                // Generate new image name
+                $newName = $request->nama . '-' . now()->timestamp . '.' . $request->file('image')->getClientOriginalExtension();
+                
+                // Delete old image if exists
+                if ($barang->gambar) {
+                    $oldImagePath = str_replace('storage/images/', '', $barang->gambar);
+                    Storage::disk('public')->delete('images/' . $oldImagePath);
+                }
+                
+                // Store new image
+                Storage::disk('public')->putFileAs('images', $request->file('image'), $newName);
+                
+                // Update image path in database
+                $updateData['gambar'] = 'storage/images/' . $newName;
             }
-        }
-
-        // Update barang data
-        $barang->nama = $request->nama;
-        $barang->jumlah = $request->jumlah;
-        $barang->stok = $request->jumlah; // assuming stok is the same as jumlah
-        $barang->lokasi_id = $request->lokasi_id;
-
-        if (isset($newName)) {
-            $barang->gambar = $newName;
-        }
-
-        $barang->save();
-
-        // Sync kategori
-        $barang->kategori()->sync($request->kategori_id);
-
-        if ($barang) {
+    
+            // Update barang data
+            $barang->update($updateData);
+    
+            // Sync kategori
+            $barang->kategori()->sync($request->kategori_id);
+    
             session()->flash('status', 'success');
-            session()->flash('message', 'Produk berhasil diperbarui.');
-        } else {
+            session()->flash('message', 'Barang berhasil diperbarui.');
+    
+            return redirect()->route('barang.index');
+    
+        } catch (\Exception $e) {
+            // Log error for debugging
+            Log::error('Error updating barang: ' . $e->getMessage());
+            
             session()->flash('status', 'error');
-            session()->flash('message', 'Gagal memperbarui produk. Silakan coba lagi.');
+            session()->flash('message', 'Gagal memperbarui Barang. Silakan coba lagi.');
+            
+            return redirect()->back()->withInput();
         }
-
-        return redirect('/barang/' . $barang->id . '/edit');
     }
-
 
     /**
      * Remove the specified resource from storage.
      */
     public function destroy(Barang $barang)
     {
-        // Hapus gambar jika ada
-        if ($barang->gambar && file_exists(storage_path('app/public/images/' . $barang->gambar))) {
-            unlink(storage_path('app/public/images/' . $barang->gambar));
-        }
+        try {
+            // Hapus gambar dari storage jika ada
+            if ($barang->gambar) {
+                Storage::disk('public')->delete('images/' . $barang->gambar);
+            }
 
-        // Hapus semua relasi kategori menggunakan detach()
-        $barang->kategori()->detach();
+            // Hapus semua relasi kategori
+            $barang->kategori()->detach();
 
-        // Hapus barang dari database
-        $deleted = $barang->delete();
+            // Hapus barang dari database
+            $barang->delete();
 
-        if ($deleted) {
             session()->flash('status', 'success');
-            session()->flash('message', 'Produk berhasil dihapus.');
-        } else {
-            session()->flash('status', 'error');
-            session()->flash('message', 'Gagal menghapus produk. Silakan coba lagi.');
-        }
+            session()->flash('message', 'Barang berhasil dihapus.');
 
-        return redirect()->route('barang.index');
+            return redirect()->route('barang.index');
+
+        } catch (\Exception $e) {
+            Log::error('Error deleting barang: ' . $e->getMessage());
+
+            session()->flash('status', 'error');
+            session()->flash('message', 'Gagal menghapus Barang. Silakan coba lagi.');
+
+            return redirect()->back();
+        }
     }
 }
