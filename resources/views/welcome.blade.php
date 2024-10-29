@@ -20,7 +20,7 @@
                     <!-- Logo -->
                     <div class="flex flex-shrink-0 items-center">
                         <img src="{{ asset('assets/img/logo-smk.png') }}" alt="SMKN 2 Cimahi" class="h-8 w-8 mr-2">
-                        <h1 class="text-3xl font-bold text-blue-600">SIMANIS</h1>
+                        <h1 class="text-3xl font-bold text-black">SIMANIS</h1>
                     </div>
                     <!-- Navigation -->
                     <div class="flex space-x-4 mr-4">

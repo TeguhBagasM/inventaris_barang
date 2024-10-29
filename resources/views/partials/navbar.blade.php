@@ -25,7 +25,7 @@
                     <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdownProfile">
                         <li>
                             <a class="dropdown-item" href="{{ route('profile.edit') }}">
-                                Edit Profile
+                                Profile
                             </a>
                         </li>
                         <li>

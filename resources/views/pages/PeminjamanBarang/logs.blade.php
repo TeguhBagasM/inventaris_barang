@@ -79,9 +79,11 @@
                                             </td>
                                             <td>
                                                 <div class="d-flex px-2 py-1">
-                                                    <h6 class="text-secondary text-sm font-weight-bold ps-2">
-                                                        {{ $log->masuk ? \Carbon\Carbon::parse($log->masuk)->format('D M, Y') : '-' }}</h6>
+                                                    <h6 class="text-secondary text-sm font-weight-bold ps-2 {{ !$log->masuk ? 'bg-danger badge font-weight-bold py-1 px-2 text-white' : '' }}">
+                                                        {{ $log->masuk ? \Carbon\Carbon::parse($log->masuk)->format('D M, Y') : 'Belum dikembalikan' }}
+                                                    </h6>
                                                 </div>
+                                                
                                             </td>
                                         </tr>
                                     @endforeach
