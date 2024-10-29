@@ -9,6 +9,7 @@
     <title>
         Inventaris | {{ $title }}
     </title>
+    <link href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css" rel="stylesheet" />
     <!-- Fonts and icons -->
     <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700" rel="stylesheet" />
     <!-- Nucleo Icons -->
@@ -108,6 +109,8 @@
     <script src="{{ asset('../assets/js/plugins/perfect-scrollbar.min.js') }}"></script>
     <script src="{{ asset('../assets/js/plugins/smooth-scrollbar.min.js') }}"></script>
     <script src="{{ asset('../assets/js/plugins/chartjs.min.js') }}"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
     <script>
         var ctx = document.getElementById("chart-bars").getContext("2d");
 

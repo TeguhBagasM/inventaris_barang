@@ -37,7 +37,7 @@
                             </div>
                         @else
                             <div class="table-responsive p-0">
-                                <table id="datatables" class="table align-items-center mb-0">
+                                <table class="table align-items-center mb-0">
                                     <thead>
                                         <tr>
                                             <th class="text-uppercase text-dark text-sm font-weight-bolder">No</th>
