@@ -132,7 +132,7 @@
                             Copyright ©
                             <script>
                                 document.write(new Date().getFullYear())
-                            </script> Kelompok 3.
+                            </script> Kelompok 2.
                         </p>
                     </div>
                 </div>

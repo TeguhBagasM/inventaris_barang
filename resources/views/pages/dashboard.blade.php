@@ -15,7 +15,7 @@
                                     </div>
                                 </div>
                                 <div class="col-4 text-end">
-                                    <div class="icon icon-shape bg-gradient-primary shadow text-center border-radius-md">
+                                    <div class="icon icon-shape bg-blue shadow text-center border-radius-md">
                                         <i class="fas fa-box text-lg opacity-10" aria-hidden="true"></i>
                                     </div>
                                 </div>                                
@@ -34,7 +34,7 @@
                                     </div>
                                 </div>
                                 <div class="col-4 text-end">
-                                    <div class="icon icon-shape bg-gradient-primary shadow text-center border-radius-md">
+                                    <div class="icon icon-shape bg-blue shadow text-center border-radius-md">
                                         <i class="fas fa-tags text-lg opacity-10" aria-hidden="true"></i>
                                     </div>
                                 </div>                                
@@ -53,7 +53,7 @@
                                     </div>
                                 </div>
                                 <div class="col-4 text-end">
-                                    <div class="icon icon-shape bg-gradient-primary shadow text-center border-radius-md">
+                                    <div class="icon icon-shape bg-blue shadow text-center border-radius-md">
                                         <i class="fas fa-map-marker-alt text-lg opacity-10" aria-hidden="true"></i>
                                     </div>
                                 </div>                                
@@ -72,7 +72,7 @@
                                     </div>
                                 </div>
                                 <div class="col-4 text-end">
-                                    <div class="icon icon-shape bg-gradient-primary shadow text-center border-radius-md">
+                                    <div class="icon icon-shape bg-blue shadow text-center border-radius-md">
                                         <i class="ni ni-cart text-lg opacity-10" aria-hidden="true"></i>
                                     </div>
                                 </div>
@@ -98,7 +98,7 @@
                             </div>
                         </div>
                         <div class="col-lg-4 ms-auto text-center mt-5 mt-lg-0">
-                            <div class="bg-gradient-primary border-radius-lg h-100">
+                            <div class="border-radius-lg h-100">
                                 <img src="../assets/img/shapes/waves-white.svg"
                                     class="position-absolute h-100 w-50 top-0 d-lg-block d-none" alt="waves">
                                 <div class="position-relative d-flex align-items-center justify-content-center h-100">
