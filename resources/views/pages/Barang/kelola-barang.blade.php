@@ -30,7 +30,7 @@
                                 <thead>
                                     <tr>
                                         <th class="text-uppercase text-dark text-sm font-weight-bolder">No</th>
-                                        <th class="text-uppercase text-dark text-sm font-weight-bolder">Gambar</th>
+                                        {{-- <th class="text-uppercase text-dark text-sm font-weight-bolder">Gambar</th> --}}
                                         <th class="text-uppercase text-dark text-sm font-weight-bolder">Nama Barang</th>
                                         <th class="text-uppercase text-dark text-sm font-weight-bolder">Stok</th>
                                         <th class="text-uppercase text-dark text-sm font-weight-bolder">Aksi</th>
@@ -53,7 +53,7 @@
                 ajax: "{{ route('barang.data') }}",
                 columns: [
                     { data: 'DT_RowIndex', name: 'DT_RowIndex', orderable: false, searchable: false },
-                    { data: 'gambar', name: 'gambar', orderable: false, searchable: false },
+                    // { data: 'gambar', name: 'gambar', orderable: false, searchable: false },
                     { data: 'nama', name: 'nama' },
                     { data: 'stok', name: 'stok' },
                     { data: 'action', name: 'action', orderable: false, searchable: false }
