@@ -14,7 +14,7 @@
                         <hr class="bg-dark px-auto">
                         <div id="alert-container"></div>
                         @if (Session::has('status'))
-                            <div class="alert alert-{{ Session::get('status') }} text-white opacity-5" role="alert">
+                            <div class="alert alert-{{ Session::get('status') }} text-white" role="alert">
                                 {{ Session::get('message') }}
                             </div>
                         @endif
