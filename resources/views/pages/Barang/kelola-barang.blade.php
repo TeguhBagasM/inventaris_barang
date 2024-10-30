@@ -104,7 +104,7 @@
                         
                         setTimeout(() => {
                             $('#alert-container .alert').fadeOut();
-                        }, 3000);
+                        }, 5000);
                     }
                 });
             }

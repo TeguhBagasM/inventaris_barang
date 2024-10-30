@@ -28,8 +28,8 @@ class LokasiController extends Controller
             ->addIndexColumn()
             ->addColumn('action', function($row){
                 $actionBtn = '
-                    <a href="'.route('lokasi.edit', $row->id).'" class="btn bg-gradient-warning btn-sm">Edit</a>
-                    <button onclick="deleteLocation('.$row->id.')" class="btn bg-gradient-danger btn-sm">Hapus</button>
+                    <a href="'.route('lokasi.edit', $row->id).'" class="btn bg-gradient-warning btn-sm"><i class="fa-solid fa-pencil" style="font-size: 14px;"></i></a>
+                    <button onclick="deleteLocation('.$row->id.')" class="btn bg-gradient-danger btn-sm"><i class="fa-solid fa-trash-alt" style="font-size: 14px;"></i></button>
                 ';
                 return $actionBtn;
             })
