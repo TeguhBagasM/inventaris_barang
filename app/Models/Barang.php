@@ -12,7 +12,7 @@ class Barang extends Model
 
     protected $guarded = [];
 
-    public function kategori()
+    public function kategoris()
     {
         return $this->belongsToMany(Kategori::class);
     }

@@ -60,7 +60,7 @@ class KategoriController extends Controller
      */
     public function show(Kategori $kategori)
     {
-        $kategori->load('barang');
+        $kategori->load('barangs.kategoris'); // Load barang beserta kategori-kategorinya
         $title = 'Detail Kategori';
 
         return view('pages.Kategori.detail-kategori', compact('kategori', 'title'));

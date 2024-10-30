@@ -18,7 +18,7 @@ class Kategori extends Model
 
     public function barangs()
     {
-        return $this->belongsTo(Barang::class);
+        return $this->belongsToMany(Barang::class, 'barang_kategori');
     }
 }
 
