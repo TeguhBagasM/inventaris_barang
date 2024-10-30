@@ -7,6 +7,7 @@ use App\Models\Lokasi;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Storage;
+use Yajra\DataTables\Facades\DataTables;
 
 class LokasiController extends Controller
 {
@@ -16,8 +17,24 @@ class LokasiController extends Controller
     public function index()
     {
         $title = 'Kelola Lokasi';
-        $lokasi = Lokasi::with('barang')->paginate(10);
-        return view('pages.lokasi.kelola-lokasi', compact('title', 'lokasi'));
+        return view('pages.lokasi.kelola-lokasi', compact('title'));
+    }
+
+    public function getData()
+    {
+        $lokasi = Lokasi::with('barang');
+        
+        return DataTables::of($lokasi)
+            ->addIndexColumn()
+            ->addColumn('action', function($row){
+                $actionBtn = '
+                    <a href="'.route('lokasi.edit', $row->id).'" class="btn bg-gradient-warning btn-sm">Edit</a>
+                    <button onclick="deleteLocation('.$row->id.')" class="btn bg-gradient-danger btn-sm">Hapus</button>
+                ';
+                return $actionBtn;
+            })
+            ->rawColumns(['action'])
+            ->make(true);
     }
 
     /**
@@ -64,10 +81,10 @@ class LokasiController extends Controller
      */
     public function show(Lokasi $lokasi)
     {
-        $lokasi->load('barang');
-        $title = 'Detail Lokasi';
+        // $lokasi->load('barang');
+        // $title = 'Detail Lokasi';
 
-        return view('pages.lokasi.detail-lokasi', compact('lokasi', 'title'));
+        // return view('pages.lokasi.detail-lokasi', compact('lokasi', 'title'));
     }
 
     /**
@@ -121,16 +138,37 @@ class LokasiController extends Controller
      */
     public function destroy(Lokasi $lokasi)
     {
-        $deleted = $lokasi->delete();
+        try {
+            $deleted = $lokasi->delete();
 
-        if ($deleted) {
-            session()->flash('status', 'success');
-            session()->flash('message', 'Lokasi berhasil dihapus.');
-        } else {
+            if ($deleted) {
+                if (request()->ajax()) {
+                    return response()->json([
+                        'success' => true,
+                        'message' => 'Lokasi berhasil dihapus.'
+                    ]);
+                }
+
+                session()->flash('status', 'success');
+                session()->flash('message', 'Lokasi berhasil dihapus.');
+            } else {
+                throw new \Exception('Failed to delete lokasi');
+            }
+
+            return redirect()->route('lokasi.index');
+
+        } catch (\Exception $e) {
+            if (request()->ajax()) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Gagal menghapus lokasi. Silakan coba lagi.'
+                ], 500);
+            }
+
             session()->flash('status', 'error');
             session()->flash('message', 'Gagal menghapus lokasi. Silakan coba lagi.');
-        }
 
-        return redirect()->route('lokasi.index');
+            return redirect()->back();
+        }
     }
 }

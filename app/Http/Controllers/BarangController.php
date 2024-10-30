@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Log;
+use Yajra\DataTables\Facades\DataTables;
 
 class BarangController extends Controller
 {
@@ -21,8 +22,29 @@ class BarangController extends Controller
     public function index()
     {
         $title = 'Kelola Barang';
-        $barang = Barang::with('lokasi')->paginate(10);
-        return view('pages.barang.kelola-barang', compact('title', 'barang'));
+        return view('pages.barang.kelola-barang', compact('title'));
+    }
+
+    public function getData()
+    {
+        $barang = Barang::with('lokasi');
+        
+        return DataTables::of($barang)
+            ->addIndexColumn()
+            ->addColumn('gambar', function($row){
+                return '<img src="'.asset($row->gambar).'" alt="'.$row->nama.'" 
+                        class="card-img" style="object-fit: cover;max-width: 100px; max-height: 100px;">';
+            })
+            ->addColumn('action', function($row){
+                $actionBtn = '
+                    <a href="'.route('barang.edit', $row->id).'" class="btn bg-gradient-warning btn-sm">Edit</a>
+                    <button onclick="deleteBarang('.$row->id.')" class="btn bg-gradient-danger btn-sm">Hapus</button>
+                    <a href="'.route('barang.show', $row->id).'" class="btn bg-gradient-info btn-sm">Detail</a>
+                ';
+                return $actionBtn;
+            })
+            ->rawColumns(['action', 'gambar'])
+            ->make(true);
     }
 
     /**
@@ -184,6 +206,13 @@ class BarangController extends Controller
             // Hapus barang dari database
             $barang->delete();
 
+            if (request()->ajax()) {
+                return response()->json([
+                    'success' => true,
+                    'message' => 'Barang berhasil dihapus.'
+                ]);
+            }
+
             session()->flash('status', 'success');
             session()->flash('message', 'Barang berhasil dihapus.');
 
@@ -191,6 +220,13 @@ class BarangController extends Controller
 
         } catch (\Exception $e) {
             Log::error('Error deleting barang: ' . $e->getMessage());
+
+            if (request()->ajax()) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Gagal menghapus Barang. Silakan coba lagi.'
+                ], 500);
+            }
 
             session()->flash('status', 'error');
             session()->flash('message', 'Gagal menghapus Barang. Silakan coba lagi.');

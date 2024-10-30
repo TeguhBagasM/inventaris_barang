@@ -24,10 +24,14 @@ Route::get('/', function () {
 
 Route::middleware('auth')->group(function () {
     Route::get('/dashboard', [ViewController::class, 'index'])->name('dashboard');
-
+    Route::middleware(['admin'])->group(function () {
+    Route::resource('lokasi', LokasiController::class);
+    Route::get('lokasi-data', [LokasiController::class, 'getData'])->name('lokasi.data');
     Route::resource('barang', BarangController::class)->middleware('admin');
-    Route::resource('lokasi', LokasiController::class)->middleware('admin');
+    Route::get('barang-data', [BarangController::class, 'getData'])->name('barang.data');
     Route::resource('kategori', KategoriController::class)->middleware('admin');
+    Route::get('/log-peminjaman', [PeminjamanController::class, 'log'])->name('log.peminjaman')->middleware('admin');
+    });
     Route::resource('User', UserController::class)->middleware('operator');
 
     Route::get('/peminjaman', [PeminjamanController::class, 'index'])->middleware('member');
@@ -35,7 +39,6 @@ Route::middleware('auth')->group(function () {
     Route::post('/pinjam', [PeminjamanController::class, 'pinjam'])->middleware('member');
     Route::post('/kembali/{id}', [PeminjamanController::class, 'kembali'])->name('kembali')->middleware('member');
 
-    Route::get('/log-peminjaman', [PeminjamanController::class, 'log'])->name('log.peminjaman')->middleware('admin');
 
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');

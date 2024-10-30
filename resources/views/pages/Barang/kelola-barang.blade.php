@@ -9,22 +9,12 @@
                             <div>
                                 <h4 class="">Pendataan Barang</h4>
                             </div>
-                            {{-- <form action="" method="get">
-                                <div class="pe-md-3 d-flex align-items-center float-end">
-                                    <div class="input-group">
-                                        <span style="max-height: 42px" class="input-group-text text-body"><i
-                                                class="fas fa-search" aria-hidden="true"></i></span>
-                                        <input style="max-height: 42px;" type="text" class="form-control"
-                                            placeholder="Masukan Nama Barang" name="keyword">
-                                        <button class="btn btn-outline-secondary" type="submit">Cari</button>
-                                    </div>
-                                </div>
-                            </form> --}}
                         </div>
 
                         <hr class="bg-dark px-auto">
+                        <div id="alert-container"></div>
                         @if (Session::has('status'))
-                            <div class="alert alert-success text-white opacity-5" role="alert">
+                            <div class="alert alert-{{ Session::get('status') }} text-white opacity-5" role="alert">
                                 {{ Session::get('message') }}
                             </div>
                         @endif
@@ -36,78 +26,89 @@
                     </div>
                     <div class="card-body px-0 pt-0 pb-2">
                         <div class="table-responsive p-0">
-                            <table class="table align-items-center mb-0">
+                            <table class="table align-items-center mb-0" id="barangTable">
                                 <thead>
                                     <tr>
                                         <th class="text-uppercase text-dark text-sm font-weight-bolder">No</th>
                                         <th class="text-uppercase text-dark text-sm font-weight-bolder">Gambar</th>
                                         <th class="text-uppercase text-dark text-sm font-weight-bolder">Nama Barang</th>
-                                        <th class="text-uppercase text-dark text-sm font-weight-bolder ">
-                                            Stok</th>
-                                        <th class="text-uppercase text-dark text-sm font-weight-bolder ">Aksi
-                                        </th>
+                                        <th class="text-uppercase text-dark text-sm font-weight-bolder">Stok</th>
+                                        <th class="text-uppercase text-dark text-sm font-weight-bolder">Aksi</th>
                                     </tr>
                                 </thead>
-                                <tbody>
-                                    @foreach ($barang as $k)
-                                        <tr class="ps-2">
-                                            <td>
-                                                <div class="d-flex px-2 py-1">
-                                                    <h6 class="ps-2 text-secondary text-sm font-weight-bold">
-                                                        {{ $loop->iteration }}</h6>
-                                                </div>
-                                            </td>
-                                            <td>
-                                                <div class="d-flex px-2 py-1">
-                                                    <img src="{{ asset($k->gambar) }}" alt="{{ $k->nama }}"
-                                                        class="card-img"
-                                                        style="object-fit: cover;max-width: 100px; max-height: 100px;"
-                                                        >
-                                                </div>
-                                            </td>
-                                            <td>
-                                                <div class="d-flex px-2 py-1">
-                                                    <h6 class="text-secondary text-sm font-weight-bold ps-2">
-                                                        {{ $k->nama }}</h6>
-                                                </div>
-                                            </td>
-                                            <td>
-                                                <div class="d-flex px-2 py-1">
-                                                    <h6 class="text-secondary text-sm font-weight-bold ps-2">
-                                                        {{ $k->stok }}</h6>
-                                                </div>
-                                            </td>
-                                            <td class="align-middle">
-                                                <a href="{{ route('barang.edit', $k->id) }}"
-                                                    class="btn bg-gradient-warning">Edit</a>
-
-                                                <a href="{{ route('barang.destroy', $k->id) }}"
-                                                    onclick="event.preventDefault(); if(confirm('Are you sure you want to delete this product?')) document.getElementById('delete-form-{{ $k->id }}').submit();"
-                                                    class="btn bg-gradient-danger">Hapus</a>
-
-                                                <form id="delete-form-{{ $k->id }}"
-                                                    action="{{ route('barang.destroy', $k->id) }}" method="POST"
-                                                    style="display: none;">
-                                                    @csrf
-                                                    @method('DELETE')
-                                                </form>
-
-                                                <a href="{{ route('barang.show', $k->id) }}"
-                                                    class="btn bg-gradient-info">Detail</a>
-                                            </td>
-                                        </tr>
-                                    @endforeach
-
-                                </tbody>
                             </table>
-                            <div class="mx-5 my-2">
-                                {{ $barang->withQueryString()->links() }}
-                            </div>
-
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+
+    @push('scripts')
+    <script type="text/javascript">
+        $(document).ready(function() {
+            $('#barangTable').DataTable({
+                processing: true,
+                serverSide: true,
+                ajax: "{{ route('barang.data') }}",
+                columns: [
+                    { data: 'DT_RowIndex', name: 'DT_RowIndex', orderable: false, searchable: false },
+                    { data: 'gambar', name: 'gambar', orderable: false, searchable: false },
+                    { data: 'nama', name: 'nama' },
+                    { data: 'stok', name: 'stok' },
+                    { data: 'action', name: 'action', orderable: false, searchable: false }
+                ],
+                language: {
+                    url: '//cdn.datatables.net/plug-ins/1.10.24/i18n/Indonesian.json'
+                }
+            });
+        });
+
+        function deleteBarang(id) {
+            if(confirm('Apakah Anda yakin ingin menghapus barang ini?')) {
+                $.ajax({
+                    url: `/barang/${id}`,
+                    type: 'DELETE',
+                    data: {
+                        "_token": "{{ csrf_token() }}"
+                    },
+                    success: function(response) {
+                        if(response.success) {
+                            // Refresh DataTable
+                            $('#barangTable').DataTable().ajax.reload();
+                            
+                            // Tampilkan pesan sukses
+                            $('#alert-container').html(`
+                                <div class="alert alert-success text-white opacity-5" role="alert">
+                                    ${response.message}
+                                </div>
+                            `);
+                            
+                            // Hilangkan pesan setelah 3 detik
+                            setTimeout(() => {
+                                $('#alert-container .alert').fadeOut();
+                            }, 3000);
+                        }
+                    },
+                    error: function(xhr) {
+                        let message = 'Gagal menghapus barang';
+                        if (xhr.responseJSON && xhr.responseJSON.message) {
+                            message = xhr.responseJSON.message;
+                        }
+                        
+                        $('#alert-container').html(`
+                            <div class="alert alert-danger text-white opacity-5" role="alert">
+                                ${message}
+                            </div>
+                        `);
+                        
+                        setTimeout(() => {
+                            $('#alert-container .alert').fadeOut();
+                        }, 3000);
+                    }
+                });
+            }
+        }
+    </script>
+    @endpush
 @endsection

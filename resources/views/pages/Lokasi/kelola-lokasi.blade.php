@@ -12,8 +12,9 @@
                         </div>
 
                         <hr class="bg-dark px-auto">
+                        <div id="alert-container"></div>
                         @if (Session::has('status'))
-                            <div class="alert alert-success text-white opacity-5" role="alert">
+                            <div class="alert alert-{{ Session::get('status') }} text-white opacity-5" role="alert">
                                 {{ Session::get('message') }}
                             </div>
                         @endif
@@ -24,72 +25,86 @@
                         </div>
                     </div>
                     <div class="card-body px-0 pt-0 pb-2">
-                        @if($lokasi->isEmpty())
-                            <div class="text-center py-5">
-                                <div class="mb-3">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" fill="currentColor" class="bi bi-geo-alt text-secondary" viewBox="0 0 16 16">
-                                        <path d="M12.166 8.94c-.524 1.062-1.234 2.12-1.96 3.07A31.493 31.493 0 0 1 8 14.58a31.481 31.481 0 0 1-2.206-2.57c-.726-.95-1.436-2.008-1.96-3.07C3.304 7.867 3 6.862 3 6a5 5 0 0 1 10 0c0 .862-.305 1.867-.834 2.94M8 16s6-5.686 6-10A6 6 0 0 0 2 6c0 4.314 6 10 6 10"/>
-                                        <path d="M8 8a2 2 0 1 1 0-4 2 2 0 0 1 0 4m0 1a3 3 0 1 0 0-6 3 3 0 0 0 0 6"/>
-                                    </svg>
-                                </div>
-                                <h6 class="text-secondary">Belum ada data lokasi</h6>
-                                <p class="text-muted">Silakan tambah lokasi baru dengan klik tombol 'Tambah Lokasi' di atas</p>
-                            </div>
-                        @else
-                            <div class="table-responsive p-0">
-                                <table class="table align-items-center mb-0">
-                                    <thead>
-                                        <tr>
-                                            <th class="text-uppercase text-dark text-sm font-weight-bolder">No</th>
-                                            <th class="text-uppercase text-dark text-sm font-weight-bolder">Nama</th>
-                                            <th class="text-uppercase text-dark text-sm font-weight-bolder">Aksi</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        @foreach ($lokasi as $k)
-                                            <tr class="ps-2">
-                                                <td>
-                                                    <div class="d-flex px-2 py-1">
-                                                        <h6 class="ps-2 text-secondary text-sm font-weight-bold">
-                                                            {{ $loop->iteration }}</h6>
-                                                    </div>
-                                                </td>
-                                                <td>
-                                                    <div class="d-flex px-2 py-1">
-                                                        <h6 class="text-secondary text-sm font-weight-bold ps-2">
-                                                            {{ $k->nama }}</h6>
-                                                    </div>
-                                                </td>
-                                                <td class="align-middle">
-                                                    <a href="{{ route('lokasi.edit', $k->id) }}"
-                                                        class="btn bg-gradient-warning">Edit</a>
-
-                                                    <a href="{{ route('lokasi.destroy', $k->id) }}"
-                                                        onclick="event.preventDefault(); if(confirm('Apakah Anda yakin ingin menghapus lokasi ini?')) document.getElementById('delete-form-{{ $k->id }}').submit();"
-                                                        class="btn bg-gradient-danger">Hapus</a>
-
-                                                    <form id="delete-form-{{ $k->id }}"
-                                                        action="{{ route('lokasi.destroy', $k->id) }}" method="POST"
-                                                        style="display: none;">
-                                                        @csrf
-                                                        @method('DELETE')
-                                                    </form>
-
-                                                    <a href="{{ route('lokasi.show', $k->id) }}"
-                                                        class="btn bg-gradient-info">Detail</a>
-                                                </td>
-                                            </tr>
-                                        @endforeach
-                                    </tbody>
-                                </table>
-                                <div class="mx-5 my-2">
-                                    {{ $lokasi->withQueryString()->links() }}
-                                </div>
-                            </div>
-                        @endif
+                        <div class="table-responsive p-0">
+                            <table class="table align-items-center mb-0" id="lokasiTable">
+                                <thead>
+                                    <tr>
+                                        <th class="text-uppercase text-dark text-sm font-weight-bolder">No</th>
+                                        <th class="text-uppercase text-dark text-sm font-weight-bolder">Nama</th>
+                                        <th class="text-uppercase text-dark text-sm font-weight-bolder">Aksi</th>
+                                    </tr>
+                                </thead>
+                            </table>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+
+    @push('scripts')
+    <script type="text/javascript">
+        $(document).ready(function() {
+            $('#lokasiTable').DataTable({
+                processing: true,
+                serverSide: true,
+                ajax: "{{ route('lokasi.data') }}",
+                columns: [
+                    { data: 'DT_RowIndex', name: 'DT_RowIndex', orderable: false, searchable: false },
+                    { data: 'nama', name: 'nama' },
+                    { data: 'action', name: 'action', orderable: false, searchable: false }
+                ],
+                language: {
+                    url: '//cdn.datatables.net/plug-ins/1.10.24/i18n/Indonesian.json'
+                }
+            });
+        });
+
+        function deleteLocation(id) {
+            if(confirm('Apakah Anda yakin ingin menghapus lokasi ini?')) {
+                $.ajax({
+                    url: `/lokasi/${id}`,
+                    type: 'DELETE',
+                    data: {
+                        "_token": "{{ csrf_token() }}"
+                    },
+                    success: function(response) {
+                        if(response.success) {
+                            // Refresh DataTable
+                            $('#lokasiTable').DataTable().ajax.reload();
+                            
+                            // Tampilkan pesan sukses
+                            $('#alert-container').html(`
+                                <div class="alert alert-success text-white opacity-5" role="alert">
+                                    ${response.message}
+                                </div>
+                            `);
+                            
+                            // Hilangkan pesan setelah 3 detik
+                            setTimeout(() => {
+                                $('#alert-container .alert').fadeOut();
+                            }, 3000);
+                        }
+                    },
+                    error: function(xhr) {
+                        let message = 'Gagal menghapus lokasi';
+                        if (xhr.responseJSON && xhr.responseJSON.message) {
+                            message = xhr.responseJSON.message;
+                        }
+                        
+                        $('#alert-container').html(`
+                            <div class="alert alert-danger text-white opacity-5" role="alert">
+                                ${message}
+                            </div>
+                        `);
+                        
+                        setTimeout(() => {
+                            $('#alert-container .alert').fadeOut();
+                        }, 3000);
+                    }
+                });
+            }
+        }
+    </script>
+    @endpush
 @endsection
