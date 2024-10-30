@@ -291,6 +291,15 @@
             }
             Scrollbar.init(document.querySelector('#sidenav-scrollbar'), options);
         }
+        setTimeout(function() {
+        var alertElement = document.querySelector('.alert');
+        if (alertElement) {
+            alertElement.style.opacity = '0';
+            setTimeout(function() {
+                alertElement.remove();
+            }, 500); // Tunggu animasi opacity sebelum menghapus elemen
+        }
+    }, 5000);
     </script>
     <!-- Di bagian bawah sebelum closing body -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
