@@ -132,11 +132,21 @@ data: {
     datasets: [{
         data: categoryValues,
         backgroundColor: [
-            '#FF6384',
-            '#36A2EB',
-            '#FFCE56',
-            '#4BC0C0',
-            '#9966FF'
+            '#FF6384', 
+            '#36A2EB', 
+            '#FFCE56', 
+            '#4BC0C0', 
+            '#9966FF', 
+            '#FF9F40', 
+            '#76B041', 
+            '#FF4500'   
+            '#8A89A6',  
+            '#FF4C6D', 
+            '#1E90FF',  
+            '#FFD700', 
+            '#C71585',  
+            '#87CEFA',  
+            '#20B2AA',  
         ],
     }],
 },
