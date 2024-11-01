@@ -219,7 +219,7 @@
                 </li>
             @endif
 
-            @if (auth()->user()->level == 'operator')
+            @if (auth()->user()->level == 'admin')
                 <li class="nav-item mt-3">
                     <h6 class="ps-4 ms-2 text-uppercase text-xs font-weight-bolder opacity-6">Kelola User</h6>
                 </li>
@@ -268,9 +268,9 @@
                         $level = auth()->user()->level; // Mengambil peran pengguna yang sedang login
                     @endphp
 
-                    @if (auth()->user()->level == 'operator')
+                    @if (auth()->user()->level == 'admin')
                     <p class="text-xs font-weight-bold">Mulai kelola pengguna dan pantau aktivitas mereka dengan efisien.</p>
-                    @elseif(auth()->user()->level == 'admin')
+                    @elseif(auth()->user()->level == 'operator')
                     <p class="text-xs font-weight-bold">Mulai kelola inventaris dan pantau aktivitas peminjaman dengan efisien.</p>
                     @else
                     <p class="text-xs font-weight-bold">Mulai pinjam barang dan kelola barang pinjaman Anda dengan mudah.</p>

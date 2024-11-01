@@ -113,6 +113,35 @@
         </div>
     </div>
 </div>
+@else
+<div class="row mt-4">
+    <div class="col-lg-12 mb-lg-0 mb-4">
+        <div class="card">
+            <div class="card-body p-2">
+                <div class="row">
+                    <div class="col-lg-6">
+                        <div class="d-flex flex-column h-100 my-auto mt-5 mx-3">
+                            <p class="mb-1 pt-3 text-bold">SMK Negeri 2 Cimahi</p>
+                            <h5 class="font-weight-bolder">Inventaris Barang</h5>
+                            <p class="mb-6">Aplikasi ini memungkinkan pengguna untuk mengelola stok barang dengan mudah, 
+                                memantau pergerakan barang, dan menghasilkan laporan inventaris secara real-time.</p>
+                        </div>
+                    </div>
+                    <div class="col-lg-4 ms-auto text-center mt-5 mt-lg-0">
+                        <div class="border-radius-lg h-100">
+                            <img src="../assets/img/shapes/waves-white.svg"
+                                class="position-absolute h-100 w-50 top-0 d-lg-block d-none" alt="waves">
+                            <div class="position-relative d-flex align-items-center justify-content-center h-100">
+                                <img draggable="false" class="w-100 position-relative z-index-2 pt-4"
+                                    src="../assets/img/illustrations/InventoryManagement.png" alt="rocket">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 @endif
 </div>
 
@@ -138,15 +167,10 @@ data: {
             '#4BC0C0', 
             '#9966FF', 
             '#FF9F40', 
-            '#76B041', 
-            '#FF4500'   
             '#8A89A6',  
+            '#76B041', 
             '#FF4C6D', 
-            '#1E90FF',  
-            '#FFD700', 
-            '#C71585',  
-            '#87CEFA',  
-            '#20B2AA',  
+            '#1E90FF'   
         ],
     }],
 },
