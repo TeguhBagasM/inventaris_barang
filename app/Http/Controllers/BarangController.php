@@ -33,7 +33,7 @@ class BarangController extends Controller
             ->addIndexColumn()
             ->addColumn('gambar', function($row){
                 return '<img src="'.asset($row->gambar).'" alt="'.$row->nama.'" 
-                        class="card-img" style="object-fit: cover;max-width: 100px; max-height: 100px;">';
+                        class="card-img" style="object-fit: cover;max-width: 50px; max-height: 50px;">';
             })
             ->addColumn('action', function($row){
                 $actionBtn = '
