@@ -88,7 +88,7 @@ class BarangController extends Controller
             'lokasi_id' => $request->lokasi_id,
         ]);
 
-        $barang->kategori()->attach($request->kategori_id);
+        $barang->kategoris()->attach($request->kategori_id);
 
         if ($barang) {
             session()->flash('status', 'success');
