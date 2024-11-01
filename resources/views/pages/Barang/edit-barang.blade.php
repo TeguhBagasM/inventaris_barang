@@ -43,7 +43,7 @@
                                         <div class="form-check form-check-inline">
                                             <input class="form-check-input" type="checkbox" name="kategori_id[]"
                                                 id="kategori_{{ $k->id }}" value="{{ $k->id }}"
-                                                @if($barang->kategori->contains($k->id)) checked @endif>
+                                                @if($barang->kategoris->contains($k->id)) checked @endif>
                                             <label class="form-check-label" for="kategori_{{ $k->id }}">
                                                 {{ $k->nama }}
                                             </label>

@@ -39,7 +39,7 @@
                                                 </th>
                                                 <td>
                                                     <ul style="list-style-type: none; padding: 0; margin: 0;">
-                                                        @foreach ($barang->kategori as $item)
+                                                        @foreach ($barang->kategoris as $item)
                                                             <li>{{ $item->nama }}</li>
                                                         @endforeach
                                                     </ul>

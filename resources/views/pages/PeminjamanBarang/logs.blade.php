@@ -40,7 +40,9 @@
                                         </th>
                                         <th class="text-uppercase text-dark text-sm font-weight-bolder">Tanggal Di Pinjam
                                         </th>
-                                        <th class="text-uppercase text-dark text-sm font-weight-bolder">Tanggal Di Kembalikan
+                                        <th class="text-uppercase text-dark text-sm font-weight-bolder">Status Pengembalian
+                                        </th>
+                                        <th class="text-uppercase text-dark text-sm font-weight-bolder">Aksi
                                         </th>
                                     </tr>
                                 </thead>
@@ -83,7 +85,18 @@
                                                         {{ $log->masuk ? \Carbon\Carbon::parse($log->masuk)->format('D M, Y') : 'Belum dikembalikan' }}
                                                     </h6>
                                                 </div>
-                                                
+                                            </td>
+                                            <td class="align-middle">
+                                                @if (!$log->masuk)
+                                                    <form action="{{ route('pengembalian.kembali', $log->id) }}" method="POST" class="d-inline">
+                                                        @csrf
+                                                        <button type="submit" 
+                                                                class="btn bg-gradient-warning btn-sm" 
+                                                                onclick="return confirm('Apakah Anda yakin ingin mengembalikan barang?')">
+                                                            Kembalikan
+                                                        </button>
+                                                    </form>
+                                                @endif
                                             </td>
                                         </tr>
                                     @endforeach

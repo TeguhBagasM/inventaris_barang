@@ -29,7 +29,7 @@
                                             <th class="text-uppercase text-dark text-sm font-weight-bolder">Tanggal Di Pinjam
                                             </th>
                                             <th class="text-uppercase text-dark text-sm font-weight-bolder">Status</th>
-                                            <th class="text-uppercase text-dark text-sm font-weight-bolder">Aksi</th>
+                                            {{-- <th class="text-uppercase text-dark text-sm font-weight-bolder">Aksi</th> --}}
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -68,7 +68,7 @@
                                                         @endif
                                                     </div>
                                                 </td>
-                                                <td class="align-middle">
+                                                {{-- <td class="align-middle">
                                                     @if (!$detail->masuk)
                                                         <form action="{{ route('kembali', $detail->id) }}" method="POST">
                                                             @csrf
@@ -76,7 +76,7 @@
                                                                 class="btn bg-gradient-warning">Kembalikan</button>
                                                         </form>
                                                     @endif
-                                                </td>
+                                                </td> --}}
                                             </tr>
                                         @endforeach
                                     </tbody>

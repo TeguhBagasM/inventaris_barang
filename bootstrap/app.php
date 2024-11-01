@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Middleware\AdminOrOperator;
 use App\Http\Middleware\IsAdmin;
 use App\Http\Middleware\IsMember;
 use App\Http\Middleware\IsOperator;
@@ -18,6 +19,7 @@ return Application::configure(basePath: dirname(__DIR__))
             'operator' => IsOperator::class,
             'admin' => IsAdmin::class,
             'member' => IsMember::class,
+            'admin_or_operator' => AdminOrOperator::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {

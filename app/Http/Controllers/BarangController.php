@@ -104,7 +104,7 @@ class BarangController extends Controller
 
     public function show(Barang $barang)
     {
-        $barang->load('kategori', 'lokasi');
+        $barang->load('kategoris', 'lokasi');
         $title = 'Kelola Barang';
 
         // Ambil detail peminjaman, kemudian grup berdasarkan user_id dan hitung jumlahnya
@@ -171,7 +171,7 @@ class BarangController extends Controller
             $barang->update($updateData);
     
             // Sync kategori
-            $barang->kategori()->sync($request->kategori_id);
+            $barang->kategoris()->sync($request->kategori_id);
     
             session()->flash('status', 'success');
             session()->flash('message', 'Barang berhasil diperbarui.');
@@ -201,7 +201,7 @@ class BarangController extends Controller
             }
 
             // Hapus semua relasi kategori
-            $barang->kategori()->detach();
+            $barang->kategoris()->detach();
 
             // Hapus barang dari database
             $barang->delete();

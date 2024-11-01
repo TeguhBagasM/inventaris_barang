@@ -68,7 +68,7 @@ class PeminjamanController extends Controller
         $title = 'Detail Peminjaman';
         $details = DetailPeminjaman::where('user_id', auth()->id())
             ->with('barang')
-            ->paginate(12); // Sesuaikan dengan jumlah data per halaman yang diinginkan
+            ->paginate(12); 
 
         return view('pages.peminjamanBarang.detailPeminjaman', compact('title', 'details'));
     }
@@ -77,20 +77,26 @@ class PeminjamanController extends Controller
     public function kembali($id)
     {
         $detailPeminjaman = DetailPeminjaman::findOrFail($id);
-
-        // Tambahkan jumlah barang yang dikembalikan ke stok barang
+    
+        // Cek apakah sudah dikembalikan
+        if ($detailPeminjaman->masuk !== null) {
+            session()->flash('status', 'error');
+            session()->flash('message', 'Barang sudah dikembalikan sebelumnya.');
+            return redirect()->back();
+        }
+    
+        // Tambahkan stok barang
         $barang = Barang::findOrFail($detailPeminjaman->barang_id);
         $barang->stok += $detailPeminjaman->jumlah;
         $barang->save();
-
-        // Set tanggal masuk menjadi waktu saat ini
+    
+        // Update tanggal pengembalian
         $detailPeminjaman->masuk = Carbon::now();
         $detailPeminjaman->save();
-
-        // Set session flash message
+    
         session()->flash('status', 'success');
         session()->flash('message', 'Berhasil Mengembalikan Barang.');
-
+    
         return redirect()->back();
     }
 
