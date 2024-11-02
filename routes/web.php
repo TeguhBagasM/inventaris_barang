@@ -10,7 +10,9 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\KategoriController;
 use App\Http\Controllers\PeminjamanController;
 use App\Http\Controllers\DetailPeminjamanController;
+use App\Http\Controllers\GedungController;
 use App\Http\Controllers\KategoriBarangController; // Add this line
+use App\Http\Controllers\RuangController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -28,6 +30,8 @@ Route::middleware('auth')->group(function () {
     // Routes for admin only
     Route::middleware('admin')->group(function () {
         Route::resource('User', UserController::class);
+        Route::resource('gedung', GedungController::class);
+        Route::resource('ruang', RuangController::class);
     });
 
     // Routes accessible by admin and operator
