@@ -21,6 +21,15 @@ class GedungController extends Controller
         return view('pages.gedung.create', compact('title'));
     }
 
+
+    public function show($id)
+    {
+        $title = 'Detail Gedung';
+        $gedung = Gedung::findOrFail($id);
+        return view('pages.gedung.show', compact('gedung', 'title'));
+    }
+
+
     public function store(Request $request)
     {
         // Validasi input
@@ -49,7 +58,8 @@ class GedungController extends Controller
 
     public function edit(Gedung $gedung)
     {
-        return view('pages.gedung.edit', compact('gedung'));
+        $title = 'Edit Gedung';
+        return view('pages.gedung.edit', compact('gedung', 'title'));
     }
 
     public function update(Request $request, Gedung $gedung)

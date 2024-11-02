@@ -45,8 +45,9 @@ class RuangController extends Controller
 
     public function edit(Ruang $ruang)
     {
+        $title = 'Edit Ruangan';
         $gedungs = Gedung::all();
-        return view('pages.ruang.edit', compact('ruang', 'gedungs'));
+        return view('pages.ruang.edit', compact('ruang', 'gedungs', 'title'));
     }
 
     public function update(Request $request, Ruang $ruang)
