@@ -114,59 +114,74 @@
     </div>
 </div>
 
-<div class="card-body px-0 pt-2 pb-2">
-    <form action="{{ route('todolist.updateStatus') }}" method="POST" id="todoForm">
-        @csrf
-        <div class="table-responsive p-0">
-            <table class="table align-items-center mb-0">
-                <thead>
-                    <tr>
-                        <th width="5%" class="text-center">#</th>
-                        <th class="text-uppercase text-dark text-sm font-weight-bolder">Judul</th>
-                        <th class="text-uppercase text-dark text-sm font-weight-bolder">Deskripsi</th>
-                        <th class="text-uppercase text-dark text-sm font-weight-bolder">Prioritas</th>
-                        <th class="text-uppercase text-dark text-sm font-weight-bolder">Status</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach ($todos as $todo)
-                        <tr>
-                            <td class="text-center">
-                                <input type="checkbox" name="todo_ids[]" value="{{ $todo->id }}" class="todo-checkbox cursor-pointer">
-                            </td>
-                            <td>
-                                <h6 class="text-secondary text-sm font-weight-bold ps-2">
-                                    {{ $todo->judul }}
-                                </h6>
-                            </td>
-                            <td>
-                                <h6 class="text-secondary text-sm font-weight-bold ps-2">
-                                    {{ $todo->deskripsi }}
-                                </h6>
-                            </td>
-                            <td>
-                                <span class="badge bg-{{ $todo->prioritas === 'Tinggi' ? 'danger' : 'info' }}">
-                                    {{ $todo->prioritas }}
-                                </span>
-                            </td>
-                            <td>
-                                <span class="badge bg-warning">
-                                    {{ $todo->status }}
-                                </span>
-                            </td>
-                        </tr>
-                    @endforeach
-                </tbody>
-            </table>
+<div class="row mt-4">
+<div class="col-lg-12">
+    <div class="card z-index-2">
+        <div class="card-header pb-0">
+            <h6>Pekerjaan Selanjutnya</h6>
         </div>
-        <div class="m-3">
-            <button type="submit" class="btn bg-gradient-success" id="submitButton" style="display: none;">
-                Selesaikan Todo
-            </button>
+            <div class="card-body px-0 pt-2 pb-2">
+                <form action="{{ route('todolist.updateStatus') }}" method="POST" id="todoForm">
+                    @csrf
+                    <div class="table-responsive p-0">
+                        <table class="table align-items-center mb-0">
+                            <thead>
+                                <tr>
+                                    <th width="5%" class="text-center">#</th>
+                                    <th class="text-uppercase text-dark text-sm font-weight-bolder">Judul</th>
+                                    <th class="text-uppercase text-dark text-sm font-weight-bolder">Deskripsi</th>
+                                    <th class="text-uppercase text-dark text-sm font-weight-bolder">Prioritas</th>
+                                    <th class="text-uppercase text-dark text-sm font-weight-bolder">Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @forelse ($todos as $todo)
+                                    <tr>
+                                        <td class="text-center">
+                                            <input type="checkbox" name="todo_ids[]" value="{{ $todo->id }}" class="todo-checkbox cursor-pointer">
+                                        </td>
+                                        <td>
+                                            <h6 class="text-secondary text-sm font-weight-bold ps-2">
+                                                {{ $todo->judul }}
+                                            </h6>
+                                        </td>
+                                        <td>
+                                            <h6 class="text-secondary text-sm font-weight-bold ps-2">
+                                                {{ $todo->deskripsi }}
+                                            </h6>
+                                        </td>
+                                        <td>
+                                            <span class="badge bg-{{ $todo->prioritas === 'Tinggi' ? 'danger' : 'info' }}">
+                                                {{ $todo->prioritas }}
+                                            </span>
+                                        </td>
+                                        <td>
+                                            <span class="badge bg-warning">
+                                                {{ $todo->status }}
+                                            </span>
+                                        </td>
+                                    </tr>
+                                    @empty
+                                            <tr>
+                                                <td colspan="5" class="text-center py-2">
+                                                    <p class="text-secondary text-sm mb-0">Tidak ada yang perlu dikerjakan</p>
+                                                </td>
+                                            </tr>
+                                @endforelse
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="m-3">
+                        <button type="submit" class="btn bg-gradient-success" id="submitButton" style="display: none;">
+                            Selesaikan Todo
+                        </button>
+                    </div>
+                </form>
+                <div class="mx-5 my-2">
+                    {{ $todos->links() }}
+                </div>
+            </div>
         </div>
-    </form>
-    <div class="mx-5 my-2">
-        {{ $todos->links() }}
     </div>
 </div>
 
