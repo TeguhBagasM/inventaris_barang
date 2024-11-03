@@ -27,7 +27,6 @@
                                         <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
                                 </div>
-
                                 <div class="mb-3">
                                     <label for="gedung_id" class="form-label text-sm required-label">Gedung</label>
                                     <select class="form-select @error('gedung_id') is-invalid @enderror" 

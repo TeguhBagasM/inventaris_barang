@@ -113,6 +113,79 @@
         </div>
     </div>
 </div>
+
+<div class="card-body px-0 pt-2 pb-2">
+    <form action="{{ route('todolist.updateStatus') }}" method="POST" id="todoForm">
+        @csrf
+        <div class="table-responsive p-0">
+            <table class="table align-items-center mb-0">
+                <thead>
+                    <tr>
+                        <th width="5%" class="text-center">#</th>
+                        <th class="text-uppercase text-dark text-sm font-weight-bolder">Judul</th>
+                        <th class="text-uppercase text-dark text-sm font-weight-bolder">Deskripsi</th>
+                        <th class="text-uppercase text-dark text-sm font-weight-bolder">Prioritas</th>
+                        <th class="text-uppercase text-dark text-sm font-weight-bolder">Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach ($todos as $todo)
+                        <tr>
+                            <td class="text-center">
+                                <input type="checkbox" name="todo_ids[]" value="{{ $todo->id }}" class="todo-checkbox cursor-pointer">
+                            </td>
+                            <td>
+                                <h6 class="text-secondary text-sm font-weight-bold ps-2">
+                                    {{ $todo->judul }}
+                                </h6>
+                            </td>
+                            <td>
+                                <h6 class="text-secondary text-sm font-weight-bold ps-2">
+                                    {{ $todo->deskripsi }}
+                                </h6>
+                            </td>
+                            <td>
+                                <span class="badge bg-{{ $todo->prioritas === 'Tinggi' ? 'danger' : 'info' }}">
+                                    {{ $todo->prioritas }}
+                                </span>
+                            </td>
+                            <td>
+                                <span class="badge bg-warning">
+                                    {{ $todo->status }}
+                                </span>
+                            </td>
+                        </tr>
+                    @endforeach
+                </tbody>
+            </table>
+        </div>
+        <div class="m-3">
+            <button type="submit" class="btn bg-gradient-success" id="submitButton" style="display: none;">
+                Selesaikan Todo
+            </button>
+        </div>
+    </form>
+    <div class="mx-5 my-2">
+        {{ $todos->links() }}
+    </div>
+</div>
+
+<!-- Add new chart for room inventory -->
+<div class="row mt-4">
+    <div class="col-12">
+        <div class="card z-index-2">
+            <div class="card-header pb-0">
+                <h6>Distribusi Barang per Ruangan</h6>
+            </div>
+            <div class="card-body p-3">
+                <div class="chart">
+                    <canvas id="roomInventoryChart" class="chart-canvas" height="400"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
 @else
 <div class="row mt-4">
     <div class="col-lg-12 mb-lg-0 mb-4">
@@ -265,6 +338,116 @@ options: {
     },
 },
 });
+
+// Prepare data for room inventory chart
+var roomData = @json($ruangData);
+var roomLabels = roomData.map(item => `${item.nama_ruang} (${item.nama_gedung})`);
+var roomValues = roomData.map(item => item.total_barang);
+var roomConditions = roomData.map(item => item.kondisi.toLowerCase());
+
+// Create colors based on room conditions
+var roomColors = roomConditions.map(condition => {
+    switch(condition) {
+        case 'baik':
+            return '#4ade80'; // green
+        case 'rusak ringan':
+            return '#fbbf24'; // yellow
+        case 'rusak berat':
+            return '#f87171'; // red
+        default:
+            return '#94a3b8'; // gray
+    }
+});
+
+// Create room inventory chart
+var ctxRoom = document.getElementById("roomInventoryChart").getContext("2d");
+new Chart(ctxRoom, {
+    type: "bar",
+    data: {
+        labels: roomLabels,
+        datasets: [{
+            label: "Jumlah Barang",
+            data: roomValues,
+            backgroundColor: roomColors,
+            borderColor: roomColors,
+            borderWidth: 1
+        }]
+    },
+    options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+            legend: {
+                display: false
+            },
+            tooltip: {
+                callbacks: {
+                    label: function(context) {
+                        return `Jumlah Barang: ${context.raw}`;
+                    },
+                    afterLabel: function(context) {
+                        return `Kondisi: ${roomConditions[context.dataIndex]}`;
+                    }
+                }
+            }
+        },
+        scales: {
+            y: {
+                beginAtZero: true,
+                grid: {
+                    drawBorder: false,
+                    display: true,
+                    drawOnChartArea: true,
+                    drawTicks: false,
+                    borderDash: [5, 5]
+                },
+                ticks: {
+                    padding: 10,
+                    font: {
+                        size: 11,
+                        family: "Open Sans",
+                        style: 'normal',
+                        lineHeight: 2
+                    }
+                }
+            },
+            x: {
+                grid: {
+                    drawBorder: false,
+                    display: false,
+                    drawOnChartArea: false,
+                    drawTicks: false
+                },
+                ticks: {
+                    display: true,
+                    padding: 20,
+                    font: {
+                        size: 11,
+                        family: "Open Sans",
+                        style: 'normal',
+                        lineHeight: 2
+                    }
+                }
+            }
+        }
+    }
+});
+
+// todolist
+document.addEventListener('DOMContentLoaded', function() {
+            const checkboxes = document.querySelectorAll('.todo-checkbox');
+            const submitButton = document.getElementById('submitButton');
+
+            checkboxes.forEach(checkbox => {
+                checkbox.addEventListener('change', function() {
+                    // Cek apakah ada checkbox yang dicentang
+                    const isAnyChecked = Array.from(checkboxes).some(cb => cb.checked);
+                    
+                    // Tampilkan atau sembunyikan tombol submit
+                    submitButton.style.display = isAnyChecked ? 'block' : 'none';
+                });
+            });
+        });
 </script>
 @endpush
 @endsection

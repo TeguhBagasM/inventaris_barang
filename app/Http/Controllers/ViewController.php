@@ -8,6 +8,8 @@ use App\Models\Kategori;
 use Illuminate\Http\Request;
 use App\Models\DetailPeminjaman;
 use App\Models\Ruang;
+use App\Models\ToDoList;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class ViewController extends Controller
@@ -34,6 +36,25 @@ class ViewController extends Controller
             ->orderBy('month')
             ->get();
 
+        // Tambahkan query untuk data distribusi barang per ruangan
+        $ruangData = DB::table('ruangs')
+            ->leftJoin('barangs', 'ruangs.id', '=', 'barangs.ruang_id')
+            ->leftJoin('gedungs', 'ruangs.gedung_id', '=', 'gedungs.id')
+            ->select(
+                'ruangs.nama_ruang',
+                'gedungs.nama_gedung',
+                DB::raw('count(barangs.id) as total_barang'),
+                'ruangs.kondisi'
+            )
+            ->groupBy('ruangs.nama_ruang', 'gedungs.nama_gedung', 'ruangs.kondisi')
+            ->orderBy('total_barang', 'desc')
+            ->get();
+
+            $todos = ToDoList::where('user_id', Auth::id())
+                        ->orderBy('created_at', 'desc')
+                        ->where('status', 'pending')
+                        ->paginate(10);
+
         return view('pages.dashboard', compact(
             'title', 
             'jumlahBarang', 
@@ -41,7 +62,9 @@ class ViewController extends Controller
             'jumlahRuang', 
             'jumlahPeminjam',
             'kategoriData',
-            'monthlyLoans'
+            'monthlyLoans',
+            'ruangData',
+            'todos'
         ));
     }
 }

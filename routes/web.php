@@ -11,8 +11,8 @@ use App\Http\Controllers\KategoriController;
 use App\Http\Controllers\PeminjamanController;
 use App\Http\Controllers\DetailPeminjamanController;
 use App\Http\Controllers\GedungController;
-use App\Http\Controllers\KategoriBarangController; // Add this line
 use App\Http\Controllers\RuangController;
+use App\Http\Controllers\TodoListController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -36,13 +36,16 @@ Route::middleware('auth')->group(function () {
 
     // Routes accessible by admin and operator
     Route::middleware(['admin_or_operator'])->group(function () {
-        Route::resource('lokasi', LokasiController::class);
-        Route::get('lokasi-data', [LokasiController::class, 'getData'])->name('lokasi.data');
+        // Route::resource('lokasi', LokasiController::class);
+        // Route::get('lokasi-data', [LokasiController::class, 'getData'])->name('lokasi.data');
         Route::resource('barang', BarangController::class);
         Route::get('barang-data', [BarangController::class, 'getData'])->name('barang.data');
         Route::resource('kategori', KategoriController::class);
         Route::get('/log-peminjaman', [PeminjamanController::class, 'log'])->name('log.peminjaman');
         Route::post('/pengembalian/{id}', [PeminjamanController::class, 'kembali'])->name('pengembalian.kembali');
+        Route::get('/todolist', [TodoListController::class, 'index'])->name('todolist.index');
+        Route::post('/todolist', [TodoListController::class, 'store'])->name('todolist.store');
+        Route::post('/todolist/update-status', [TodoListController::class, 'updateStatus'])->name('todolist.updateStatus');
     });
 
     // Routes for members only
