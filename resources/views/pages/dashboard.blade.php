@@ -119,6 +119,11 @@
     <div class="card z-index-2">
         <div class="card-header pb-0">
             <h6>Pekerjaan Selanjutnya</h6>
+            @if (Session::has('status'))
+            <div class="alert alert-success text-white opacity-5" role="alert">
+                {{ Session::get('message') }}
+            </div>
+            @endif
         </div>
             <div class="card-body px-0 pt-2 pb-2">
                 <form action="{{ route('todolist.updateStatus') }}" method="POST" id="todoForm">
