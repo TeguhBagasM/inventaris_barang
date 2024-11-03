@@ -19,7 +19,7 @@ return new class extends Migration
             $table->string('no_seri');
             $table->integer('jumlah');
             $table->string('satuan');
-            $table->string('tahun_pengadaan');
+            $table->year('tahun_pengadaan');
             $table->string('sumber_dana');
             $table->timestamps();
         });
