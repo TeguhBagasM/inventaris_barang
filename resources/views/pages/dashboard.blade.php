@@ -48,8 +48,8 @@
                             <div class="row">
                                 <div class="col-8">
                                     <div class="numbers">
-                                        <p class="text-sm mb-0 text-capitalize font-weight-bold">Lokasi Barang</p>
-                                        <h5 class="font-weight-bolder mb-0">{{ $jumlahLokasi }}</h5>
+                                        <p class="text-sm mb-0 text-capitalize font-weight-bold">Ruangan Barang</p>
+                                        <h5 class="font-weight-bolder mb-0">{{ $jumlahRuang }}</h5>
                                     </div>
                                 </div>
                                 <div class="col-4 text-end">

@@ -12,14 +12,14 @@ class Barang extends Model
 
     protected $guarded = [];
 
-    public function kategoris()
+    public function kategori()
     {
-        return $this->belongsToMany(Kategori::class);
+        return $this->belongsTo(Kategori::class);
     }
 
-    public function lokasi()
+    public function ruang()
     {
-        return $this->belongsTo(Lokasi::class);
+        return $this->belongsTo(Ruang::class);
     }
     public function detailPeminjaman()
     {

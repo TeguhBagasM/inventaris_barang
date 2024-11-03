@@ -29,26 +29,23 @@
                                     <input type="number" class="form-control" name="jumlah" id="jumlah" required>
                                 </div>
                                 <div class="mb-3">
-                                    <label for="lokasi_id" class="form-label text-sm">Lokasi</label>
-                                    <select class="form-select" name="lokasi_id" id="lokasi_id" required>
-                                        <option value="">Pilih Lokasi...</option>
-                                        @foreach ($lokasi as $k)
-                                            <option value="{{ $k->id }}">{{ $k->nama }}</option>
+                                    <label for="ruang_id" class="form-label text-sm">Ruang</label>
+                                    <select class="form-select" name="ruang_id" id="ruang_id" required>
+                                        <option value="">Pilih Ruang...</option>
+                                        @foreach ($ruang as $k)
+                                            <option value="{{ $k->id }}">{{ $k->nama_ruang }}</option>
                                         @endforeach
                                     </select>
                                 </div>
                                 <div class="mb-3">
-                                    <label for="kategori_id" class="form-label text-sm">Kategori</label><br>
-                                    @foreach ($kategori as $k)
-                                        <div class="form-check form-check-inline">
-                                            <input class="form-check-input" type="checkbox" name="kategori_id[]"
-                                                id="kategori_{{ $k->id }}" value="{{ $k->id }}">
-                                            <label class="form-check-label" for="kategori_{{ $k->id }}">
-                                                {{ $k->nama }}
-                                            </label>
-                                        </div>
-                                    @endforeach
-                                </div>
+                                    <label for="kategori_id" class="form-label text-sm">Kategori</label>
+                                    <select class="form-select" name="kategori_id" id="kategori_id">
+                                        <option value="" disabled selected>Pilih Kategori</option>
+                                        @foreach ($kategori as $k)
+                                            <option value="{{ $k->id }}">{{ $k->nama }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>                                
                                 <div class="mb-3">
                                     <label for="image" class="form-label text-sm required-label">Foto</label>
                                     <input type="file" class="form-control" name="image" id="image"

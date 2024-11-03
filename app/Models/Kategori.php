@@ -11,15 +11,10 @@ class Kategori extends Model
     protected $guarded = [];
     // Protected $table = 'kategoris';
 
-    public function kategoris()
-    {
-        return $this->hasMany(Kategori::class);
-    }
-
     public function barangs()
-    {
-        return $this->belongsToMany(Barang::class, 'barang_kategori');
-    }
+{
+    return $this->hasMany(Barang::class);
+}
 }
 
 

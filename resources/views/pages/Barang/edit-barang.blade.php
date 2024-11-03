@@ -28,28 +28,28 @@
                                         value="{{ $barang->jumlah }}" required>
                                 </div>
                                 <div class="mb-3">
-                                    <label for="lokasi_id" class="form-label text-sm">Lokasi</label>
-                                    <select class="form-select" name="lokasi_id" id="lokasi_id">
-                                        @foreach ($lokasi as $item)
+                                    <label for="ruang_id" class="form-label text-sm">Ruang</label>
+                                    <select class="form-select" name="ruang_id" id="ruang_id">
+                                        @foreach ($ruang as $item)
                                             <option value="{{ $item->id }}"
-                                                @if ($item->id === $barang->lokasi_id) selected @endif>{{ $item->nama }}
+                                                @if ($item->id === $barang->ruang_id) selected @endif>{{ $item->nama_ruang }}
                                             </option>
                                         @endforeach
                                     </select>
                                 </div>
                                 <div class="mb-3">
-                                    <label for="kategori_id" class="form-label text-sm">Kategori</label><br>
-                                    @foreach ($kategori as $k)
-                                        <div class="form-check form-check-inline">
-                                            <input class="form-check-input" type="checkbox" name="kategori_id[]"
-                                                id="kategori_{{ $k->id }}" value="{{ $k->id }}"
-                                                @if($barang->kategoris->contains($k->id)) checked @endif>
-                                            <label class="form-check-label" for="kategori_{{ $k->id }}">
+                                    <label for="kategori_id" class="form-label text-sm">Kategori</label>
+                                    <select class="form-select" name="kategori_id" id="kategori_id">
+                                        <option value="" disabled selected>Pilih Kategori</option>
+                                        @foreach ($kategori as $k)
+                                            <option value="{{ $k->id }}" 
+                                                @if($barang->kategori_id == $k->id) selected @endif>
                                                 {{ $k->nama }}
-                                            </label>
-                                        </div>
-                                    @endforeach
+                                            </option>
+                                        @endforeach
+                                    </select>
                                 </div>
+                                
                                 <div class="mb-3">
                                     <label for="image" class="form-label text-sm">Gambar</label>
                                     <input type="file" class="form-control" name="image" id="image"

@@ -23,4 +23,14 @@ class Ruang extends Model
     {
         return $this->belongsTo(Gedung::class);
     }
+
+    public function ruang()
+    {
+        return $this->hasMany(Barang::class);
+    }
+
+    public function barang()
+    {
+        return $this->belongsTo(Ruang::class);
+    }
 }

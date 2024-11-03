@@ -3,13 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Models\Barang;
-use App\Models\Lokasi;
 use App\Models\Kategori;
 use Illuminate\Http\Request;
-use App\Models\KategoriBarang;
 use App\Models\DetailPeminjaman;
+use App\Models\Ruang;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Log;
 use Yajra\DataTables\Facades\DataTables;
@@ -27,7 +25,7 @@ class BarangController extends Controller
 
     public function getData()
     {
-        $barang = Barang::with('lokasi');
+        $barang = Barang::with('ruang');
         
         return DataTables::of($barang)
             ->addIndexColumn()
@@ -52,10 +50,10 @@ class BarangController extends Controller
      */
     public function create()
     {
-        $lokasi = Lokasi::all();
+        $ruang = Ruang::all();
         $kategori = Kategori::all();
         $title = 'Kelola Barang';
-        return view('pages.barang.add-barang', compact('title', 'lokasi', 'kategori'));
+        return view('pages.barang.add-barang', compact('title', 'ruang', 'kategori'));
     }
 
     /**
@@ -66,9 +64,8 @@ class BarangController extends Controller
         $request->validate([
             'nama' => 'required',
             'jumlah' => 'required|integer',
-            'lokasi_id' => 'required|exists:lokasis,id',
-            'kategori_id' => 'required|array',
-            'kategori_id.*' => 'exists:kategoris,id',
+            'ruang_id' => 'required|exists:ruangs,id',
+            'kategori_id' => 'required|exists:kategoris,id',
             'image' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
 
@@ -76,19 +73,20 @@ class BarangController extends Controller
 
         if ($request->hasFile('image') && $request->file('image')->isValid()) {
             $newName = $request->nama . '-' . now()->timestamp . '.' . $request->file('image')->getClientOriginalExtension();
-            // Simpan file ke storage/app/public/images
             Storage::disk('public')->putFileAs('images', $request->file('image'), $newName);
         }
 
-        $barang = Barang::create([
+        $barang = new Barang([
             'nama' => $request->nama,
             'jumlah' => $request->jumlah,
             'stok' => $request->jumlah,
-            'gambar' => $newName ? 'storage/images/' . $newName : null, // Simpan path relatif
-            'lokasi_id' => $request->lokasi_id,
+            'gambar' => $newName ? 'storage/images/' . $newName : null,
+            'ruang_id' => $request->ruang_id,
         ]);
 
-        $barang->kategoris()->attach($request->kategori_id);
+        // Associate kategori
+        $barang->kategori()->associate($request->kategori_id);
+        $barang->save();
 
         if ($barang) {
             session()->flash('status', 'success');
@@ -102,9 +100,10 @@ class BarangController extends Controller
     }
 
 
+
     public function show(Barang $barang)
     {
-        $barang->load('kategoris', 'lokasi');
+        $barang->load('kategori', 'ruang');
         $title = 'Kelola Barang';
 
         // Ambil detail peminjaman, kemudian grup berdasarkan user_id dan hitung jumlahnya
@@ -122,10 +121,10 @@ class BarangController extends Controller
      */
     public function edit(Barang $barang)
     {
-        $lokasi = Lokasi::all();
+        $ruang = Ruang::all();
         $kategori = Kategori::all();
         $title = 'Kelola Barang';
-        return view('pages.barang.edit-barang', compact('barang', 'title', 'lokasi', 'kategori'));
+        return view('pages.barang.edit-barang', compact('barang', 'title', 'ruang', 'kategori'));
     }
     /**
      * Update the specified resource in storage.
@@ -135,51 +134,43 @@ class BarangController extends Controller
         $request->validate([
             'nama' => 'required',
             'jumlah' => 'required|integer',
-            'lokasi_id' => 'required|exists:lokasis,id',
-            'kategori_id' => 'required|array',
-            'kategori_id.*' => 'exists:kategoris,id',
+            'ruang_id' => 'required|exists:ruangs,id',
+            'kategori_id' => 'required|exists:kategoris,id',
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
-    
+
         try {
             $updateData = [
                 'nama' => $request->nama,
                 'jumlah' => $request->jumlah,
                 'stok' => $request->jumlah,
-                'lokasi_id' => $request->lokasi_id,
+                'ruang_id' => $request->ruang_id,
             ];
-    
-            // Handle image upload if there's a new image
+
             if ($request->hasFile('image') && $request->file('image')->isValid()) {
-                // Generate new image name
                 $newName = $request->nama . '-' . now()->timestamp . '.' . $request->file('image')->getClientOriginalExtension();
                 
-                // Delete old image if exists
                 if ($barang->gambar) {
                     $oldImagePath = str_replace('storage/images/', '', $barang->gambar);
                     Storage::disk('public')->delete('images/' . $oldImagePath);
                 }
                 
-                // Store new image
                 Storage::disk('public')->putFileAs('images', $request->file('image'), $newName);
-                
-                // Update image path in database
                 $updateData['gambar'] = 'storage/images/' . $newName;
             }
-    
-            // Update barang data
+
             $barang->update($updateData);
-    
-            // Sync kategori
-            $barang->kategoris()->sync($request->kategori_id);
-    
+
+            // Associate kategori
+            $barang->kategori()->associate($request->kategori_id);
+            $barang->save();
+
             session()->flash('status', 'success');
             session()->flash('message', 'Barang berhasil diperbarui.');
-    
+
             return redirect()->route('barang.index');
-    
+
         } catch (\Exception $e) {
-            // Log error for debugging
             Log::error('Error updating barang: ' . $e->getMessage());
             
             session()->flash('status', 'error');
@@ -188,6 +179,7 @@ class BarangController extends Controller
             return redirect()->back()->withInput();
         }
     }
+
 
     /**
      * Remove the specified resource from storage.
@@ -201,7 +193,7 @@ class BarangController extends Controller
             }
 
             // Hapus semua relasi kategori
-            $barang->kategoris()->detach();
+            $barang->kategori()->detach();
 
             // Hapus barang dari database
             $barang->delete();

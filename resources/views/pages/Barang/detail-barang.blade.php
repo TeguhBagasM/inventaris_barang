@@ -30,20 +30,14 @@
                                                 <td>{{ $barang->jumlah }}</td>
                                             </tr>
                                             <tr>
-                                                <th class="text-uppercase text-dark text-sm font-weight-bolder">Lokasi
+                                                <th class="text-uppercase text-dark text-sm font-weight-bolder">ruang
                                                 </th>
-                                                <td>{{ $barang->lokasi->nama }}</td>
+                                                <td>{{ $barang->ruang->nama_ruang }}</td>
                                             </tr>
                                             <tr>
                                                 <th class="text-uppercase text-dark text-sm font-weight-bolder">Kategori
                                                 </th>
-                                                <td>
-                                                    <ul style="list-style-type: none; padding: 0; margin: 0;">
-                                                        @foreach ($barang->kategoris as $item)
-                                                            <li>{{ $item->nama }}</li>
-                                                        @endforeach
-                                                    </ul>
-                                                </td>
+                                                <td>{{ $barang->kategori->nama }}</td>
                                             </tr>
                                         </tbody>
                                     </table>
