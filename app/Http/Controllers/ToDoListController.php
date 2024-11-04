@@ -10,14 +10,14 @@ class TodoListController extends Controller
 {
     public function index()
     {
-        $title = "To Do List";
+        $title = "Daftar Pekerjaan";
         $todos = ToDoList::where('user_id', Auth::id())
                         ->orderBy('created_at', 'desc')
                         ->paginate(10);
         return view('pages.todolist.index', compact('todos', 'title'));
     }
 
-    public function store(Request $request)
+    public function store(Request $request) 
     {
         $request->validate([
             'judul' => 'required|string|max:255',
@@ -48,7 +48,7 @@ class TodoListController extends Controller
         
         return redirect()->back()->with([
             'status' => 'success',
-            'message' => 'To Do List telah diselesaikan'
+            'message' => 'Daftar Pekerjaan telah diselesaikan'
         ]);
     }
 }

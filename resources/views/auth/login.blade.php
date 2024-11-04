@@ -55,18 +55,18 @@
                                         <x-input-error :messages="$errors->get('password')" class="mt-2" />
                                         <x-input-error :messages="$errors->get('email')" class="mt-2" />
                                         <div class="text-center">
-                                            <button type="submit" class="btn bg-gradient-info w-100 mt-4 mb-0">Sign
+                                            <button type="submit" class="btn bg-gradient-info w-100 mt-4 mb-7">Sign
                                                 in</button>
                                         </div>
                                     </form>
                                 </div>
-                                <div class="card-footer text-center pt-0 px-lg-2 px-1">
+                                {{-- <div class="card-footer text-center pt-0 px-lg-2 px-1">
                                     <p class="mb-4 text-sm mx-auto">
                                         Don't have an account?
                                         <a href="/register" class="text-info text-gradient font-weight-bold">Sign
                                             up</a>
                                     </p>
-                                </div>
+                                </div> --}}
                             </div>
                         </div>
                         <div class="col-md-6">

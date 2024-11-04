@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Gedung;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 
 class GedungController extends Controller
 {
@@ -46,7 +47,12 @@ class GedungController extends Controller
         // Handle upload gambar
         if ($request->hasFile('gambar')) {
             $gambar = $request->file('gambar');
-            $path = $gambar->store('gedung-images', 'public');
+            // Mendapatkan ekstensi file asli
+            $extension = $gambar->getClientOriginalExtension();
+            // Membuat nama file baru berdasarkan nama gedung
+            $fileName = Str::slug($request->nama_gedung) . '.' . $extension;
+            // Menyimpan file dengan nama yang baru
+            $path = $gambar->storeAs('gedung-images', $fileName, 'public');
             $validated['gambar'] = $path;
         }
 
@@ -73,7 +79,8 @@ class GedungController extends Controller
             'gambar' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
             'keterangan' => 'nullable|string'
         ]);
-
+    
+        // Jika ada file gambar baru yang diupload
         if ($request->hasFile('gambar')) {
             // Hapus gambar lama jika ada
             if ($gedung->gambar) {
@@ -81,12 +88,25 @@ class GedungController extends Controller
             }
             
             $gambar = $request->file('gambar');
-            $path = $gambar->store('gedung-images', 'public');
+            $extension = $gambar->getClientOriginalExtension();
+            $fileName = Str::slug($request->nama_gedung) . '.' . $extension;
+            $path = $gambar->storeAs('gedung-images', $fileName, 'public');
             $validated['gambar'] = $path;
         }
-
+        // Jika tidak ada file baru tapi nama gedung berubah dan ada gambar lama
+        elseif ($gedung->nama_gedung !== $request->nama_gedung && $gedung->gambar) {
+            $oldPath = $gedung->gambar;
+            $extension = pathinfo($oldPath, PATHINFO_EXTENSION);
+            $newFileName = Str::slug($request->nama_gedung) . '.' . $extension;
+            $newPath = 'gedung-images/' . $newFileName;
+    
+            // Rename file di storage
+            Storage::disk('public')->move($oldPath, $newPath);
+            $validated['gambar'] = $newPath;
+        }
+    
         $gedung->update($validated);
-
+    
         return redirect()->route('gedung.index')
             ->with('success', 'Gedung berhasil diperbarui!');
     }
