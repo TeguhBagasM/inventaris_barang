@@ -68,12 +68,6 @@
 
                                 <div class="mb-3">
                                     <label for="gambar" class="form-label text-sm">Foto Gedung</label>
-                                    @if($gedung->gambar)
-                                        <div class="mb-2">
-                                            <img src="{{ asset('storage/' . $gedung->gambar) }}" alt="Foto Gedung" 
-                                                 class="rounded" style="max-width: 200px;">
-                                        </div>
-                                    @endif
                                     <input type="file" class="form-control @error('gambar') is-invalid @enderror" 
                                            name="gambar" id="gambar" accept="image/*" onchange="previewImage(event)">
                                     <small class="text-muted">Biarkan kosong jika tidak ingin mengubah foto</small>
@@ -82,8 +76,13 @@
                                     @enderror
                                 </div>
 
-                                <div id="imagePreview" class="mb-3" style="display: none;">
-                                    <img src="#" class="rounded" alt="Preview" style="max-width: 100%; max-height: 200px;">
+                                <div id="imagePreview" class="mb-3" style="{{ $gedung->gambar ? '' : 'display: none;' }}">
+                                    @if($gedung->gambar)
+                                        <img src="{{ asset('storage/' . $gedung->gambar) }}" alt="Foto Gedung" class="rounded" 
+                                             style="max-width: 100%; max-height: 200px;">
+                                    @else
+                                        <img src="#" alt="Preview" class="rounded" style="max-width: 100%; max-height: 200px;">
+                                    @endif
                                 </div>
 
                                 <div class="mb-3">
@@ -113,11 +112,11 @@
 
             reader.onloadend = function() {
                 preview.src = reader.result;
+                document.getElementById('imagePreview').style.display = 'block';
             }
 
             if (file) {
                 reader.readAsDataURL(file);
-                document.getElementById('imagePreview').style.display = 'block';
             } else {
                 preview.src = "#";
                 document.getElementById('imagePreview').style.display = 'none';
