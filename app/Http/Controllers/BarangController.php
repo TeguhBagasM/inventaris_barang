@@ -74,8 +74,11 @@ class BarangController extends Controller
             $imagePath = null;
     
             if ($request->hasFile('image') && $request->file('image')->isValid()) {
-                // Menggunakan Str::slug untuk nama file yang konsisten dan URL-friendly
-                $newName = Str::slug($request->nama) . '.' . $request->file('image')->getClientOriginalExtension();
+                // Tambahkan timestamp pada nama file
+                $timestamp = date('dmYHis');  // Format: ddmmyyyyhhiiss
+                $newName = Str::slug($request->nama) . '-' . $timestamp . '.' . 
+                          $request->file('image')->getClientOriginalExtension();
+                
                 Storage::disk('public')->putFileAs('images', $request->file('image'), $newName);
                 $imagePath = 'storage/images/' . $newName;
             }
@@ -88,7 +91,6 @@ class BarangController extends Controller
                 'ruang_id' => $request->ruang_id,
             ]);
     
-            // Associate kategori
             $barang->kategori()->associate($request->kategori_id);
             $barang->save();
     
@@ -98,7 +100,6 @@ class BarangController extends Controller
             return redirect()->route('barang.index');
     
         } catch (\Exception $e) {
-            // Jika terjadi error, hapus file yang sudah terupload (jika ada)
             if (isset($newName) && Storage::disk('public')->exists('images/' . $newName)) {
                 Storage::disk('public')->delete('images/' . $newName);
             }
@@ -111,8 +112,6 @@ class BarangController extends Controller
             return redirect()->back()->withInput();
         }
     }
-
-
 
     public function show(Barang $barang)
     {
@@ -151,7 +150,7 @@ class BarangController extends Controller
             'kategori_id' => 'required|exists:kategoris,id',
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
-    
+
         try {
             $updateData = [
                 'nama' => $request->nama,
@@ -159,11 +158,14 @@ class BarangController extends Controller
                 'stok' => $request->jumlah,
                 'ruang_id' => $request->ruang_id,
             ];
-    
+
             // Jika ada file gambar baru yang diupload
             if ($request->hasFile('image') && $request->file('image')->isValid()) {
-                $newName = Str::slug($request->nama) . '.' . $request->file('image')->getClientOriginalExtension();
+                $timestamp = date('dmYHis');
+                $newName = Str::slug($request->nama) . '-' . $timestamp . '.' . 
+                        $request->file('image')->getClientOriginalExtension();
                 
+                // Hapus gambar lama jika ada
                 if ($barang->gambar) {
                     $oldImagePath = str_replace('storage/images/', '', $barang->gambar);
                     Storage::disk('public')->delete('images/' . $oldImagePath);
@@ -172,28 +174,33 @@ class BarangController extends Controller
                 Storage::disk('public')->putFileAs('images', $request->file('image'), $newName);
                 $updateData['gambar'] = 'storage/images/' . $newName;
             }
-            // Jika nama barang berubah dan ada gambar lama
+            // Jika nama barang berubah dan ada gambar lama, rename file gambar
             elseif ($barang->nama !== $request->nama && $barang->gambar) {
                 $oldImagePath = str_replace('storage/images/', '', $barang->gambar);
                 $extension = pathinfo($oldImagePath, PATHINFO_EXTENSION);
-                $newName = Str::slug($request->nama) . '.' . $extension;
+                
+                // Ambil timestamp dari nama file lama atau generate baru jika tidak ada
+                $oldNameParts = explode('-', pathinfo($oldImagePath, PATHINFO_FILENAME));
+                $timestamp = count($oldNameParts) > 1 ? end($oldNameParts) : date('dmYHis');
+                
+                $newName = Str::slug($request->nama) . '-' . $timestamp . '.' . $extension;
                 
                 // Rename file di storage
-                Storage::disk('public')->move('images/' . $oldImagePath, 'images/' . $newName);
-                $updateData['gambar'] = 'storage/images/' . $newName;
+                if (Storage::disk('public')->exists('images/' . $oldImagePath)) {
+                    Storage::disk('public')->move('images/' . $oldImagePath, 'images/' . $newName);
+                    $updateData['gambar'] = 'storage/images/' . $newName;
+                }
             }
-    
+
             $barang->update($updateData);
-    
-            // Associate kategori
             $barang->kategori()->associate($request->kategori_id);
             $barang->save();
-    
+
             session()->flash('status', 'success');
             session()->flash('message', 'Barang berhasil diperbarui.');
-    
+
             return redirect()->route('barang.index');
-    
+
         } catch (\Exception $e) {
             Log::error('Error updating barang: ' . $e->getMessage());
             
@@ -203,7 +210,6 @@ class BarangController extends Controller
             return redirect()->back()->withInput();
         }
     }
-
 
     /**
      * Remove the specified resource from storage.
