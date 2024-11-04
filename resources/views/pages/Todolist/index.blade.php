@@ -7,7 +7,7 @@
                     <div class="card-header pb-0">
                         <div class="d-flex justify-content-between">
                             <div>
-                                <h4 class="">To Do List</h4>
+                                <h4 class="">Daftar Pekerjaan</h4>
                             </div>
                         </div>
 
