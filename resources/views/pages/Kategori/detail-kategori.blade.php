@@ -47,17 +47,16 @@
                             <div class="table-responsive p-0">
                                 <table class="table align-items-center mb-0">
                                     <thead>
-                                        <tr>
+                                        <tr class="text-center">
                                             <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">No</th>
                                             <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Nama Barang</th>
                                             <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Stok</th>
-                                            <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Kategori Lainnya</th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         @forelse($kategori->barangs as $index => $barang)
-                                            <tr>
-                                                <td class="align-middle text-center">
+                                            <tr class="text-center">
+                                                <td>
                                                     <span class="text-secondary text-xs font-weight-bold">{{ $index + 1 }}</span>
                                                 </td>
                                                 <td>
@@ -76,15 +75,6 @@
                                                     <span class="text-secondary text-xs font-weight-bold">
                                                         {{ $barang->stok }}
                                                     </span>
-                                                </td>
-                                                <td>
-                                                    <div class="d-flex flex-wrap gap-1">
-                                                        @foreach($barang->kategoris->where('id', '!=', $kategori->id) as $otherKategori)
-                                                            <span class="badge bg-gradient-info">
-                                                                {{ $otherKategori->nama }}
-                                                            </span>
-                                                        @endforeach
-                                                    </div>
                                                 </td>
                                             </tr>
                                         @empty
