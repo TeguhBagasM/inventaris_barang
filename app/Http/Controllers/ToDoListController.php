@@ -10,7 +10,7 @@ class TodoListController extends Controller
 {
     public function index()
     {
-        $title = "Daftar Pekerjaan";
+        $title = "Daftar Tugas";
         $todos = ToDoList::where('user_id', Auth::id())
                         ->orderBy('created_at', 'desc')
                         ->paginate(10);

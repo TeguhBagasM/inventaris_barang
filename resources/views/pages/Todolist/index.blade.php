@@ -7,7 +7,7 @@
                     <div class="card-header pb-0">
                         <div class="d-flex justify-content-between">
                             <div>
-                                <h4 class="">Daftar Pekerjaan</h4>
+                                <h4 class="">Daftar Tugas</h4>
                             </div>
                         </div>
 
@@ -19,7 +19,7 @@
                         @endif
                         <div class="d-flex justify-content-between mb-3">
                             <button type="button" class="btn bg-gradient-success" data-bs-toggle="modal" data-bs-target="#addTodoModal">
-                                Tambah Todo
+                                Tambah Tugas
                             </button>
                         </div>
                     </div>
@@ -71,7 +71,7 @@
                                 </table>
                             </div>
                             <div class="m-3">
-                                <button type="submit" class="btn bg-gradient-success" id="submitButton" style="display: none;">Selesaikan Todo</button>
+                                <button type="submit" class="btn bg-gradient-success" id="submitButton" style="display: none;">Selesaikan Tugas</button>
                             </div>
                         </form>
                         <div class="mx-5 my-2">
@@ -90,7 +90,7 @@
                 <form action="{{ route('todolist.store') }}" method="POST">
                     @csrf
                     <div class="modal-header">
-                        <h5 class="modal-title" id="addTodoModalLabel">Tambah Todo Baru</h5>
+                        <h5 class="modal-title" id="addTodoModalLabel">Tambah Tugas Baru</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">

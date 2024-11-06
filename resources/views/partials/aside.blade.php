@@ -214,7 +214,7 @@
                                 </g>
                             </svg>
                         </div>
-                        <span class="nav-link-text ms-1">Daftar Pekerjaan</span>
+                        <span class="nav-link-text ms-1">Daftar Tugas</span>
                     </a>
                 </li>
             @endif
