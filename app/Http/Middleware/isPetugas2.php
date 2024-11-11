@@ -15,7 +15,7 @@ class isPetugas2
      */
     public function handle(Request $request, Closure $next): Response
     {
-        if (auth()->user()->level == 'petugas 2' && 'admin') {
+        if (auth()->user()->level == 'petugas 2' || auth()->user()->level == 'admin') {
             return $next($request);
         }
         else {
