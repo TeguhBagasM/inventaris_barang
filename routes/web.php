@@ -45,18 +45,24 @@ Route::middleware('auth')->group(function () {
     Route::middleware('petugas1')->group(function () {
         Route::resource('barang', BarangController::class);
         Route::get('barang-data', [BarangController::class, 'getData'])->name('barang.data');
+        Route::get('/todolist', [TodoListController::class, 'index'])->name('todolist.index');
+        Route::post('/todolist', [TodoListController::class, 'store'])->name('todolist.store');
     });
 
     // Routes khusus petugas 2
     Route::middleware('petugas2')->group(function () {
         Route::get('/log-peminjaman', [PeminjamanController::class, 'log'])->name('log.peminjaman');
         Route::post('/pengembalian/{id}', [PeminjamanController::class, 'kembali'])->name('pengembalian.kembali');
+        Route::get('/todolist', [TodoListController::class, 'index'])->name('todolist.index');
+        Route::post('/todolist', [TodoListController::class, 'store'])->name('todolist.store');
     });
 
     // Routes khusus petugas 3
     Route::middleware('petugas3')->group(function () {
         Route::resource('barang', BarangController::class);
         Route::get('barang-data', [BarangController::class, 'getData'])->name('barang.data');
+        Route::get('/todolist', [TodoListController::class, 'index'])->name('todolist.index');
+        Route::post('/todolist', [TodoListController::class, 'store'])->name('todolist.store');
     });
 
     // Routes khusus guru

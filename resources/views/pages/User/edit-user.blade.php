@@ -9,7 +9,7 @@
                         <hr class="bg-dark px-auto">
                     </div>
                     <div class="card-body px-0 pt-0 pb-2">
-                        <form action="{{ route('User.update', $user->id) }}" method="POST">
+                        <form action="{{ route('user.update', $user->id) }}" method="POST">
                             @csrf
                             @method('PUT')
                             <div class="mb-3">

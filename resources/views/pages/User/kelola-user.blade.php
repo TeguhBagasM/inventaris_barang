@@ -55,15 +55,15 @@
                                                 </div>
                                             </td>
                                             <td class="align-middle">
-                                                <a href="{{ route('User.edit', $user->id) }}"
+                                                <a href="{{ route('user.edit', $user->id) }}"
                                                     class="btn bg-gradient-warning">Edit</a>
 
-                                                <a href="{{ route('User.destroy', $user->id) }}"
+                                                <a href="{{ route('user.destroy', $user->id) }}"
                                                     onclick="event.preventDefault(); if(confirm('Are you sure you want to delete this User?')) document.getElementById('delete-form-{{ $user->id }}').submit();"
                                                     class="btn bg-gradient-danger">Hapus</a>
 
                                                 <form id="delete-form-{{ $user->id }}"
-                                                    action="{{ route('User.destroy', $user->id) }}" method="POST"
+                                                    action="{{ route('user.destroy', $user->id) }}" method="POST"
                                                     style="display: none;">
                                                     @csrf
                                                     @method('DELETE')
