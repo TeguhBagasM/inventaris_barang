@@ -1,9 +1,11 @@
 <?php
 
-use App\Http\Middleware\AdminOrOperator;
 use App\Http\Middleware\IsAdmin;
-use App\Http\Middleware\IsMember;
-use App\Http\Middleware\IsOperator;
+use App\Http\Middleware\isGuru;
+use App\Http\Middleware\isPetugas1;
+use App\Http\Middleware\isPetugas2;
+use App\Http\Middleware\isPetugas3;
+use App\Http\Middleware\isSiswa;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
@@ -16,10 +18,12 @@ return Application::configure(basePath: dirname(__DIR__))
     )
     ->withMiddleware(function (Middleware $middleware) {
         $middleware->alias([
-            'operator' => IsOperator::class,
             'admin' => IsAdmin::class,
-            'member' => IsMember::class,
-            'admin_or_operator' => AdminOrOperator::class,
+            'petugas1' => isPetugas1::class,
+            'petugas2' => isPetugas2::class,
+            'petugas3' => isPetugas3::class,
+            'guru' => isGuru::class,
+            'siswa' => isSiswa::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {

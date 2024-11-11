@@ -25,10 +25,12 @@
                             <div class="mb-3">
                                 <label for="level" class="form-label">Level</label>
                                 <select class="form-select" id="level" name="level" required>
-                                    <option value="member" @if ($user->level == 'member') selected @endif>Member</option>
                                     <option value="admin" @if ($user->level == 'admin') selected @endif>Admin</option>
-                                    <option value="operator" @if ($user->level == 'operator') selected @endif>Operator
-                                    </option>
+                                    <option value="petugas 1" @if ($user->level == 'petugas 1') selected @endif>Petugas 1</option>
+                                    <option value="petugas 2" @if ($user->level == 'petugas 2') selected @endif>Petugas 2</option>
+                                    <option value="petugas 3" @if ($user->level == 'petugas 3') selected @endif>Petugas 3</option>
+                                    <option value="guru" @if ($user->level == 'guru') selected @endif>Guru</option>
+                                    <option value="siswa" @if ($user->level == 'siswa') selected @endif>Siswa</option>
                                 </select>
                             </div>
                             <div class="mb-3">

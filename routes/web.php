@@ -1,43 +1,36 @@
 <?php
 
-use App\Models\DetailPeminjaman;
+use App\Http\Controllers\{
+    BarangController,
+    DetailPeminjamanController,
+    GedungController,
+    KategoriController,
+    PeminjamanController,
+    PermintaanController,
+    ProfileController,
+    RuangController,
+    TodoListController,
+    UserController,
+    ViewController
+};
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\UserController;
-use App\Http\Controllers\ViewController;
-use App\Http\Controllers\BarangController;
-use App\Http\Controllers\LokasiController;
-use App\Http\Controllers\ProfileController;
-use App\Http\Controllers\KategoriController;
-use App\Http\Controllers\PeminjamanController;
-use App\Http\Controllers\DetailPeminjamanController;
-use App\Http\Controllers\GedungController;
-use App\Http\Controllers\RuangController;
-use App\Http\Controllers\TodoListController;
 
+// Route untuk halaman login
 Route::get('/', function () {
     return view('auth.login');
 });
 
-// Route::get('/dashboard', function () {
-//     return view('pages.dashboard', [
-//         'title' => 'Dashboard'
-//     ]);
-// })->middleware(['auth', 'verified']);
-
+// Middleware untuk autentikasi pengguna
 Route::middleware('auth')->group(function () {
+    
+    // Route dashboard
     Route::get('/dashboard', [ViewController::class, 'index'])->name('dashboard');
 
-    // Routes for admin only
+    // Routes khusus admin
     Route::middleware('admin')->group(function () {
-        Route::resource('User', UserController::class);
+        Route::resource('user', UserController::class);
         Route::resource('gedung', GedungController::class);
         Route::resource('ruang', RuangController::class);
-    });
-
-    // Routes accessible by admin and operator
-    Route::middleware(['admin_or_operator'])->group(function () {
-        // Route::resource('lokasi', LokasiController::class);
-        // Route::get('lokasi-data', [LokasiController::class, 'getData'])->name('lokasi.data');
         Route::resource('barang', BarangController::class);
         Route::get('barang-data', [BarangController::class, 'getData'])->name('barang.data');
         Route::resource('kategori', KategoriController::class);
@@ -48,17 +41,46 @@ Route::middleware('auth')->group(function () {
         Route::post('/todolist/update-status', [TodoListController::class, 'updateStatus'])->name('todolist.updateStatus');
     });
 
-    // Routes for members only
-    Route::middleware('member')->group(function () {
+    // Routes khusus petugas 1
+    Route::middleware('petugas1')->group(function () {
+        Route::resource('barang', BarangController::class);
+        Route::get('barang-data', [BarangController::class, 'getData'])->name('barang.data');
+    });
+
+    // Routes khusus petugas 2
+    Route::middleware('petugas2')->group(function () {
+        Route::get('/log-peminjaman', [PeminjamanController::class, 'log'])->name('log.peminjaman');
+        Route::post('/pengembalian/{id}', [PeminjamanController::class, 'kembali'])->name('pengembalian.kembali');
+    });
+
+    // Routes khusus petugas 3
+    Route::middleware('petugas3')->group(function () {
+        Route::resource('barang', BarangController::class);
+        Route::get('barang-data', [BarangController::class, 'getData'])->name('barang.data');
+    });
+
+    // Routes khusus guru
+    Route::middleware('guru')->group(function() {
+        Route::get('/peminjaman', [PeminjamanController::class, 'index']);
+        Route::get('/permintaan', [PermintaanController::class, 'index']);
+        Route::get('/detailPeminjaman', [PeminjamanController::class, 'detail']);
+        Route::get('/detailPermintaan', [PermintaanController::class, 'detail']);
+        Route::post('/pinjam', [PeminjamanController::class, 'pinjam']);
+        Route::post('/permintaan', [PeminjamanController::class, 'permintaan']);
+    });
+
+    // Routes khusus siswa
+    Route::middleware('siswa')->group(function () {
         Route::get('/peminjaman', [PeminjamanController::class, 'index']);
         Route::get('/detailPeminjaman', [PeminjamanController::class, 'detail']);
         Route::post('/pinjam', [PeminjamanController::class, 'pinjam']);
     });
 
-    // Routes for profile management
+    // Routes untuk manajemen profil
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
+// Route untuk autentikasi
 require __DIR__ . '/auth.php';
