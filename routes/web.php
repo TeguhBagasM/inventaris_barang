@@ -18,7 +18,7 @@ use Illuminate\Support\Facades\Route;
 // Route untuk halaman login
 Route::get('/', function () {
     return view('auth.login');
-});
+})->middleware('guest');
 
 // Middleware untuk autentikasi pengguna
 Route::middleware('auth')->group(function () {
@@ -47,6 +47,7 @@ Route::middleware('auth')->group(function () {
         Route::get('barang-data', [BarangController::class, 'getData'])->name('barang.data');
         Route::get('/todolist', [TodoListController::class, 'index'])->name('todolist.index');
         Route::post('/todolist', [TodoListController::class, 'store'])->name('todolist.store');
+        Route::post('/todolist/update-status', [TodoListController::class, 'updateStatus'])->name('todolist.updateStatus');
     });
 
     // Routes khusus petugas 2
@@ -55,6 +56,7 @@ Route::middleware('auth')->group(function () {
         Route::post('/pengembalian/{id}', [PeminjamanController::class, 'kembali'])->name('pengembalian.kembali');
         Route::get('/todolist', [TodoListController::class, 'index'])->name('todolist.index');
         Route::post('/todolist', [TodoListController::class, 'store'])->name('todolist.store');
+        Route::post('/todolist/update-status', [TodoListController::class, 'updateStatus'])->name('todolist.updateStatus');
     });
 
     // Routes khusus petugas 3
@@ -63,6 +65,7 @@ Route::middleware('auth')->group(function () {
         Route::get('barang-data', [BarangController::class, 'getData'])->name('barang.data');
         Route::get('/todolist', [TodoListController::class, 'index'])->name('todolist.index');
         Route::post('/todolist', [TodoListController::class, 'store'])->name('todolist.store');
+        Route::post('/todolist/update-status', [TodoListController::class, 'updateStatus'])->name('todolist.updateStatus');
     });
 
     // Routes khusus guru
