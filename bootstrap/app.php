@@ -1,5 +1,8 @@
 <?php
 
+use App\Http\Middleware\CanAccessBarang;
+use App\Http\Middleware\CanAccessLogPeminjaman;
+use App\Http\Middleware\CanAccessTodolist;
 use App\Http\Middleware\IsAdmin;
 use App\Http\Middleware\isGuru;
 use App\Http\Middleware\isPetugas1;
@@ -22,6 +25,9 @@ return Application::configure(basePath: dirname(__DIR__))
             'petugas1' => isPetugas1::class,
             'petugas2' => isPetugas2::class,
             'petugas3' => isPetugas3::class,
+            'can.access.barang' => CanAccessBarang::class,
+            'can.access.log' => CanAccessLogPeminjaman::class,
+            'can.access.todolist' => CanAccessTodolist::class,
             'guru' => isGuru::class,
             'siswa' => isSiswa::class,
         ]);

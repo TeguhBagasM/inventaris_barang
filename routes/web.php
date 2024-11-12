@@ -26,46 +26,31 @@ Route::middleware('auth')->group(function () {
     // Route dashboard
     Route::get('/dashboard', [ViewController::class, 'index'])->name('dashboard');
 
+    // Routes untuk barang (bisa diakses admin, petugas1, petugas3)
+    Route::middleware(['can.access.barang'])->group(function() {
+        Route::resource('barang', BarangController::class);
+        Route::get('barang-data', [BarangController::class, 'getData'])->name('barang.data');
+    });
+
+    // Routes untuk log peminjaman (bisa diakses admin, petugas2)
+    Route::middleware(['can.access.log'])->group(function() {
+        Route::get('/log-peminjaman', [PeminjamanController::class, 'log'])->name('log.peminjaman');
+        Route::post('/pengembalian/{id}', [PeminjamanController::class, 'kembali'])->name('pengembalian.kembali');
+    });
+
+    // Routes untuk todolist (bisa diakses admin dan semua petugas)
+    Route::middleware(['can.access.todolist'])->group(function() {
+        Route::get('/todolist', [TodoListController::class, 'index'])->name('todolist.index');
+        Route::post('/todolist', [TodoListController::class, 'store'])->name('todolist.store');
+        Route::post('/todolist/update-status', [TodoListController::class, 'updateStatus'])->name('todolist.updateStatus');
+    });
+
     // Routes khusus admin
     Route::middleware('admin')->group(function () {
         Route::resource('user', UserController::class);
         Route::resource('gedung', GedungController::class);
         Route::resource('ruang', RuangController::class);
-        Route::resource('barang', BarangController::class);
-        Route::get('barang-data', [BarangController::class, 'getData'])->name('barang.data');
         Route::resource('kategori', KategoriController::class);
-        Route::get('/log-peminjaman', [PeminjamanController::class, 'log'])->name('log.peminjaman');
-        Route::post('/pengembalian/{id}', [PeminjamanController::class, 'kembali'])->name('pengembalian.kembali');
-        Route::get('/todolist', [TodoListController::class, 'index'])->name('todolist.index');
-        Route::post('/todolist', [TodoListController::class, 'store'])->name('todolist.store');
-        Route::post('/todolist/update-status', [TodoListController::class, 'updateStatus'])->name('todolist.updateStatus');
-    });
-
-    // Routes khusus petugas 1
-    Route::middleware('petugas1')->group(function () {
-        Route::resource('barang', BarangController::class);
-        Route::get('barang-data', [BarangController::class, 'getData'])->name('barang.data');
-        Route::get('/todolist', [TodoListController::class, 'index'])->name('todolist.index');
-        Route::post('/todolist', [TodoListController::class, 'store'])->name('todolist.store');
-        Route::post('/todolist/update-status', [TodoListController::class, 'updateStatus'])->name('todolist.updateStatus');
-    });
-
-    // Routes khusus petugas 2
-    Route::middleware('petugas2')->group(function () {
-        Route::get('/log-peminjaman', [PeminjamanController::class, 'log'])->name('log.peminjaman');
-        Route::post('/pengembalian/{id}', [PeminjamanController::class, 'kembali'])->name('pengembalian.kembali');
-        Route::get('/todolist', [TodoListController::class, 'index'])->name('todolist.index');
-        Route::post('/todolist', [TodoListController::class, 'store'])->name('todolist.store');
-        Route::post('/todolist/update-status', [TodoListController::class, 'updateStatus'])->name('todolist.updateStatus');
-    });
-
-    // Routes khusus petugas 3
-    Route::middleware('petugas3')->group(function () {
-        Route::resource('barang', BarangController::class);
-        Route::get('barang-data', [BarangController::class, 'getData'])->name('barang.data');
-        Route::get('/todolist', [TodoListController::class, 'index'])->name('todolist.index');
-        Route::post('/todolist', [TodoListController::class, 'store'])->name('todolist.store');
-        Route::post('/todolist/update-status', [TodoListController::class, 'updateStatus'])->name('todolist.updateStatus');
     });
 
     // Routes khusus guru
