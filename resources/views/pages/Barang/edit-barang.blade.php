@@ -9,7 +9,6 @@
                         <div class="card-header pb-0">
                             <h4 class="">Edit Produk</h4>
                             <hr style="background-color: black">
-                            
                         </div>
 
                         <div class="card-body px-0 pt-0 pb-2 ps-4 me-4">
@@ -23,24 +22,61 @@
                                         value="{{ $barang->nama }}" required>
                                 </div>
                                 <div class="mb-3">
-                                    <label for="jumlah" class="form-label text-sm required-label">Jumlah</label>
-                                    <input type="number" class="form-control" name="jumlah" id="jumlah"
-                                        value="{{ $barang->jumlah }}" required>
+                                    <label for="merk" class="form-label text-sm required-label">Merk</label>
+                                    <input type="text" class="form-control" name="merk" id="merk"
+                                        value="{{ $barang->merk }}" required>
                                 </div>
                                 <div class="mb-3">
-                                    <label for="ruang_id" class="form-label text-sm">Ruang</label>
-                                    <select class="form-select" name="ruang_id" id="ruang_id">
+                                    <label for="spesifikasi" class="form-label text-sm required-label">Spesifikasi</label>
+                                    <textarea class="form-control" name="spesifikasi" id="spesifikasi" required>{{ $barang->spesifikasi }}</textarea>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="serial_number" class="form-label text-sm required-label">Serial Number</label>
+                                    <input type="text" class="form-control" name="serial_number" id="serial_number"
+                                        value="{{ $barang->serial_number }}" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="stok" class="form-label text-sm required-label">Stok</label>
+                                    <input type="number" class="form-control" name="stok" id="stok"
+                                        value="{{ $barang->stok }}" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="tahun_pengadaan" class="form-label text-sm required-label">Tahun Pengadaan</label>
+                                    <input type="year" class="form-control" name="tahun_pengadaan" id="tahun_pengadaan"
+                                        value="{{ $barang->tahun_pengadaan }}" min="1900" max="{{ date('Y') }}" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="sumber_dana" class="form-label text-sm required-label">Sumber Dana</label>
+                                    <input type="text" class="form-control" name="sumber_dana" id="sumber_dana"
+                                        value="{{ $barang->sumber_dana }}" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="kondisi" class="form-label text-sm required-label">Kondisi</label>
+                                    <select class="form-select @error('kondisi') is-invalid @enderror" 
+                                            name="kondisi" id="kondisi" required>
+                                        <option value="">Pilih Kondisi...</option>
+                                        <option value="Baik" {{ old('kondisi', $barang->kondisi) == 'Baik' ? 'selected' : '' }}>Baik</option>
+                                        <option value="Rusak Ringan" {{ old('kondisi', $barang->kondisi) == 'Rusak Ringan' ? 'selected' : '' }}>Rusak Ringan</option>
+                                        <option value="Rusak Berat" {{ old('kondisi', $barang->kondisi) == 'Rusak Berat' ? 'selected' : '' }}>Rusak Berat</option>
+                                    </select>
+                                    @error('kondisi')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                </div>
+                                <div class="mb-3">
+                                    <label for="ruang_id" class="form-label text-sm required-label">Ruang</label>
+                                    <select class="form-select" name="ruang_id" id="ruang_id" required>
                                         @foreach ($ruang as $item)
                                             <option value="{{ $item->id }}"
-                                                @if ($item->id === $barang->ruang_id) selected @endif>{{ $item->nama_ruang }}
+                                                @if ($item->id === $barang->ruang_id) selected @endif>
+                                                {{ $item->nama_ruang }}
                                             </option>
                                         @endforeach
                                     </select>
                                 </div>
                                 <div class="mb-3">
-                                    <label for="kategori_id" class="form-label text-sm">Kategori</label>
-                                    <select class="form-select" name="kategori_id" id="kategori_id">
-                                        <option value="" disabled selected>Pilih Kategori</option>
+                                    <label for="kategori_id" class="form-label text-sm required-label">Kategori</label>
+                                    <select class="form-select" name="kategori_id" id="kategori_id" required>
                                         @foreach ($kategori as $k)
                                             <option value="{{ $k->id }}" 
                                                 @if($barang->kategori_id == $k->id) selected @endif>
@@ -54,6 +90,7 @@
                                     <label for="image" class="form-label text-sm">Gambar</label>
                                     <input type="file" class="form-control" name="image" id="image"
                                         accept="image/*" onchange="previewImage(event)">
+                                    <small class="text-muted">Kosongkan jika tidak ingin mengubah gambar</small>
                                 </div>
                                 <div id="imagePreview" class="mb-3">
                                     <img src="{{ asset($barang->gambar) }}" class="rounded" alt="Preview"

@@ -87,7 +87,6 @@
                 <th>Ruangan</th>
                 <th>Kondisi</th>
                 <th>Tahun</th>
-                <th>Ket.</th>
             </tr>
         </thead>
         <tbody>
@@ -97,8 +96,7 @@
                 <td>{{ $item->stok }}</td>
                 <td>{{ $item->ruang->nama_ruang }}</td>
                 <td>{{ $item->kondisi }}</td>
-                <td>{{ $item->tahun }}</td>
-                <td>{{ $item->keterangan ?? '-' }}</td>
+                <td>{{ $item->tahun_pengadaan }}</td>
             </tr>
             @endforeach
         </tbody>

@@ -74,11 +74,18 @@ class BarangController extends Controller
     {
         $request->validate([
             'nama' => 'required',
-            'jumlah' => 'required|integer',
+            'merk' => 'required',
+            'spesifikasi' => 'required',
+            'serial_number' => 'required',
+            'stok' => 'required|integer',
+            'tahun_pengadaan' => 'required|integer',
+            'sumber_dana' => 'required',
+            'kondisi' => 'required',
             'ruang_id' => 'required|exists:ruangs,id',
             'kategori_id' => 'required|exists:kategoris,id',
             'image' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
+    
     
         try {
             $imagePath = null;
@@ -95,8 +102,13 @@ class BarangController extends Controller
     
             $barang = new Barang([
                 'nama' => $request->nama,
-                'jumlah' => $request->jumlah,
-                'stok' => $request->jumlah,
+                'merk' => $request->merk,
+                'spesifikasi' => $request->spesifikasi,
+                'serial_number' => $request->serial_number,
+                'stok' => $request->stok,
+                'tahun_pengadaan' => $request->tahun_pengadaan,
+                'sumber_dana' => $request->sumber_dana,
+                'kondisi' => $request->kondisi,
                 'gambar' => $imagePath,
                 'ruang_id' => $request->ruang_id,
             ]);
@@ -155,7 +167,13 @@ class BarangController extends Controller
     {
         $request->validate([
             'nama' => 'required',
-            'jumlah' => 'required|integer',
+            'merk' => 'required',
+            'spesifikasi' => 'required',
+            'serial_number' => 'required',
+            'stok' => 'required|integer',
+            'tahun_pengadaan' => 'required|integer',
+            'sumber_dana' => 'required',
+            'kondisi' => 'required',
             'ruang_id' => 'required|exists:ruangs,id',
             'kategori_id' => 'required|exists:kategoris,id',
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
@@ -164,18 +182,21 @@ class BarangController extends Controller
         try {
             $updateData = [
                 'nama' => $request->nama,
-                'jumlah' => $request->jumlah,
-                'stok' => $request->jumlah,
+                'merk' => $request->merk,
+                'spesifikasi' => $request->spesifikasi,
+                'serial_number' => $request->serial_number,
+                'stok' => $request->stok,
+                'tahun_pengadaan' => $request->tahun_pengadaan,
+                'sumber_dana' => $request->sumber_dana,
+                'kondisi' => $request->kondisi,
                 'ruang_id' => $request->ruang_id,
             ];
 
-            // Jika ada file gambar baru yang diupload
             if ($request->hasFile('image') && $request->file('image')->isValid()) {
                 $timestamp = date('dmYHis');
                 $newName = Str::slug($request->nama) . '-' . $timestamp . '.' . 
                         $request->file('image')->getClientOriginalExtension();
                 
-                // Hapus gambar lama jika ada
                 if ($barang->gambar) {
                     $oldImagePath = str_replace('storage/images/', '', $barang->gambar);
                     Storage::disk('public')->delete('images/' . $oldImagePath);
@@ -184,18 +205,15 @@ class BarangController extends Controller
                 Storage::disk('public')->putFileAs('images', $request->file('image'), $newName);
                 $updateData['gambar'] = 'storage/images/' . $newName;
             }
-            // Jika nama barang berubah dan ada gambar lama, rename file gambar
             elseif ($barang->nama !== $request->nama && $barang->gambar) {
                 $oldImagePath = str_replace('storage/images/', '', $barang->gambar);
                 $extension = pathinfo($oldImagePath, PATHINFO_EXTENSION);
                 
-                // Ambil timestamp dari nama file lama atau generate baru jika tidak ada
                 $oldNameParts = explode('-', pathinfo($oldImagePath, PATHINFO_FILENAME));
                 $timestamp = count($oldNameParts) > 1 ? end($oldNameParts) : date('dmYHis');
                 
                 $newName = Str::slug($request->nama) . '-' . $timestamp . '.' . $extension;
                 
-                // Rename file di storage
                 if (Storage::disk('public')->exists('images/' . $oldImagePath)) {
                     Storage::disk('public')->move('images/' . $oldImagePath, 'images/' . $newName);
                     $updateData['gambar'] = 'storage/images/' . $newName;

@@ -1,6 +1,6 @@
-@extends('index')
+    @extends('index')
 
-@section('content')
+    @section('content')
     <main class="main-content position-relative max-height-vh-100 h-100 border-radius-lg">
         <div class="container-fluid py-4">
             <div class="row">
@@ -21,27 +21,50 @@
                                     <table class="table table-sm align-items-center mb-0">
                                         <tbody>
                                             <tr>
-                                                <th class="text-uppercase text-dark text-sm font-weight-bolder">Nama Barang
-                                                </th>
+                                                <th class="text-uppercase text-dark text-sm font-weight-bolder">Nama Barang</th>
                                                 <td>{{ $barang->nama }}</td>
                                             </tr>
                                             <tr>
-                                                <th class="text-uppercase text-dark text-sm font-weight-bolder">Jumlah</th>
-                                                <td>{{ $barang->jumlah }}</td>
+                                                <th class="text-uppercase text-dark text-sm font-weight-bolder">Merk</th>
+                                                <td>{{ $barang->merk }}</td>
                                             </tr>
                                             <tr>
-                                                <th class="text-uppercase text-dark text-sm font-weight-bolder">ruang
-                                                </th>
+                                                <th class="text-uppercase text-dark text-sm font-weight-bolder">Spesifikasi</th>
+                                                <td>{{ $barang->spesifikasi }}</td>
+                                            </tr>
+                                            <tr>
+                                                <th class="text-uppercase text-dark text-sm font-weight-bolder">Serial Number</th>
+                                                <td>{{ $barang->serial_number }}</td>
+                                            </tr>
+                                            <tr>
+                                                <th class="text-uppercase text-dark text-sm font-weight-bolder">Stok</th>
+                                                <td>{{ $barang->stok }}</td>
+                                            </tr>
+                                            <tr>
+                                                <th class="text-uppercase text-dark text-sm font-weight-bolder">Tahun Pengadaan</th>
+                                                <td>{{ $barang->tahun_pengadaan }}</td>
+                                            </tr>
+                                            <tr>
+                                                <th class="text-uppercase text-dark text-sm font-weight-bolder">Sumber Dana</th>
+                                                <td>{{ number_format($barang->sumber_dana, 0, ',', '.') }}</td>
+                                            </tr>
+                                            <tr>
+                                                <th class="text-uppercase text-dark text-sm font-weight-bolder">Ruang</th>
                                                 <td>{{ $barang->ruang->nama_ruang }}</td>
                                             </tr>
                                             <tr>
-                                                <th class="text-uppercase text-dark text-sm font-weight-bolder">Kategori
-                                                </th>
+                                                <th class="text-uppercase text-dark text-sm font-weight-bolder">Kategori</th>
                                                 <td>{{ $barang->kategori->nama }}</td>
+                                            </tr>
+                                            <tr>
+                                                <th class="text-uppercase text-dark text-sm font-weight-bolder">Kondisi</th>
+                                                <td>{{ $barang->kondisi }}</td>
                                             </tr>
                                         </tbody>
                                     </table>
-                                    <div class="table-responsive pt-2">
+                                    
+                                    <div class="table-responsive pt-4">
+                                        <h6 class="text-uppercase text-dark font-weight-bolder mb-3">Riwayat Peminjaman</h6>
                                         <table class="table table-striped table-bordered table-hover table-sm">
                                             <thead>
                                                 <tr>
@@ -52,7 +75,7 @@
                                             <tbody>
                                                 @foreach ($detail as $k)
                                                     <tr>
-                                                        <td>{{ $k->user->name }}</td> <!-- Asumsikan kolom 'name' ada di model 'User' -->
+                                                        <td>{{ $k->user->name }}</td>
                                                         <td>{{ $k->total_peminjaman }}</td>
                                                     </tr>
                                                 @endforeach
@@ -72,4 +95,4 @@
             </div>
         </div>
     </main>
-@endsection
+    @endsection
