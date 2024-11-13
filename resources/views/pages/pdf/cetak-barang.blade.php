@@ -10,21 +10,38 @@
         }
         .header {
             text-align: center;
-            margin-bottom: 20px;
+            position: relative;
+            height: 80px;
         }
         .header img {
             height: 60px;
-            margin: 0 20px;
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+        .header img:first-child {
+            left: 10px; 
+        }
+        .header img:last-child {
+            right: 10px; 
+            margin-left: 40px;
+        }
+        .header-content {
+            display: inline-block;
+            text-align: center; 
+            width: calc(100% - 100px); 
         }
         .header-text {
             margin: 5px 0;
         }
+        hr {
+            border-top: 2px solid black;
+            margin-top: 10px;
+            margin-bottom: 0;
+        }
         .title {
             text-align: center;
             margin: 20px 0;
-        }
-        .info {
-            margin: 10px 0;
         }
         table {
             width: 100%;
@@ -63,24 +80,18 @@
 </head>
 <body>
     <div class="header">
-        <img src="{{ public_path('assets/img/logo-cimahi.png') }}" alt="Logo Kiri" style="float: left;">
-        <div style="display: inline-block;">
+        <img src="{{ public_path('assets/img/logo-cimahi.png') }}" alt="Logo Cimahi">
+        <div class="header-content">
             <h2 class="header-text">SMK NEGERI 2 CIMAHI</h2>
             <p class="header-text">JL. Kamarung No. 69 Kel. Citereup Kec. Cimahi Utara</p>
             <p class="header-text">Email: smkn2cmi@yahoo.com Kota Cimahi 40512</p>
         </div>
-        <img src="{{ public_path('assets/img/logo-smk.png') }}" alt="Logo Kanan" style="float: right;">
-        <div style="clear: both;"></div>
-        <hr style="border-top: 2px solid black; margin-top: 10px;">
+        <img src="{{ public_path('assets/img/logo-smk.png') }}" alt="Logo SMKN 2 Cimahi">
+        <hr>
     </div>
-
     <div class="title">
         <h3>Laporan Barang</h3>
-        {{-- <p>01 November 2024 s.d 30 November 2024</p> --}}
-        {{-- <p>Kategori Barang: Aset</p> --}}
-        {{-- <p>Lokasi: Semua</p> --}}
     </div>
-
     <table>
         <thead>
             <tr>
