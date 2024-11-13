@@ -83,6 +83,7 @@
         <thead>
             <tr>
                 <th>Nama</th>
+                <th>Serial No.</th>
                 <th>Stok</th>
                 <th>Ruangan</th>
                 <th>Kondisi</th>
@@ -93,6 +94,7 @@
             @foreach($barang as $item)
             <tr>
                 <td>{{ $item->nama }}</td>
+                <td>{{ $item->serial_number }}</td>
                 <td>{{ $item->stok }}</td>
                 <td>{{ $item->ruang->nama_ruang }}</td>
                 <td>{{ $item->kondisi }}</td>
