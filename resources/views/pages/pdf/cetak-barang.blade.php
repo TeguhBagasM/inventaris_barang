@@ -54,8 +54,10 @@
             bottom: 0;
             left: 0;
             right: 0;
-            text-align: right;
+            display: flex;
+            justify-content: space-between;
             font-size: 12px;
+            padding: 0 20px;
         }
     </style>
 </head>
@@ -76,7 +78,7 @@
         <h3>Laporan Barang</h3>
         {{-- <p>01 November 2024 s.d 30 November 2024</p> --}}
         {{-- <p>Kategori Barang: Aset</p> --}}
-    {{-- <p>Lokasi: Semua</p> --}}
+        {{-- <p>Lokasi: Semua</p> --}}
     </div>
 
     <table>
@@ -113,13 +115,13 @@
         </div>
         <div class="signature">
             <br><br><br>
-            (Jane Cooper)
+            {{ Auth::user()->name }}
         </div>
     </div>
 
     <div class="page-number">
-        SIMANIS - Laporan Inventaris &nbsp;&nbsp;&nbsp;&nbsp; {{ date('d - m - Y') }}<br>
-        {{ date('H:i') }}
-    </div>
+        <div style="float: left">SIMANIS - Laporan Barang</div>
+        <div style="float: right">{{ date('d - m - Y') }} &nbsp;&nbsp;&nbsp; {{ date('H:i') }}</div>
+    </div> 
 </body>
 </html>
