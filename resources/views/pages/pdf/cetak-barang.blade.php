@@ -14,7 +14,7 @@
             height: 80px;
         }
         .header img {
-            height: 60px;
+            height: 70px;
             position: absolute;
             top: 50%;
             transform: translateY(-50%);
