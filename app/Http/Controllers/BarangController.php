@@ -7,6 +7,7 @@ use App\Models\Kategori;
 use Illuminate\Http\Request;
 use App\Models\DetailPeminjaman;
 use App\Models\Ruang;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Log;
@@ -45,7 +46,16 @@ class BarangController extends Controller
             ->rawColumns(['action', 'gambar'])
             ->make(true);
     }
-
+    
+    public function cetak()
+    {
+        $barang = Barang::with('ruang')->get();
+        $pdf = PDF::loadView('pages.pdf.cetak-barang', [
+            'barang' => $barang
+        ]);
+        return $pdf->stream('laporan-barang-'.date('Y-m-d').'.pdf');
+    }
+    
     /**
      * Show the form for creating a new resource.
      */

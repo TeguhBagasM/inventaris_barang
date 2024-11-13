@@ -22,6 +22,7 @@
                             <a href="{{ route('barang.create') }}">
                                 <div class="mt-2 text-white btn bg-gradient-success">Tambah Barang</div>
                             </a>
+                            <a href="{{ route('barang.cetak') }}" class="mt-2 text-white btn bg-gradient-success">Cetak</a>
                         </div>
                     </div>
                     <div class="card-body px-0 pt-0 pb-2">

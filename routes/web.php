@@ -30,6 +30,7 @@ Route::middleware('auth')->group(function () {
     Route::middleware(['can.access.barang'])->group(function() {
         Route::resource('barang', BarangController::class);
         Route::get('barang-data', [BarangController::class, 'getData'])->name('barang.data');
+        Route::get('/cetak', [BarangController::class, 'cetak'])->name('barang.cetak');
     });
 
     // Routes untuk log peminjaman (bisa diakses admin, petugas2)
