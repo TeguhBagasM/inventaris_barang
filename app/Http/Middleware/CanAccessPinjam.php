@@ -6,7 +6,7 @@ use Closure;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 
-class isPetugas2
+class CanAccessPinjam
 {
     /**
      * Handle an incoming request.
@@ -15,11 +15,10 @@ class isPetugas2
      */
     public function handle(Request $request, Closure $next): Response
     {
-        if (auth()->user()->level == 'petugas 2' || auth()->user()->level == 'admin') {
+        $level = auth()->user()->level;
+        if (in_array($level, ['siswa', 'guru'])) {
             return $next($request);
         }
-        else {
-            abort(404);
-        }
+        abort(404);
     }
 }

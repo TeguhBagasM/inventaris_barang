@@ -2,6 +2,7 @@
 
 use App\Http\Middleware\CanAccessBarang;
 use App\Http\Middleware\CanAccessLogPeminjaman;
+use App\Http\Middleware\CanAccessPinjam;
 use App\Http\Middleware\CanAccessTodolist;
 use App\Http\Middleware\IsAdmin;
 use App\Http\Middleware\isGuru;
@@ -22,14 +23,11 @@ return Application::configure(basePath: dirname(__DIR__))
     ->withMiddleware(function (Middleware $middleware) {
         $middleware->alias([
             'admin' => IsAdmin::class,
-            'petugas1' => isPetugas1::class,
-            'petugas2' => isPetugas2::class,
-            'petugas3' => isPetugas3::class,
             'can.access.barang' => CanAccessBarang::class,
             'can.access.log' => CanAccessLogPeminjaman::class,
             'can.access.todolist' => CanAccessTodolist::class,
+            'can.access.pinjam' => CanAccessPinjam::class,
             'guru' => isGuru::class,
-            'siswa' => isSiswa::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {

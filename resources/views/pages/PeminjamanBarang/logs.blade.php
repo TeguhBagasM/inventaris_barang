@@ -7,7 +7,10 @@
                     <div class="card-header pb-0">
                         <div class="d-flex justify-content-between">
                             <div>
-                                <h4 class="">Log Peminjaman Barang</h4>
+                                <h4>Logs Peminjaman Barang</h4>
+                            </div>
+                            <div>
+                                <a href="{{ route('peminjaman.cetak') }}" class="mt-2 text-white btn bg-gradient-success">Cetak</a>
                             </div>
                         </div>
                         <hr class="bg-dark px-auto">
@@ -32,15 +35,15 @@
                         <div class="table-responsive p-0">
                             <table class="table align-items-center mb-0">
                                 <thead>
-                                    <tr>
+                                    <tr class="text-center">
                                         <th class="text-uppercase text-dark text-sm font-weight-bolder">No</th>
-                                        <th class="text-uppercase text-dark text-sm font-weight-bolder">Nama User</th>
-                                        <th class="text-uppercase text-dark text-sm font-weight-bolder">Nama Barang</th>
-                                        <th class="text-uppercase text-dark text-sm font-weight-bolder">Jumlah Peminjaman
+                                        <th class="text-uppercase text-dark text-sm font-weight-bolder">Peminjam</th>
+                                        <th class="text-uppercase text-dark text-sm font-weight-bolder">Barang</th>
+                                        <th class="text-uppercase text-dark text-sm font-weight-bolder">Jumlah
                                         </th>
                                         <th class="text-uppercase text-dark text-sm font-weight-bolder">Tanggal Di Pinjam
                                         </th>
-                                        <th class="text-uppercase text-dark text-sm font-weight-bolder">Status Pengembalian
+                                        <th class="text-uppercase text-dark text-sm font-weight-bolder">Status
                                         </th>
                                         <th class="text-uppercase text-dark text-sm font-weight-bolder">Aksi
                                         </th>
@@ -76,13 +79,13 @@
                                             <td>
                                                 <div class="d-flex px-2 py-1">
                                                     <h6 class="text-secondary text-sm font-weight-bold ps-2">
-                                                        {{ \Carbon\Carbon::parse($log->keluar)->format('D M, Y') }}</h6>
+                                                        {{ \Carbon\Carbon::parse($log->keluar)->translatedFormat('l, d M Y') }}</h6>
                                                 </div>
                                             </td>
                                             <td>
                                                 <div class="d-flex px-2 py-1">
                                                     <h6 class="text-secondary text-sm font-weight-bold ps-2 {{ !$log->masuk ? 'bg-danger badge font-weight-bold py-1 px-2 text-white' : '' }}">
-                                                        {{ $log->masuk ? \Carbon\Carbon::parse($log->masuk)->format('D M, Y') : 'Belum dikembalikan' }}
+                                                        {{ $log->masuk ? \Carbon\Carbon::parse($log->masuk)->translatedFormat('l, d M Y') : 'Belum dikembalikan' }}
                                                     </h6>
                                                 </div>
                                             </td>

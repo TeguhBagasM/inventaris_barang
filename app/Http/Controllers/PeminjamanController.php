@@ -6,6 +6,7 @@ use Carbon\Carbon;
 use App\Models\Barang;
 use Illuminate\Http\Request;
 use App\Models\DetailPeminjaman;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class PeminjamanController extends Controller
 {
@@ -71,6 +72,17 @@ class PeminjamanController extends Controller
             ->paginate(12); 
 
         return view('pages.peminjamanBarang.detailPeminjaman', compact('title', 'details'));
+    }
+
+    public function cetak()
+    {
+        $peminjaman = DetailPeminjaman::all();
+        $barangs = Barang::get();
+        $pdf = Pdf::loadView('pages.pdf.cetak-peminjaman', [
+            'peminjaman' => $peminjaman,
+            'barangs' => $barangs
+        ]);
+        return $pdf->stream('laporan-peminjaman-'.date('Y-m-d').'.pdf');
     }
 
 

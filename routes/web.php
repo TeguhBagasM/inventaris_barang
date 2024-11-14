@@ -37,6 +37,7 @@ Route::middleware('auth')->group(function () {
     Route::middleware(['can.access.log'])->group(function() {
         Route::get('/log-peminjaman', [PeminjamanController::class, 'log'])->name('log.peminjaman');
         Route::post('/pengembalian/{id}', [PeminjamanController::class, 'kembali'])->name('pengembalian.kembali');
+        Route::get('/cetak-logs', [PeminjamanController::class, 'cetak'])->name('peminjaman.cetak');
     });
 
     // Routes untuk todolist (bisa diakses admin dan semua petugas)
@@ -56,16 +57,12 @@ Route::middleware('auth')->group(function () {
 
     // Routes khusus guru
     Route::middleware('guru')->group(function() {
-        Route::get('/peminjaman', [PeminjamanController::class, 'index']);
         Route::get('/permintaan', [PermintaanController::class, 'index']);
-        Route::get('/detailPeminjaman', [PeminjamanController::class, 'detail']);
         Route::get('/detailPermintaan', [PermintaanController::class, 'detail']);
-        Route::post('/pinjam', [PeminjamanController::class, 'pinjam']);
         Route::post('/permintaan', [PeminjamanController::class, 'permintaan']);
     });
 
-    // Routes khusus siswa
-    Route::middleware('siswa')->group(function () {
+    Route::middleware(['can.access.pinjam'])->group(function() {
         Route::get('/peminjaman', [PeminjamanController::class, 'index']);
         Route::get('/detailPeminjaman', [PeminjamanController::class, 'detail']);
         Route::post('/pinjam', [PeminjamanController::class, 'pinjam']);
