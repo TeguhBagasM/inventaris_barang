@@ -7,7 +7,7 @@
                 <div class="card-header pb-0">
                     <div class="d-flex justify-content-between align-items-center mb-3">
                         <h4 class="mb-0">Detail Kategori: {{ $kategori->nama }}</h4>
-                        <a href="{{ route('kategori.index') }}" class="btn bg-blue text-white">
+                        <a href="{{ route('kategori.index') }}" class="btn btn-info">
                             <i class="fas fa-arrow-left me-2"></i>Kembali
                         </a>
                     </div>
