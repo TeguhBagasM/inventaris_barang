@@ -33,7 +33,7 @@
                             </div>
                         @else
                         <div class="table-responsive p-0">
-                            <table class="table align-items-center mb-0">
+                            <table class="table table-striped align-items-center mb-0">
                                 <thead>
                                     <tr class="text-center">
                                         <th class="text-uppercase text-dark text-sm font-weight-bolder">No</th>
@@ -90,7 +90,7 @@
                                                 </div>
                                             </td>
                                             <td class="align-middle">
-                                                @if (!$log->masuk)
+                                                    @if (!$log->masuk)
                                                     <form action="{{ route('pengembalian.kembali', $log->id) }}" method="POST" class="d-inline">
                                                         @csrf
                                                         <button type="submit" 
@@ -100,6 +100,7 @@
                                                         </button>
                                                     </form>
                                                 @endif
+                                                <a href="{{ route('cetak.bukti', ['id' => $log->id]) }}" class="text-white btn btn-info py-2 px-3" target="_blank">Cetak</a>
                                             </td>
                                         </tr>
                                     @endforeach

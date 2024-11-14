@@ -38,6 +38,7 @@ Route::middleware('auth')->group(function () {
         Route::get('/log-peminjaman', [PeminjamanController::class, 'log'])->name('log.peminjaman');
         Route::post('/pengembalian/{id}', [PeminjamanController::class, 'kembali'])->name('pengembalian.kembali');
         Route::get('/cetak-logs', [PeminjamanController::class, 'cetak'])->name('peminjaman.cetak');
+        Route::get('/cetak-bukti', [PeminjamanController::class, 'cetakBukti'])->name('cetak.bukti');
     });
 
     // Routes untuk todolist (bisa diakses admin dan semua petugas)

@@ -85,6 +85,27 @@ class PeminjamanController extends Controller
         return $pdf->stream('laporan-peminjaman-'.date('Y-m-d').'.pdf');
     }
 
+    public function cetakBukti(Request $request)
+    {
+        // Validasi ID peminjaman
+        $request->validate([
+            'id' => 'required|exists:detail_peminjaman,id'
+        ]);
+
+        // Ambil data peminjaman beserta relasi barang dan user
+        $peminjaman = DetailPeminjaman::with(['barang', 'user'])
+            ->findOrFail($request->id);
+
+        // Generate PDF
+        $pdf = Pdf::loadView('pages.pdf.cetak-bukti', [
+            'peminjaman' => $peminjaman,
+            'tanggal_cetak' => Carbon::now()->format('d/m/Y H:i:s')
+        ]);
+
+        // Stream PDF dengan nama yang sesuai
+        return $pdf->stream('bukti-peminjaman-' . $peminjaman->id . '.pdf');
+    }
+
 
     public function kembali($id)
     {
