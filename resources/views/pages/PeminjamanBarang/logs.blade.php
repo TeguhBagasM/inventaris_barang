@@ -10,7 +10,7 @@
                                 <h4>Logs Peminjaman Barang</h4>
                             </div>
                             <div>
-                                <a href="{{ route('peminjaman.cetak') }}" class="mt-2 text-white btn bg-gradient-success">Cetak</a>
+                                <a href="{{ route('peminjaman.cetak') }}" class="mt-2 text-white btn bg-gradient-success" target="_blank">Cetak</a>
                             </div>
                         </div>
                         <hr class="bg-dark px-auto">

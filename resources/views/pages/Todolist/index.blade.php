@@ -18,7 +18,7 @@
                             </div>
                         @endif
                         <div class="d-flex justify-content-between mb-3">
-                            <button type="button" class="btn bg-gradient-success" data-bs-toggle="modal" data-bs-target="#addTodoModal">
+                            <button type="button" class="btn bg-gradient-orange text-white" data-bs-toggle="modal" data-bs-target="#addTodoModal">
                                 Tambah Tugas
                             </button>
                         </div>
