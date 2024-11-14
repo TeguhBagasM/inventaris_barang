@@ -37,9 +37,9 @@ class BarangController extends Controller
             })
             ->addColumn('action', function($row){
                 $actionBtn = '
-                    <a href="'.route('barang.edit', $row->id).'" class="btn bg-gradient-warning btn-sm"><i class="fa-solid fa-pencil" style="font-size: 14px;"></i></a>
-                    <button onclick="deleteBarang('.$row->id.')" class="btn bg-gradient-danger btn-sm"><i class="fa-solid fa-trash-alt" style="font-size: 14px;"></i></button>
+                    <a href="'.route('barang.edit', $row->id).'" class="btn bg-gradient-dark btn-sm"><i class="fa-solid fa-pencil" style="font-size: 14px;"></i></a>
                     <a href="'.route('barang.show', $row->id).'" class="btn bg-gradient-info btn-sm"><i class="fa-solid fa-eye" style="font-size: 14px;"></i></a>
+                    <button onclick="deleteBarang('.$row->id.')" class="btn bg-gradient-danger btn-sm"><i class="fa-solid fa-trash-alt" style="font-size: 14px;"></i></button>
                 ';
                 return $actionBtn;
             })

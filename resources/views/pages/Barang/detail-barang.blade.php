@@ -22,7 +22,7 @@
                             </div>
                             <div class="col-md-8">
                                 <div class="table-responsive">
-                                    <table class="table table-hover align-items-center mb-4">
+                                    <table class="table table-striped align-items-center mb-4">
                                         <tbody>
                                             <tr>
                                                 <th class="text-uppercase text-dark text-xs font-weight-bolder" width="30%">Nama Barang</th>
