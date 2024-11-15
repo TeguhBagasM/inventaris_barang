@@ -73,6 +73,11 @@
             padding: 10px;
             border: 1px solid #000;
         }
+        .qr-container img {
+            width: 100px;
+            height: 100px;
+            margin-bottom: 10px;
+        }
         .qr-code {
             margin-bottom: 10px;
         }
