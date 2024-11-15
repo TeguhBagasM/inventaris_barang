@@ -7,6 +7,12 @@ use App\Models\Barang;
 use Illuminate\Http\Request;
 use App\Models\DetailPeminjaman;
 use Barryvdh\DomPDF\Facade\Pdf;
+// use SimpleSoftwareIO\QrCode\Facades\QrCode;
+use Endroid\QrCode\QrCode;
+use Endroid\QrCode\Writer\PngWriter;
+use Endroid\QrCode\Encoding\Encoding;
+use Endroid\QrCode\ErrorCorrectionLevel;
+use Endroid\QrCode\RoundBlockSizeMode;
 
 class PeminjamanController extends Controller
 {
@@ -87,25 +93,40 @@ class PeminjamanController extends Controller
 
     public function cetakBukti(Request $request)
     {
-        // Validasi ID peminjaman
         $request->validate([
             'id' => 'required|exists:detail_peminjaman,id'
         ]);
-
-        // Ambil data peminjaman beserta relasi barang dan user
+    
         $peminjaman = DetailPeminjaman::with(['barang', 'user'])
             ->findOrFail($request->id);
-
-        // Generate PDF
+        
+        // Generate kode peminjaman
+        $kodePeminjaman = date('dmY', strtotime($peminjaman->keluar)) . 
+            str_pad($peminjaman->id, 4, '0', STR_PAD_LEFT);
+        
+        // Generate QR Code menggunakan Endroid
+        $qrCode = QrCode::create($kodePeminjaman)
+            ->setSize(300)  // Ukuran lebih besar untuk kualitas lebih baik
+            ->setMargin(10)
+            ->setEncoding(new Encoding('UTF-8'))
+            ->setErrorCorrectionLevel(ErrorCorrectionLevel::High)
+            ->setRoundBlockSizeMode(RoundBlockSizeMode::Margin);
+    
+        $writer = new PngWriter();
+        $result = $writer->write($qrCode);
+        
+        // Convert ke base64
+        $qrcode = base64_encode($result->getString());
+    
         $pdf = Pdf::loadView('pages.pdf.cetak-bukti', [
             'peminjaman' => $peminjaman,
-            'tanggal_cetak' => Carbon::now()->format('d/m/Y H:i:s')
+            'tanggal_cetak' => Carbon::now()->format('d/m/Y H:i:s'),
+            'kode_peminjaman' => $kodePeminjaman,
+            'qrcode' => $qrcode
         ]);
-
-        // Stream PDF dengan nama yang sesuai
-        return $pdf->stream('bukti-peminjaman-' . $peminjaman->id . '.pdf');
+    
+        return $pdf->stream('bukti-peminjaman-' . $kodePeminjaman . '.pdf');
     }
-
 
     public function kembali($id)
     {

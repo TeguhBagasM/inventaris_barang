@@ -7,9 +7,11 @@
     "require": {
         "php": "^8.2",
         "barryvdh/laravel-dompdf": "^3.0",
+        "endroid/qr-code": "^5.0",
         "laravel/breeze": "^2.1",
         "laravel/framework": "^11.9",
         "laravel/tinker": "^2.9",
+        "simplesoftwareio/simple-qrcode": "^4.2",
         "yajra/laravel-datatables": "11.0"
     },
     "require-dev": {
