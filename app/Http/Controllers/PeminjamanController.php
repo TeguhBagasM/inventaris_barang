@@ -106,7 +106,7 @@ class PeminjamanController extends Controller
         
         // Generate QR Code menggunakan Endroid
         $qrCode = QrCode::create($kodePeminjaman)
-            ->setSize(300)  // Ukuran lebih besar untuk kualitas lebih baik
+            ->setSize(300)  
             ->setMargin(10)
             ->setEncoding(new Encoding('UTF-8'))
             ->setErrorCorrectionLevel(ErrorCorrectionLevel::High)

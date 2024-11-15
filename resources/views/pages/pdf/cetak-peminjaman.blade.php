@@ -51,6 +51,9 @@
         table, th, td {
             border: 1px solid black;
         }
+        th {
+            background: lightblue;
+        }
         th, td {
             padding: 8px;
             text-align: center;
