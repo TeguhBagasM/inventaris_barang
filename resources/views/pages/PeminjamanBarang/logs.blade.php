@@ -10,6 +10,9 @@
                                 <h4>Logs Peminjaman Barang</h4>
                             </div>
                             <div>
+                                <a href="{{ route('scan-qr') }}" class="mt-2 text-white btn bg-gradient-info me-2">
+                                    <i class="fas fa-qrcode me-2"></i> Scan QR
+                                </a>
                                 <a href="{{ route('peminjaman.cetak') }}" class="mt-2 text-white btn bg-gradient-success" target="_blank">Cetak</a>
                             </div>
                         </div>

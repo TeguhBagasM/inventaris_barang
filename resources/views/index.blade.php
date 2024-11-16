@@ -11,6 +11,8 @@
     </title>
     <!-- Di bagian head -->
     <link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css">
+    <!-- Di bagian head -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.19/dist/sweetalert2.min.css">
 
     <!-- Fonts and icons -->
     <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700" rel="stylesheet" />
@@ -49,6 +51,8 @@
     <script src="{{ asset('../assets/js/plugins/smooth-scrollbar.min.js') }}"></script>
     <script src="{{ asset('../assets/js/plugins/chartjs.min.js') }}"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <!-- Di bagian bawah body, sebelum scripts lainnya -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.19/dist/sweetalert2.all.min.js"></script>
     <script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
     <script>
         var win = navigator.platform.indexOf('Win') > -1;

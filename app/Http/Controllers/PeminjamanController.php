@@ -13,6 +13,7 @@ use Endroid\QrCode\Writer\PngWriter;
 use Endroid\QrCode\Encoding\Encoding;
 use Endroid\QrCode\ErrorCorrectionLevel;
 use Endroid\QrCode\RoundBlockSizeMode;
+use Illuminate\Support\Facades\Log;
 
 class PeminjamanController extends Controller
 {
@@ -152,6 +153,53 @@ class PeminjamanController extends Controller
         session()->flash('message', 'Berhasil Mengembalikan Barang.');
     
         return redirect()->back();
+    }
+
+    public function scanQR()
+    {
+        $title = "Scan Qr Code";
+        return view('pages.peminjamanBarang.scan-qr', compact('title'));
+    }
+
+    public function processQR(Request $request)
+    {
+        $kodePeminjaman = $request->kode;
+        
+        try {
+            // Extract ID dari kode peminjaman (4 karakter terakhir)
+            $id = intval(substr($kodePeminjaman, -4));
+            
+            $detailPeminjaman = DetailPeminjaman::findOrFail($id);
+        
+            // Cek apakah sudah dikembalikan
+            if ($detailPeminjaman->masuk !== null) {
+                return response()->json([
+                    'status' => 'error',
+                    'message' => 'Barang sudah dikembalikan sebelumnya.'
+                ], 400);
+            }
+        
+            // Tambahkan stok barang
+            $barang = Barang::findOrFail($detailPeminjaman->barang_id);
+            $barang->stok += $detailPeminjaman->jumlah;
+            $barang->save();
+        
+            // Update tanggal pengembalian
+            $detailPeminjaman->masuk = Carbon::now();
+            $detailPeminjaman->save();
+        
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Berhasil Mengembalikan Barang.'
+            ]);
+
+        } catch (\Exception $e) {
+            Log::error('Error processing QR code: ' . $e->getMessage());
+            return response()->json([
+                'status' => 'error',
+                'message' => 'QR Code tidak valid atau barang tidak ditemukan'
+            ], 400);
+        }
     }
 
     public function log()

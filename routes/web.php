@@ -39,6 +39,8 @@ Route::middleware('auth')->group(function () {
         Route::post('/pengembalian/{id}', [PeminjamanController::class, 'kembali'])->name('pengembalian.kembali');
         Route::get('/cetak-logs', [PeminjamanController::class, 'cetak'])->name('peminjaman.cetak');
         Route::get('/cetak-bukti', [PeminjamanController::class, 'cetakBukti'])->name('cetak.bukti');
+        Route::get('/scan-qr', [PeminjamanController::class, 'scanQR'])->name('scan-qr');
+        Route::post('/process-qr', [PeminjamanController::class, 'processQR'])->name('process-qr');
     });
 
     // Routes untuk todolist (bisa diakses admin dan semua petugas)
