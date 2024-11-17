@@ -146,7 +146,7 @@
         <div class="table-container">
             <table>
                 <tr>
-                    <td width="170">Tanggal Peminjaman</td>
+                    <td width="140">Tanggal Peminjaman</td>
                     <td>: {{ \Carbon\Carbon::parse($peminjaman->keluar)->format('d/m/Y') }}</td>
                 </tr>
                 <tr>
