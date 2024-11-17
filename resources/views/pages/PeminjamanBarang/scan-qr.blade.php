@@ -36,54 +36,77 @@
 @push('scripts')
 <script src="https://unpkg.com/html5-qrcode"></script>
 <script>
-    function onScanSuccess(decodedText, decodedResult) {
-    // Tampilkan loading
-    document.getElementById('loading').style.display = 'block';
+    let isProcessing = false;
+    let lastScannedCode = null;
+    let lastScanTime = 0;
+    const SCAN_COOLDOWN = 3000; // 3 detik cooldown antara scan
     
-    // Kirim ke backend
-    fetch('{{ route("process-qr") }}', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-            'X-CSRF-TOKEN': '{{ csrf_token() }}'
-        },
-        body: JSON.stringify({
-            kode: decodedText
-        })
-    })
-    .then(response => {
-        if (!response.ok) {
-            return response.json().then(err => Promise.reject(err));
+    function onScanSuccess(decodedText, decodedResult) {
+        // Cek jika sedang memproses atau kode yang sama di-scan dalam waktu cooldown
+        const currentTime = Date.now();
+        if (isProcessing || 
+            (decodedText === lastScannedCode && 
+             currentTime - lastScanTime < SCAN_COOLDOWN)) {
+            return;
         }
-        return response.json();
-    })
-    .then(data => {
-        document.getElementById('loading').style.display = 'none';
-        Swal.fire({
-            icon: 'success',
-            title: 'Berhasil!',
-            text: data.message,
-            showConfirmButton: false,
-            timer: 1500
-        }).then(() => {
-            window.location.href = '{{ route("log.peminjaman") }}';
+    
+        isProcessing = true;
+        lastScannedCode = decodedText;
+        lastScanTime = currentTime;
+    
+        // Tampilkan loading
+        document.getElementById('loading').style.display = 'block';
+        
+        // Kirim ke backend
+        fetch('{{ route("process-qr") }}', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': '{{ csrf_token() }}'
+            },
+            body: JSON.stringify({
+                kode: decodedText
+            })
+        })
+        .then(response => {
+            if (!response.ok) {
+                return response.json().then(err => Promise.reject(err));
+            }
+            return response.json();
+        })
+        .then(data => {
+            document.getElementById('loading').style.display = 'none';
+            // Stop scanner setelah berhasil
+            html5QrcodeScanner.clear();
+            
+            Swal.fire({
+                icon: 'success',
+                title: 'Berhasil!',
+                text: data.message,
+                showConfirmButton: false,
+                timer: 1500
+            }).then(() => {
+                window.location.href = '{{ route("log.peminjaman") }}';
+            });
+        })
+        .catch(error => {
+            document.getElementById('loading').style.display = 'none';
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: error.message || 'Terjadi kesalahan saat memproses QR code'
+            });
+        })
+        .finally(() => {
+            isProcessing = false;
         });
-    })
-    .catch(error => {
-        document.getElementById('loading').style.display = 'none';
-        Swal.fire({
-            icon: 'error',
-            title: 'Oops...',
-            text: error.message || 'Terjadi kesalahan saat memproses QR code'
-        });
-    });
-}
-
+    }
+    
     function onScanFailure(error) {
         // handle scan failure, usually better to ignore and keep scanning.
         console.warn(`Code scan error = ${error}`);
     }
-
+    
     let html5QrcodeScanner = new Html5QrcodeScanner(
         "reader",
         { 
@@ -93,7 +116,16 @@
         },
         /* verbose= */ false
     );
+    
+    // Render scanner
     html5QrcodeScanner.render(onScanSuccess, onScanFailure);
+    
+    // Cleanup pada saat komponen di-unmount
+    window.addEventListener('beforeunload', () => {
+        if (html5QrcodeScanner) {
+            html5QrcodeScanner.clear();
+        }
+    });
 </script>
 @endpush
 

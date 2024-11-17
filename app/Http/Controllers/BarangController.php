@@ -91,8 +91,7 @@ class BarangController extends Controller
             $imagePath = null;
     
             if ($request->hasFile('image') && $request->file('image')->isValid()) {
-                // Tambahkan timestamp pada nama file
-                $timestamp = date('dmYHis');  // Format: ddmmyyyyhhiiss
+                $timestamp = date('dmYHis');  
                 $newName = Str::slug($request->nama) . '-' . $timestamp . '.' . 
                           $request->file('image')->getClientOriginalExtension();
                 
