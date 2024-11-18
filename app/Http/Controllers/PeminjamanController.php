@@ -13,6 +13,7 @@ use Endroid\QrCode\Writer\PngWriter;
 use Endroid\QrCode\Encoding\Encoding;
 use Endroid\QrCode\ErrorCorrectionLevel;
 use Endroid\QrCode\RoundBlockSizeMode;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 
 class PeminjamanController extends Controller
@@ -74,7 +75,7 @@ class PeminjamanController extends Controller
     public function detail()
     {
         $title = 'Detail Peminjaman';
-        $details = DetailPeminjaman::where('user_id', auth()->id())
+        $details = DetailPeminjaman::where('user_id', Auth::id())
             ->with('barang')
             ->paginate(12); 
 
