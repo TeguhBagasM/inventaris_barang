@@ -93,15 +93,10 @@
                                                 </div>
                                             </td>
                                             <td class="align-middle">
-                                                    @if (!$log->masuk)
-                                                    <form action="{{ route('pengembalian.kembali', $log->id) }}" method="POST" class="d-inline">
-                                                        @csrf
-                                                        <button type="submit" 
-                                                                class="btn bg-gradient-warning btn-sm" 
-                                                                onclick="return confirm('Apakah Anda yakin ingin mengembalikan barang?')">
-                                                            Kembalikan
-                                                        </button>
-                                                    </form>
+                                                @if (!$log->masuk)
+                                                    <a href="{{ route('pengembalian.form', $log->id) }}" class="btn bg-gradient-warning btn-sm">
+                                                        Kembalikan
+                                                    </a>
                                                 @endif
                                                 <a href="{{ route('cetak.bukti', ['id' => $log->id]) }}" class="text-white btn btn-info py-2 px-3" target="_blank">Cetak</a>
                                             </td>

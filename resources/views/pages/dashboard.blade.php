@@ -368,11 +368,11 @@ var roomConditions = roomData.map(item => item.kondisi.toLowerCase());
 // Create colors based on room conditions
 var roomColors = roomConditions.map(condition => {
     switch(condition) {
-        case 'baik':
+        case 'Baik':
             return '#4ade80'; // green
-        case 'rusak ringan':
+        case 'Rusak Ringan':
             return '#fbbf24'; // yellow
-        case 'rusak berat':
+        case 'Rusak Berat':
             return '#f87171'; // red
         default:
             return '#94a3b8'; // gray

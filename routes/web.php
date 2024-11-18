@@ -36,7 +36,8 @@ Route::middleware('auth')->group(function () {
     // Routes untuk log peminjaman (bisa diakses admin, petugas2)
     Route::middleware(['can.access.log'])->group(function() {
         Route::get('/log-peminjaman', [PeminjamanController::class, 'log'])->name('log.peminjaman');
-        Route::post('/pengembalian/{id}', [PeminjamanController::class, 'kembali'])->name('pengembalian.kembali');
+        Route::get('/pengembalian/{id}/form', [PeminjamanController::class, 'showPengembalianForm'])->name('pengembalian.form');
+        Route::post('/pengembalian/{id}/process', [PeminjamanController::class, 'processPengembalian'])->name('pengembalian.process');
         Route::get('/cetak-logs', [PeminjamanController::class, 'cetak'])->name('peminjaman.cetak');
         Route::get('/cetak-bukti', [PeminjamanController::class, 'cetakBukti'])->name('cetak.bukti');
         Route::get('/scan-qr', [PeminjamanController::class, 'scanQR'])->name('scan-qr');

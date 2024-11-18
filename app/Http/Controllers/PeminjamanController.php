@@ -129,20 +129,33 @@ class PeminjamanController extends Controller
         return $pdf->stream('bukti-peminjaman-' . $kodePeminjaman . '.pdf');
     }
 
-    public function kembali($id)
+    public function showPengembalianForm($id)
     {
-        $detailPeminjaman = DetailPeminjaman::findOrFail($id);
-    
-        // Cek apakah sudah dikembalikan
+        $title = "Form Pengembalian Barang";
+        $detailPeminjaman = DetailPeminjaman::with(['barang', 'user'])->findOrFail($id);
+        
         if ($detailPeminjaman->masuk !== null) {
             session()->flash('status', 'error');
             session()->flash('message', 'Barang sudah dikembalikan sebelumnya.');
             return redirect()->back();
         }
     
-        // Tambahkan stok barang
+        return view('pages.peminjamanBarang.form-pengembalian', compact('detailPeminjaman', 'title'));
+    }
+    
+    public function processPengembalian(Request $request, $id)
+    {
+        $detailPeminjaman = DetailPeminjaman::findOrFail($id);
+        
+        // Validasi
+        $request->validate([
+            'kondisi' => 'required'
+        ]);
+    
+        // Update stok dan kondisi barang
         $barang = Barang::findOrFail($detailPeminjaman->barang_id);
         $barang->stok += $detailPeminjaman->jumlah;
+        $barang->kondisi = $request->kondisi; // Update kondisi barang
         $barang->save();
     
         // Update tanggal pengembalian
@@ -152,7 +165,7 @@ class PeminjamanController extends Controller
         session()->flash('status', 'success');
         session()->flash('message', 'Berhasil Mengembalikan Barang.');
     
-        return redirect()->back();
+        return redirect()->route('log.peminjaman');
     }
 
     public function scanQR()
