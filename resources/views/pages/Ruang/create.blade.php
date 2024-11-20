@@ -68,15 +68,6 @@
                                         <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
                                 </div>
-
-                                {{-- <div class="mb-3">
-                                    <label for="kondisi" class="form-label text-sm required-label">Kondisi</label>
-                                    <input type="text" class="form-control @error('kondisi') is-invalid @enderror" 
-                                           name="kondisi" id="kondisi" value="{{ old('kondisi') }}" required>
-                                    @error('kondisi')
-                                        <div class="invalid-feedback">{{ $message }}</div>
-                                    @enderror
-                                </div> --}}
                                 <div class="mb-3">
                                     <label for="peruntukkan" class="form-label text-sm required-label">Peruntukkan</label>
                                     <input type="text" class="form-control @error('peruntukkan') is-invalid @enderror" 

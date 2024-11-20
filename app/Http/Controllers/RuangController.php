@@ -43,6 +43,33 @@ class RuangController extends Controller
             ->with('success', 'Ruang berhasil ditambahkan!');
     }
 
+    public function createFromGedung(Gedung $gedung)
+    {
+        $gedungs = Gedung::all();
+        return view('pages.ruang.create-from-gedung', compact('gedung', 'gedungs'));
+    }
+
+    public function storeFromGedung(Request $request, Gedung $gedung)
+    {
+        $validated = $request->validate([
+            'nama_ruang' => 'required|string|max:255',
+            'ukuran' => 'required|numeric',
+            'kondisi' => 'required',
+            'peruntukkan' => 'required|string|max:255',
+            'keterangan' => 'nullable|string'
+        ]);
+
+        $validated['gedung_id'] = $gedung->id;
+
+        $ruang = Ruang::create($validated);
+
+        // Update jumlah ruang di gedung
+        $gedung->increment('jumlah_ruang');
+
+        return redirect()->route('gedung.show', $gedung->id)
+            ->with('success', 'Ruang berhasil ditambahkan!');
+    }
+
     public function edit(Ruang $ruang)
     {
         $title = 'Edit Ruangan';

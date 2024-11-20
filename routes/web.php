@@ -56,6 +56,8 @@ Route::middleware('auth')->group(function () {
         Route::resource('user', UserController::class);
         Route::resource('gedung', GedungController::class);
         Route::resource('ruang', RuangController::class);
+        Route::get('gedung/{gedung}/tambah-ruang', [RuangController::class, 'createFromGedung'])->name('ruang.create-from-gedung');
+        Route::post('gedung/{gedung}/tambah-ruang', [RuangController::class, 'storeFromGedung'])->name('ruang.store-from-gedung');
         Route::resource('kategori', KategoriController::class);
     });
 
