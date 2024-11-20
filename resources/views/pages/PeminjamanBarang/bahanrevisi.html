@@ -1,0 +1,197 @@
+@extends('index') @section('content')
+<div class="container-fluid py-4">
+    <div class="row">
+        <div class="col-12">
+            <div class="card mb-4 p-4">
+                <div class="card-header pb-0">
+                    <h4>Peminjaman Barang</h4>
+                    <hr class="bg-dark" />
+                </div>
+                <div class="card-body">
+                    @if ($errors->any())
+                    <div class="alert alert-danger">
+                        <ul>
+                            @foreach ($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                            @endforeach
+                        </ul>
+                    </div>
+                    @endif @if (Session::has('status'))
+                    <div class="alert alert-success">
+                        {{ Session::get('message') }}
+                    </div>
+                    @endif
+
+                    <form id="peminjamanForm" action="/pinjam" method="POST">
+                        @csrf
+                        <!-- Informasi User -->
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label for="user_id" class="form-label"
+                                    >Nama</label
+                                >
+                                <input
+                                    type="text"
+                                    class="form-control"
+                                    value="{{ auth()->user()->name }}"
+                                    readonly
+                                />
+                                <input
+                                    type="hidden"
+                                    name="user_id"
+                                    value="{{ auth()->user()->id }}"
+                                />
+                            </div>
+                            <div class="col-md-6">
+                                <label for="keluar" class="form-label"
+                                    >Tanggal Peminjaman</label
+                                >
+                                <input
+                                    type="date"
+                                    class="form-control"
+                                    name="keluar"
+                                    value="{{ date('Y-m-d') }}"
+                                    readonly
+                                />
+                            </div>
+                        </div>
+
+                        <!-- Form Dinamis -->
+                        <div class="row align-items-end mb-3">
+                            <div class="col-md-6">
+                                <label for="barang_id" class="form-label"
+                                    >Pilih Barang</label
+                                >
+                                <select
+                                    id="barang_id"
+                                    class="form-control"
+                                    required
+                                >
+                                    <option value="" disabled selected>
+                                        Cari Barang...
+                                    </option>
+                                    @foreach ($barangs as $barang)
+                                    <option
+                                        value="{{ $barang->id }}"
+                                        data-nama="{{ $barang->nama }}"
+                                        data-stok="{{ $barang->stok }}"
+                                    >
+                                        {{ $barang->nama }} (Stok: {{
+                                        $barang->stok }})
+                                    </option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            <div class="col-md-3">
+                                <label for="jumlah" class="form-label"
+                                    >Jumlah</label
+                                >
+                                <input
+                                    type="number"
+                                    id="jumlah"
+                                    class="form-control"
+                                    min="1"
+                                    placeholder="Jumlah"
+                                    required
+                                />
+                            </div>
+                            <div class="col-md-3">
+                                <button
+                                    type="button"
+                                    id="tambahBarang"
+                                    class="btn btn-primary w-100"
+                                >
+                                    Tambah
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Tabel Barang -->
+                        <div class="table-responsive">
+                            <table
+                                class="table table-bordered"
+                                id="tabelBarang"
+                            >
+                                <thead>
+                                    <tr>
+                                        <th>Nama Barang</th>
+                                        <th>Jumlah</th>
+                                        <th>Aksi</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <!-- Dinamis -->
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <!-- Tombol Pinjam -->
+                        <div class="d-flex justify-content-end">
+                            <button type="submit" class="btn btn-success mt-3">
+                                Pinjam
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@endsection @section('scripts')
+<script>
+    $(document).ready(function () {
+        // Inisialisasi Select2
+        $("#barang_id").select2({
+            placeholder: "Cari Barang...",
+            allowClear: true,
+            width: "100%",
+        });
+
+        const tabelBarang = document.querySelector("#tabelBarang tbody");
+        const tambahBarangBtn = document.querySelector("#tambahBarang");
+        const jumlahInput = document.querySelector("#jumlah");
+
+        // Tambah Barang ke Tabel
+        tambahBarangBtn.addEventListener("click", function () {
+            const barangSelect = $("#barang_id");
+            const barangId = barangSelect.val();
+            const barangNama = barangSelect
+                .find("option:selected")
+                .data("nama");
+            const stok = parseInt(
+                barangSelect.find("option:selected").data("stok")
+            );
+            const jumlah = parseInt(jumlahInput.value);
+
+            if (!barangId || jumlah < 1 || jumlah > stok) {
+                alert("Jumlah tidak valid atau barang belum dipilih!");
+                return;
+            }
+
+            const row = document.createElement("tr");
+            row.dataset.id = barangId;
+            row.innerHTML = `
+            <td>${barangNama}</td>
+            <td>
+                <input type="hidden" name="barang_ids[]" value="${barangId}">
+                <input type="hidden" name="jumlahs[]" value="${jumlah}">
+                ${jumlah}
+            </td>
+            <td>
+                <button type="button" class="btn btn-danger btn-sm hapus-barang">Hapus</button>
+            </td>
+        `;
+            tabelBarang.appendChild(row);
+
+            barangSelect.val(null).trigger("change");
+            jumlahInput.value = "";
+        });
+
+        tabelBarang.addEventListener("click", function (e) {
+            if (e.target.classList.contains("hapus-barang")) {
+                e.target.closest("tr").remove();
+            }
+        });
+    });
+</script>
+@endsection
