@@ -178,7 +178,7 @@
                     </div>
                     <div class="m-3">
                         <button type="submit" class="btn bg-gradient-success" id="submitButton" style="display: none;">
-                            Selesaikan Todo
+                            Selesaikan Tugas
                         </button>
                     </div>
                 </form>

@@ -45,8 +45,9 @@ class RuangController extends Controller
 
     public function createFromGedung(Gedung $gedung)
     {
+        $title = 'Tambah Ruangan';
         $gedungs = Gedung::all();
-        return view('pages.ruang.create-from-gedung', compact('gedung', 'gedungs'));
+        return view('pages.ruang.create-from-gedung', compact('gedung', 'gedungs', 'title'));
     }
 
     public function storeFromGedung(Request $request, Gedung $gedung)
@@ -66,7 +67,7 @@ class RuangController extends Controller
         // Update jumlah ruang di gedung
         $gedung->increment('jumlah_ruang');
 
-        return redirect()->route('gedung.show', $gedung->id)
+        return redirect()->route('ruang.index')
             ->with('success', 'Ruang berhasil ditambahkan!');
     }
 

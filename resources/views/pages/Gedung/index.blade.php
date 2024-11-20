@@ -27,13 +27,11 @@
                         <div class="table-responsive p-0">
                             <table class="table align-items-center mb-0">
                                 <thead>
-                                    <tr>
+                                    <tr class="text-center">
                                         <th class="text-uppercase text-dark text-sm font-weight-bolder">No</th>
                                         <th class="text-uppercase text-dark text-sm font-weight-bolder">Gambar</th>
                                         <th class="text-uppercase text-dark text-sm font-weight-bolder">Nama Gedung</th>
-                                        <th class="text-uppercase text-dark text-sm font-weight-bolder">Luas</th>
                                         <th class="text-uppercase text-dark text-sm font-weight-bolder">Jumlah Ruang</th>
-                                        <th class="text-uppercase text-dark text-sm font-weight-bolder">Peruntukkan</th>
                                         <th class="text-uppercase text-dark text-sm font-weight-bolder">Aksi</th>
                                     </tr>
                                 </thead>
@@ -60,31 +58,21 @@
                                                         {{ $gedung->nama_gedung }}</h6>
                                                 </div>
                                             </td>
-                                            <td>
-                                                <div class="d-flex px-2 py-1">
-                                                    <h6 class="text-secondary text-sm font-weight-bold ps-2">
-                                                        {{ $gedung->luas_gedung }} m²</h6>
-                                                </div>
-                                            </td>
+                                            
                                             <td>
                                                 <div class="d-flex px-2 py-1">
                                                     <h6 class="text-secondary text-sm font-weight-bold ps-2">
                                                         {{ $gedung->jumlah_ruang }}</h6>
                                                 </div>
                                             </td>
-                                            <td>
-                                                <div class="d-flex px-2 py-1">
-                                                    <h6 class="text-secondary text-sm font-weight-bold ps-2">
-                                                        {{ $gedung->peruntukkan }}</h6>
-                                                </div>
-                                            </td>
                                             <td class="align-middle">
+                                                <a href="{{ route('ruang.create-from-gedung', $gedung->id) }}" class="btn bg-gradient-success"><i class="fa-solid fa-plus"></i> Ruangan</a>
                                                 <a href="{{ route('gedung.edit', $gedung->id) }}"
-                                                    class="btn bg-gradient-warning">Edit</a>
+                                                    class="btn bg-gradient-warning"><i class="fa-solid fa-pencil" style="font-size: 14px"></i></a>
 
                                                 <a href="{{ route('gedung.destroy', $gedung->id) }}"
                                                     onclick="event.preventDefault(); if(confirm('Apakah Anda yakin ingin menghapus gedung ini?')) document.getElementById('delete-form-{{ $gedung->id }}').submit();"
-                                                    class="btn bg-gradient-danger">Hapus</a>
+                                                    class="btn bg-gradient-danger"><i class="fa-solid fa-trash" style="font-size: 14px"></i></a>
 
                                                 <form id="delete-form-{{ $gedung->id }}"
                                                     action="{{ route('gedung.destroy', $gedung->id) }}" method="POST"
@@ -92,9 +80,8 @@
                                                     @csrf
                                                     @method('DELETE')
                                                 </form>
-
                                                 <a href="{{ route('gedung.show', $gedung->id) }}"
-                                                    class="btn bg-gradient-info">Detail</a>
+                                                    class="btn bg-gradient-info"><i class="fa-solid fa-eye" style="font-size: 14px"></i></a>
                                             </td>
                                         </tr>
                                     @endforeach

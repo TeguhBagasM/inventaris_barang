@@ -10,13 +10,7 @@
                                 <h4 class="">Kelola Ruang</h4>
                             </div>
                         </div>
-
                         <hr class="bg-dark px-auto">
-                        @if (Session::has('success'))
-                            <div class="alert alert-success text-white opacity-5" role="alert">
-                                {{ Session::get('success') }}
-                            </div>
-                        @endif
                         <div class="d-flex justify-content-between">
                             <a href="{{ route('ruang.create') }}">
                                 <div class="mt-2 text-white btn bg-gradient-success">Tambah Ruang</div>
@@ -106,4 +100,18 @@
             </div>
         </div>
     </div>
+    @push('scripts')
+    <script>
+        // Check if there's a flash message
+        @if(Session::has('status'))
+            Swal.fire({
+                icon: '{{ Session::get("status") }}',
+                title: '{{ Session::get("status") == "success" ? "Berhasil!" : "Oops..." }}',
+                text: '{{ Session::get("message") }}',
+                showConfirmButton: false,
+                timer: 3000
+            });
+        @endif
+    </script>
+    @endpush
 @endsection
