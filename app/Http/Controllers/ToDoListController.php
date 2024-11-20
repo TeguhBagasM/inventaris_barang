@@ -11,8 +11,7 @@ class TodoListController extends Controller
     public function index()
     {
         $title = "Daftar Tugas";
-        $todos = ToDoList::where('user_id', Auth::id())
-                        ->orderBy('created_at', 'desc')
+        $todos = ToDoList::orderBy('created_at', 'desc')
                         ->paginate(10);
         return view('pages.todolist.index', compact('todos', 'title'));
     }

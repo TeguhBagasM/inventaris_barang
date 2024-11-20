@@ -1,4 +1,5 @@
-@extends('index') @section('content')
+@extends('index') 
+@section('content')
 <div class="container-fluid py-4">
     <div class="row">
         <div class="col-12">
@@ -9,11 +10,7 @@
                             <h4>Scan QR Code Pengembalian</h4>
                         </div>
                         <div>
-                            <a
-                                href="{{ route('log.peminjaman') }}"
-                                class="mt-2 btn btn-outline-primary"
-                                >Kembali</a
-                            >
+                            <a href="{{ route('log.peminjaman') }}" class="mt-2 btn btn-outline-primary">Kembali</a>
                         </div>
                     </div>
                 </div>
@@ -23,13 +20,8 @@
                             <div id="reader" class="mb-3"></div>
                             <div id="result"></div>
                             <div id="loading" style="display: none">
-                                <div
-                                    class="spinner-border text-primary"
-                                    role="status"
-                                >
-                                    <span class="visually-hidden"
-                                        >Loading...</span
-                                    >
+                                <div class="spinner-border text-primary" role="status">
+                                    <span class="visually-hidden">Loading...</span>
                                 </div>
                                 <p class="mt-2">Memproses QR Code...</p>
                             </div>
@@ -52,11 +44,7 @@
     function onScanSuccess(decodedText, decodedResult) {
         // Cek jika sedang memproses atau kode yang sama di-scan dalam waktu cooldown
         const currentTime = Date.now();
-        if (
-            isProcessing ||
-            (decodedText === lastScannedCode &&
-                currentTime - lastScanTime < SCAN_COOLDOWN)
-        ) {
+        if (isProcessing || (decodedText === lastScannedCode && currentTime - lastScanTime < SCAN_COOLDOWN)) {
             return;
         }
 
@@ -78,17 +66,21 @@
                 kode: decodedText,
             }),
         })
-            .then((response) => {
-                if (!response.ok) {
-                    return response.json().then((err) => Promise.reject(err));
-                }
-                return response.json();
-            })
-            .then((data) => {
-                document.getElementById("loading").style.display = "none";
-                // Stop scanner setelah berhasil
-                html5QrcodeScanner.clear();
+        .then((response) => {
+            if (!response.ok) {
+                return response.json().then((err) => Promise.reject(err));
+            }
+            return response.json();
+        })
+        .then((data) => {
+            document.getElementById("loading").style.display = "none";
+            // Stop scanner setelah berhasil
+            html5QrcodeScanner.clear();
 
+            if (data.redirect_url) {
+                // Redirect ke form pengembalian
+                window.location.href = data.redirect_url;
+            } else {
                 Swal.fire({
                     icon: "success",
                     title: "Berhasil!",
@@ -98,20 +90,19 @@
                 }).then(() => {
                     window.location.href = '{{ route("log.peminjaman") }}';
                 });
-            })
-            .catch((error) => {
-                document.getElementById("loading").style.display = "none";
-                Swal.fire({
-                    icon: "error",
-                    title: "Oops...",
-                    text:
-                        error.message ||
-                        "Terjadi kesalahan saat memproses QR code",
-                });
-            })
-            .finally(() => {
-                isProcessing = false;
+            }
+        })
+        .catch((error) => {
+            document.getElementById("loading").style.display = "none";
+            Swal.fire({
+                icon: "error",
+                title: "Oops...",
+                text: error.message || "Terjadi kesalahan saat memproses QR code",
             });
+        })
+        .finally(() => {
+            isProcessing = false;
+        });
     }
 
     function onScanFailure(error) {

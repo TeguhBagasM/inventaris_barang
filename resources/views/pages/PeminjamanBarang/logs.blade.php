@@ -17,11 +17,6 @@
                             </div>
                         </div>
                         <hr class="bg-dark px-auto">
-                        @if (Session::has('status'))
-                            <div class="alert alert-success text-white opacity-5" role="alert">
-                                {{ Session::get('message') }}
-                            </div>
-                        @endif
                     </div>
                     <div class="card-body px-0 pt-0 pb-2">
                         @if($logs->isEmpty())
@@ -114,7 +109,20 @@
             </div>
         </div>
     </div>
-
+    @push('scripts')
+    <script>
+        // Check if there's a flash message
+        @if(Session::has('status'))
+            Swal.fire({
+                icon: '{{ Session::get("status") }}',
+                title: '{{ Session::get("status") == "success" ? "Berhasil!" : "Oops..." }}',
+                text: '{{ Session::get("message") }}',
+                showConfirmButton: false,
+                timer: 3000
+            });
+        @endif
+    </script>
+    @endpush
     <style>
         .pagination .page-item.active .page-link {
             border-color: white;

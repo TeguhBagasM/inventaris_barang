@@ -140,10 +140,10 @@ class PeminjamanController extends Controller
             session()->flash('message', 'Barang sudah dikembalikan sebelumnya.');
             return redirect()->back();
         }
-    
+
         return view('pages.peminjamanBarang.form-pengembalian', compact('detailPeminjaman', 'title'));
     }
-    
+
     public function processPengembalian(Request $request, $id)
     {
         $detailPeminjaman = DetailPeminjaman::findOrFail($id);
@@ -152,20 +152,20 @@ class PeminjamanController extends Controller
         $request->validate([
             'kondisi' => 'required'
         ]);
-    
+
         // Update stok dan kondisi barang
         $barang = Barang::findOrFail($detailPeminjaman->barang_id);
         $barang->stok += $detailPeminjaman->jumlah;
         $barang->kondisi = $request->kondisi; // Update kondisi barang
         $barang->save();
-    
+
         // Update tanggal pengembalian
         $detailPeminjaman->masuk = Carbon::now();
         $detailPeminjaman->save();
-    
+
         session()->flash('status', 'success');
         session()->flash('message', 'Berhasil Mengembalikan Barang.');
-    
+
         return redirect()->route('log.peminjaman');
     }
 
@@ -193,18 +193,11 @@ class PeminjamanController extends Controller
                 ], 400);
             }
         
-            // Tambahkan stok barang
-            $barang = Barang::findOrFail($detailPeminjaman->barang_id);
-            $barang->stok += $detailPeminjaman->jumlah;
-            $barang->save();
-        
-            // Update tanggal pengembalian
-            $detailPeminjaman->masuk = Carbon::now();
-            $detailPeminjaman->save();
-        
+            // Return URL untuk redirect ke form pengembalian
             return response()->json([
                 'status' => 'success',
-                'message' => 'Berhasil Mengembalikan Barang.'
+                'message' => 'QR Code valid',
+                'redirect_url' => route('pengembalian.form', $id)
             ]);
 
         } catch (\Exception $e) {
