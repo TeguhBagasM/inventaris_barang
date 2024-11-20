@@ -155,10 +155,13 @@ class GedungController extends Controller
         if ($gedung->gambar) {
             Storage::disk('public')->delete($gedung->gambar);
         }
-
+        
         $gedung->delete();
 
-        return redirect()->route('gedung.index')
-            ->with('success', 'Gedung berhasil dihapus!');
+        // Return JSON response instead of redirect
+        return response()->json([
+            'message' => 'Gedung berhasil dihapus!',
+            'success' => true
+        ]);
     }
 }

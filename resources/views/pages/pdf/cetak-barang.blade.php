@@ -62,9 +62,9 @@
         .footer-text {
             margin-bottom: 50px;
         }
-        .signature {
-            margin-top: 10px;
-            text-align: center;
+        .signature-space {
+            margin: 30px 0;
+            height: 60px;
         }
         .page-number {
             position: fixed;
@@ -118,16 +118,10 @@
     </table>
 
     <div class="footer">
-        <div class="footer-text">
-            Cimahi, {{ date('d F Y') }}
-        </div>
-        <div class="footer-text">
-            Sarana Prasarana Sekolah
-        </div>
-        <div class="signature">
-            <br><br><br>
-            {{ Auth::user()->name }}
-        </div>
+        <p>Cimahi, {{ date('d F Y') }}</p>
+        <div class="signature-space"></div>
+        <p>{{ Auth::user()->name }}</p>
+        <p>Sarana Prasarana Sekolah</p>
     </div>
 
     <div class="page-number">

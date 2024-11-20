@@ -12,11 +12,6 @@
                         </div>
 
                         <hr class="bg-dark px-auto">
-                        @if (Session::has('success'))
-                            <div class="alert alert-success text-white opacity-5" role="alert">
-                                {{ Session::get('success') }}
-                            </div>
-                        @endif
                         <div class="d-flex justify-content-between">
                             <a href="{{ route('gedung.create') }}">
                                 <div class="mt-2 text-white btn bg-gradient-success">Tambah Gedung</div>
@@ -70,16 +65,17 @@
                                                 <a href="{{ route('gedung.edit', $gedung->id) }}"
                                                     class="btn bg-gradient-warning"><i class="fa-solid fa-pencil" style="font-size: 14px"></i></a>
 
-                                                <a href="{{ route('gedung.destroy', $gedung->id) }}"
-                                                    onclick="event.preventDefault(); if(confirm('Apakah Anda yakin ingin menghapus gedung ini?')) document.getElementById('delete-form-{{ $gedung->id }}').submit();"
-                                                    class="btn bg-gradient-danger"><i class="fa-solid fa-trash" style="font-size: 14px"></i></a>
-
                                                 <form id="delete-form-{{ $gedung->id }}"
                                                     action="{{ route('gedung.destroy', $gedung->id) }}" method="POST"
                                                     style="display: none;">
                                                     @csrf
                                                     @method('DELETE')
                                                 </form>
+                                                <button onclick="deleteGedung({{ $gedung->id }})" 
+                                                    class="btn bg-gradient-danger">
+                                                    <i class="fa-solid fa-trash" style="font-size: 14px"></i>
+                                                </button>
+
                                                 <a href="{{ route('gedung.show', $gedung->id) }}"
                                                     class="btn bg-gradient-info"><i class="fa-solid fa-eye" style="font-size: 14px"></i></a>
                                             </td>
@@ -93,4 +89,70 @@
             </div>
         </div>
     </div>
+
+    @push('scripts')
+    <script>
+        function deleteGedung(id) {
+        Swal.fire({
+            title: 'Apakah Anda yakin?',
+            text: "Gedung yang dihapus tidak dapat dikembalikan!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Ya, hapus!',
+            cancelButtonText: 'Batal'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                // Use fetch instead of jQuery AJAX for better compatibility
+                fetch(`{{ route('gedung.destroy', '') }}/${id}`, {
+                    method: 'DELETE',
+                    headers: {
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json'
+                    }
+                })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Berhasil!',
+                        text: data.message || 'Gedung berhasil dihapus',
+                        showConfirmButton: false,
+                        timer: 3000
+                    }).then(() => {
+                        window.location.reload();
+                    });
+                })
+                .catch(error => {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Oops...',
+                        text: error.message || 'Gagal menghapus gedung',
+                        showConfirmButton: false,
+                        timer: 3000
+                    });
+                });
+            }
+        });
+    }
+
+        // Handle session success message with SweetAlert
+        @if(Session::has('success'))
+            Swal.fire({
+                icon: 'success',
+                title: 'Berhasil!',
+                text: '{{ Session::get('success') }}',
+                showConfirmButton: false,
+                timer: 3000
+            });
+        @endif
+    </script>
+    @endpush
 @endsection

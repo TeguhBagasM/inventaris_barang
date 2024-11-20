@@ -246,41 +246,39 @@ class BarangController extends Controller
         try {
             // Hapus gambar dari storage jika ada
             if ($barang->gambar) {
-                Storage::disk('public')->delete('images/' . $barang->gambar);
+                // Full debug logging
+                Log::info('Attempting to delete image: ' . $barang->gambar);
+                
+                // Try different path variations
+                $paths = [
+                    'images/' . $barang->gambar,
+                    $barang->gambar,
+                    'public/images/' . $barang->gambar
+                ];
+    
+                foreach ($paths as $path) {
+                    if (Storage::disk('public')->exists($path)) {
+                        Storage::disk('public')->delete($path);
+                        Log::info('Image deleted successfully: ' . $path);
+                        break;
+                    }
+                }
             }
-
-            // Hapus semua relasi kategori
-            $barang->kategori()->detach();
-
-            // Hapus barang dari database
+    
             $barang->delete();
-
-            if (request()->ajax()) {
-                return response()->json([
-                    'success' => true,
-                    'message' => 'Barang berhasil dihapus.'
-                ]);
-            }
-
-            session()->flash('status', 'success');
-            session()->flash('message', 'Barang berhasil dihapus.');
-
-            return redirect()->route('barang.index');
-
+    
+            return response()->json([
+                'success' => true,
+                'message' => 'Barang berhasil dihapus.'
+            ]);
+    
         } catch (\Exception $e) {
             Log::error('Error deleting barang: ' . $e->getMessage());
-
-            if (request()->ajax()) {
-                return response()->json([
-                    'success' => false,
-                    'message' => 'Gagal menghapus Barang. Silakan coba lagi.'
-                ], 500);
-            }
-
-            session()->flash('status', 'error');
-            session()->flash('message', 'Gagal menghapus Barang. Silakan coba lagi.');
-
-            return redirect()->back();
+            
+            return response()->json([
+                'success' => false,
+                'message' => 'Gagal menghapus Barang. ' . $e->getMessage()
+            ], 500);
         }
     }
 }

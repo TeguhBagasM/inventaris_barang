@@ -122,7 +122,7 @@ class PeminjamanController extends Controller
     
         $pdf = Pdf::loadView('pages.pdf.cetak-bukti', [
             'peminjaman' => $peminjaman,
-            'tanggal_cetak' => Carbon::now()->format('d/m/Y H:i:s'),
+            'tanggal_cetak' => Carbon::now()->format('d/m/Y H:i'),
             'kode_peminjaman' => $kodePeminjaman,
             'qrcode' => $qrcode
         ]);
