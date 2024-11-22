@@ -20,6 +20,17 @@
                     </div>
                     <div class="card-body px-0 pt-0 pb-2">
                         @if($logs->isEmpty())
+                        <form action="{{ route('log.peminjaman') }}" method="GET" class="row mb-4 ms-4">
+                            <div class="col-md-4">
+                                <label>Tanggal Pinjam</label>
+                                <input type="date" name="tanggal_pinjam" class="form-control" 
+                                       value="{{ request('tanggal_pinjam') }}">
+                            </div>
+                            <div class="col-md-4 align-self-end mt-4">
+                                <button type="submit" class="btn btn-primary me-2">Filter</button>
+                                <a href="{{ route('log.peminjaman') }}" class="btn btn-secondary">Reset</a>
+                            </div>
+                        </form>
                             <div class="text-center py-5">
                                 <div class="mb-3">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" fill="currentColor" class="bi bi-inbox text-secondary" viewBox="0 0 16 16">
@@ -30,6 +41,17 @@
                                 <p class="text-muted">Data log peminjaman barang akan muncul di sini</p>
                             </div>
                         @else
+                        <form action="{{ route('log.peminjaman') }}" method="GET" class="row mb-4 ms-4">
+                            <div class="col-md-4">
+                                <label>Tanggal Pinjam</label>
+                                <input type="date" name="tanggal_pinjam" class="form-control" 
+                                       value="{{ request('tanggal_pinjam') }}">
+                            </div>
+                            <div class="col-md-4 align-self-end mt-4">
+                                <button type="submit" class="btn btn-primary me-2">Filter</button>
+                                <a href="{{ route('log.peminjaman') }}" class="btn btn-secondary">Reset</a>
+                            </div>
+                        </form>
                         <div class="table-responsive p-0">
                             <table class="table table-striped align-items-center mb-0">
                                 <thead>
