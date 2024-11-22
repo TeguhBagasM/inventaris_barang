@@ -7,13 +7,8 @@
                 <div class="col-12">
                     <div class="card mb-4">
                         <div class="card-header pb-0">
-                            <h4 class="">Tambah Produk</h4>
+                            <h4 class="">Tambah Barang</h4>
                             <hr style="background-color: black">
-                            @if (Session::has('status'))
-                                <div class="alert alert-success text-white opacity-5" role="alert">
-                                    {{ Session::get('message') }}
-                                </div>
-                            @endif
                         </div>
 
                         <div class="card-body px-0 pt-0 pb-2 ps-4 me-4">
@@ -91,8 +86,8 @@
                                     <img src="#" class="rounded" alt="Preview"
                                         style="max-width: 100%; max-height: 200px;">
                                 </div>
-                                <a href="{{ url()->previous() }}" class="btn bg-gradient-danger">Back</a>
-                                <button type="submit" class="btn btn-success float-end">Submit</button>
+                                <a href="{{ url()->previous() }}" class="btn bg-gradient-danger">Kembali</a>
+                                <button type="submit" class="btn btn-success float-end">Simpan</button>
                             </form>
                         </div>
                     </div>

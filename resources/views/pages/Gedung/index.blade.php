@@ -106,7 +106,7 @@
         function deleteGedung(id) {
         Swal.fire({
             title: 'Apakah Anda yakin?',
-            text: "Gedung yang dihapus tidak dapat dikembalikan!",
+            text: "Jika gedung dihapus, Ruangan di gedung ikut terhapus!",
             icon: 'warning',
             showCancelButton: true,
             confirmButtonColor: '#3085d6',

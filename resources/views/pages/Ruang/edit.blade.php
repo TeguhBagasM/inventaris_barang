@@ -9,13 +9,7 @@
                         <div class="card-header pb-0">
                             <h4 class="">Edit Ruang</h4>
                             <hr style="background-color: black">
-                            @if (Session::has('success'))
-                                <div class="alert alert-success text-white opacity-5" role="alert">
-                                    {{ Session::get('success') }}
-                                </div>
-                            @endif
                         </div>
-
                         <div class="card-body px-0 pt-0 pb-2 ps-4 me-4">
                             <form action="{{ route('ruang.update', $ruang->id) }}" method="POST">
                                 @csrf

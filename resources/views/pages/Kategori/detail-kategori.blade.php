@@ -11,13 +11,6 @@
                             <i class="fas fa-arrow-left me-2"></i>Kembali
                         </a>
                     </div>
-
-                    @if (Session::has('status'))
-                        <div class="alert alert-success alert-dismissible fade show text-white" role="alert">
-                            {{ Session::get('message') }}
-                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                        </div>
-                    @endif
                 </div>
 
                 <div class="card-body">
