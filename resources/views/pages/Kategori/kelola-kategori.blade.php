@@ -10,13 +10,7 @@
                                 <h4 class="">Kelola Kategori</h4>
                             </div>
                         </div>
-
                         <hr class="bg-dark px-auto">
-                        @if (Session::has('status'))
-                            <div class="alert alert-success text-white opacity-5" role="alert">
-                                {{ Session::get('message') }}
-                            </div>
-                        @endif
                         <div class="d-flex justify-content-between">
                             <a href="{{ route('kategori.create') }}">
                                 <div class="mt-2 text-white btn bg-gradient-success">Tambah Kategori</div>
@@ -43,14 +37,6 @@
                                                         {{ $loop->iteration }}</h6>
                                                 </div>
                                             </td>
-                                            {{-- <td>
-                                                <div class="d-flex px-2 py-1">
-                                                    <img src="{{ asset('/storage/public/images/' . $k->gambar) }}"
-                                                        class="card-img"
-                                                        style="object-fit: cover;max-width: 100px; max-height: 100px;"
-                                                        alt="...">
-                                                </div>
-                                            </td> --}}
                                             <td>
                                                 <div class="d-flex px-2 py-1">
                                                     <h6 class="text-secondary text-sm font-weight-bold ps-2">
@@ -59,11 +45,12 @@
                                             </td>
                                             <td class="align-middle">
                                                 <a href="{{ route('kategori.edit', $k->id) }}"
-                                                    class="btn bg-gradient-warning">Edit</a>
-
-                                                <a href="{{ route('kategori.destroy', $k->id) }}"
-                                                    onclick="event.preventDefault(); if(confirm('Are you sure you want to delete this product?')) document.getElementById('delete-form-{{ $k->id }}').submit();"
-                                                    class="btn bg-gradient-danger">Hapus</a>
+                                                    class="btn btn-sm bg-gradient-warning"><i class="fa-solid fa-pencil" style="font-size: 14px"></i></a>
+                                                    <button type="button" 
+                                                    class="btn btn-sm bg-gradient-danger"
+                                                    onclick="confirmDelete('{{ $k->id }}')">
+                                                    <i class="fa-solid fa-trash" style="font-size: 14px"></i>
+                                            </button>
 
                                                 <form id="delete-form-{{ $k->id }}"
                                                     action="{{ route('kategori.destroy', $k->id) }}" method="POST"
@@ -73,7 +60,7 @@
                                                 </form>
 
                                                 <a href="{{ route('kategori.show', $k->id) }}"
-                                                    class="btn bg-gradient-info">Detail</a>
+                                                    class="btn btn-sm bg-gradient-info"><i class="fa-solid fa-eye" style="font-size: 14px"></i></a>
                                             </td>
                                         </tr>
                                     @endforeach
@@ -90,4 +77,35 @@
             </div>
         </div>
     </div>
+    @push('scripts')
+    <script>
+        @if(Session::has('status'))
+            Swal.fire({
+                icon: '{{ Session::get("status") }}',
+                title: '{{ Session::get("status") == "success" ? "Berhasil!" : "Oops..." }}',
+                text: '{{ Session::get("message") }}',
+                showConfirmButton: false,
+                timer: 3000
+            });
+        @endif
+
+        // Function untuk konfirmasi delete
+        function confirmDelete(id) {
+            Swal.fire({
+                title: 'Apakah Anda yakin?',
+                text: "Data yang dihapus tidak dapat dikembalikan!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Ya, hapus!',
+                cancelButtonText: 'Batal'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    document.getElementById('delete-form-' + id).submit();
+                }
+            });
+        }
+    </script>
+    @endpush
 @endsection

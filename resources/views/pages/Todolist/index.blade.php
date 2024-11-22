@@ -62,15 +62,15 @@
                                                     </span>
                                                 </td>
                                                 <td>
-                                                    <button type="button" class="btn btn-sm bg-gradient-info" 
+                                                    <button type="button" class="btn btn-sm btn-info" 
                                                             data-bs-toggle="modal" 
                                                             data-bs-target="#editTodoModal{{ $todo->id }}">
-                                                        Edit
+                                                        <i class="fa-solid fa-pencil" style="font-size: 14px"></i>
                                                     </button>
                                                     <button type="button" 
                                                             class="btn btn-sm bg-gradient-danger"
                                                             onclick="confirmDelete('{{ $todo->id }}')">
-                                                        Hapus
+                                                            <i class="fa-solid fa-trash" style="font-size: 14px"></i>
                                                     </button>
                                                     <form id="delete-form-{{ $todo->id }}" 
                                                           action="{{ route('todolist.destroy', $todo->id) }}" 
