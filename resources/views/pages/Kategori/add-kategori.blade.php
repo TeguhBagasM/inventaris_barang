@@ -17,10 +17,13 @@
                                 @csrf
                                 <div class="mb-3">
                                     <label for="nama" class="form-label text-sm required-label">Nama Kategori</label>
-                                    <input type="text" class="form-control" name="nama" id="nama" required>
+                                    <input type="text" class="form-control @error('nama') is-invalid @enderror" name="nama" id="nama" value="{{ old('nama') }}">
+                                    @error('nama')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
                                 </div>
-                                <a href="/kategori" class="btn bg-gradient-danger ">Back</a>
-                                <button type="submit" class="btn btn-success float-end">Submit</button>
+                                <a href="/kategori" class="btn bg-gradient-danger ">Kembali</a>
+                                <button type="submit" class="btn btn-success float-end">Simpan</button>
                             </form>
                         </div>
                     </div>

@@ -6,14 +6,17 @@
                 <div class="card mb-4">
                     <div class="card-header pb-0">
                         <div class="d-flex justify-content-between">
-                            <h4 class="">Pendataan User</h4>
-                        </div>
-                        <hr class="bg-dark px-auto">
-                        @if (Session::has('status'))
-                            <div class="alert alert-success text-white opacity-5" role="alert">
-                                {{ Session::get('message') }}
+                            <div>
+                                <h4 class="">Kelola User</h4>
                             </div>
-                        @endif
+                        </div>
+
+                        <hr class="bg-dark px-auto">
+                        <div class="d-flex justify-content-between">
+                            <a href="{{ route('user.create') }}">
+                                <div class="mt-2 text-white btn bg-gradient-success">Tambah User</div>
+                            </a>
+                        </div>
                     </div>
                     <div class="card-body px-0 pt-0 pb-2">
                         <div class="table-responsive p-0">
@@ -56,11 +59,15 @@
                                             </td>
                                             <td class="align-middle">
                                                 <a href="{{ route('user.edit', $user->id) }}"
-                                                    class="btn bg-gradient-warning">Edit</a>
+                                                    class="btn btn-sm bg-gradient-warning">
+                                                    <i class="fa-solid fa-pencil" style="font-size: 14px"></i>
+                                                </a>
 
-                                                <a href="{{ route('user.destroy', $user->id) }}"
-                                                    onclick="event.preventDefault(); if(confirm('Are you sure you want to delete this User?')) document.getElementById('delete-form-{{ $user->id }}').submit();"
-                                                    class="btn bg-gradient-danger">Hapus</a>
+                                                <button type="button" 
+                                                    class="btn btn-sm bg-gradient-danger"
+                                                    onclick="confirmDelete('{{ $user->id }}')">
+                                                    <i class="fa-solid fa-trash" style="font-size: 14px"></i>
+                                                </button>
 
                                                 <form id="delete-form-{{ $user->id }}"
                                                     action="{{ route('user.destroy', $user->id) }}" method="POST"
@@ -83,4 +90,35 @@
             </div>
         </div>
     </div>
+    @push('scripts')
+    <script>
+        @if(Session::has('status'))
+            Swal.fire({
+                icon: '{{ Session::get("status") }}',
+                title: '{{ Session::get("status") == "success" ? "Berhasil!" : "Oops..." }}',
+                text: '{{ Session::get("message") }}',
+                showConfirmButton: false,
+                timer: 3000
+            });
+        @endif
+
+        // Function untuk konfirmasi delete
+        function confirmDelete(id) {
+            Swal.fire({
+                title: 'Apakah Anda yakin?',
+                text: "Data yang dihapus tidak dapat dikembalikan!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Ya, hapus!',
+                cancelButtonText: 'Batal'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    document.getElementById('delete-form-' + id).submit();
+                }
+            });
+        }
+    </script>
+    @endpush
 @endsection

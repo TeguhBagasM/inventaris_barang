@@ -1,0 +1,54 @@
+@extends('index')
+@section('content')
+    <div class="container-fluid py-4">
+        <div class="row">
+            <div class="col-12">
+                <div class="card mb-4">
+                    <div class="card-header pb-0">
+                        <h4 class="">Tambah User</h4>
+                        <hr class="bg-dark px-auto">
+                    </div>
+                    <div class="card-body px-0 pt-0 pb-2 ps-4 me-4">
+                        <form action="{{ route('user.store') }}" method="POST">
+                            @csrf
+                            <div class="mb-3">
+                                <label for="name" class="form-label">Nama</label>
+                                <input type="text" class="form-control" id="name" name="name" value="{{ old('name') }}" required>
+                                @error('name')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
+                            <div class="mb-3">
+                                <label for="email" class="form-label">Email</label>
+                                <input type="email" class="form-control" id="email" name="email" value="{{ old('email') }}" required>
+                                @error('email')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
+                            <div class="mb-3">
+                                <label for="level" class="form-label">Level</label>
+                                <select class="form-select" id="level" name="level" required>
+                                    <option value="" disabled selected>Pilih Level</option>
+                                    <option value="admin">Admin</option>
+                                    <option value="petugas 1">Petugas 1</option>
+                                    <option value="petugas 2">Petugas 2</option>
+                                    <option value="petugas 3">Petugas 3</option>
+                                    <option value="guru">Guru</option>
+                                    <option value="siswa">Siswa</option>
+                                </select>
+                            </div>
+                            <div class="mb-3">
+                                <label for="password" class="form-label">Password</label>
+                                <input type="password" class="form-control" id="password" name="password" required>
+                                @error('password')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                            </div>
+                            <button type="submit" class="btn btn-success">Tambah</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+@endsection

@@ -33,7 +33,7 @@ class KategoriController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'nama' => 'required',
+            'nama' => 'required|max:255|unique:kategoris,nama',
         ]);
 
         $newName = null; // inisialisasi $newName untuk penanganan gambar
@@ -81,7 +81,7 @@ class KategoriController extends Controller
     public function update(Request $request, Kategori $kategori)
     {
         $request->validate([
-            'nama' => 'required',
+            'nama' => 'required|max:255|unique:kategoris,nama',
         ]);
 
         $updated = $kategori->update([

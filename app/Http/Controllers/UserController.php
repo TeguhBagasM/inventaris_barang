@@ -4,19 +4,53 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
 {
     public function index()
     {
-        $title = "User";
-        $users = User::where('id', '!=', auth()->id())->paginate(10);
+        $title = "Kelola User";
+        $users = User::where('id', '!=', Auth::id())->paginate(10);
         return view('pages.User.kelola-user', compact('users', 'title'));
     }
+    public function create()
+    {
+        $title = "Tambah User";
+        return view('pages.User.add-user', compact('title'));
+    }
+
+    public function store(Request $request)
+    {
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|email|unique:users,email',
+            'level' => 'required',
+            'password' => 'required|min:8',
+        ]);
+
+        $user = User::create([
+            'name' => $request->name,
+            'email' => $request->email,
+            'level' => $request->level,
+            'password' => Hash::make($request->password),
+        ]);
+
+        if ($user) {
+            session()->flash('status', 'success');
+            session()->flash('message', 'User berhasil ditambahkan.');
+        } else {
+            session()->flash('status', 'error');
+            session()->flash('message', 'Gagal menambahkan user.');
+        }
+
+        return redirect()->route('user.index');
+    }
+
     public function edit($id)
     {
-        $title = "User";
+        $title = "Edit User";
         $user = User::findOrFail($id);
         return view('pages.User.edit-user', compact('user', 'title'));
     }
