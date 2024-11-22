@@ -12,7 +12,7 @@
                         </div>
 
                         <hr class="bg-dark px-auto">
-                        <div class="d-flex justify-content-between mb-3">
+                        <div class="d-flex justify-content-between mb-1">
                             <button type="button" class="btn bg-gradient-orange text-white" data-bs-toggle="modal" data-bs-target="#addTodoModal">
                                 Tambah Tugas
                             </button>
@@ -21,6 +21,11 @@
                     <div class="card-body px-0 pt-0 pb-2">
                         <form action="{{ route('todolist.updateStatus') }}" method="POST">
                             @csrf
+                            <div class="ms-4">
+                                <button type="submit" class="btn bg-gradient-success" id="submitButton" style="display: none;">
+                                    Selesaikan Tugas
+                                </button>
+                            </div>
                             <div class="table-responsive p-0">
                                 <table class="table align-items-center mb-0">
                                     <thead>
@@ -30,6 +35,7 @@
                                             <th class="text-uppercase text-dark text-sm font-weight-bolder">Deskripsi</th>
                                             <th class="text-uppercase text-dark text-sm font-weight-bolder">Prioritas</th>
                                             <th class="text-uppercase text-dark text-sm font-weight-bolder">Status</th>
+                                            <th class="text-uppercase text-dark text-sm font-weight-bolder">Dibuat oleh</th>
                                             <th class="text-uppercase text-dark text-sm font-weight-bolder">Aksi</th>
                                         </tr>
                                     </thead>
@@ -40,6 +46,7 @@
                                                     @if($todo->status === 'pending')
                                                         <input type="checkbox" name="todo_ids[]" value="{{ $todo->id }}" class="todo-checkbox cursor-pointer">
                                                     @endif
+                                                </form>
                                                 </td>
                                                 <td>
                                                     <h6 class="text-secondary text-sm font-weight-bold ps-2">
@@ -60,6 +67,11 @@
                                                     <span class="badge bg-{{ $todo->status === 'selesai' ? 'success' : 'warning' }}">
                                                         {{ $todo->status }}
                                                     </span>
+                                                </td>
+                                                <td>
+                                                    <h6 class="text-secondary text-sm font-weight-bold ps-2">
+                                                        {{ $todo->user->level ?? 'Tidak Diketahui' }}
+                                                    </h6>
                                                 </td>
                                                 <td>
                                                     <button type="button" class="btn btn-sm btn-info" 
@@ -127,12 +139,6 @@
                                     </tbody>
                                 </table>
                             </div>
-                            <div class="m-3">
-                                <button type="submit" class="btn bg-gradient-success" id="submitButton" style="display: none;">
-                                    Selesaikan Tugas
-                                </button>
-                            </div>
-                        </form>
                         <div class="mx-5 my-2">
                             {{ $todos->links() }}
                         </div>
@@ -180,9 +186,29 @@
     @push('scripts')
     <script>
         document.addEventListener('DOMContentLoaded', function() {
+            // Form dan checkbox handling
+            const todoForm = document.querySelector('form[action="{{ route("todolist.updateStatus") }}"]');
             const checkboxes = document.querySelectorAll('.todo-checkbox');
             const submitButton = document.getElementById('submitButton');
-
+    
+            // Form submit validation
+            todoForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                const checkedBoxes = Array.from(checkboxes).filter(cb => cb.checked);
+                if (checkedBoxes.length === 0) {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Oops...',
+                        text: 'Pilih minimal satu tugas untuk diselesaikan',
+                    });
+                    return;
+                }
+                
+                this.submit();
+            });
+    
+            // Checkbox change handler
             checkboxes.forEach(checkbox => {
                 checkbox.addEventListener('change', function() {
                     const isAnyChecked = Array.from(checkboxes).some(cb => cb.checked);
@@ -190,7 +216,7 @@
                 });
             });
         });
-
+    
         // SweetAlert2 Notifications
         @if(Session::has('status'))
             Swal.fire({
@@ -201,7 +227,6 @@
                 timer: 3000
             });
         @endif
-
         // Function untuk konfirmasi delete
         function confirmDelete(id) {
             Swal.fire({
@@ -221,5 +246,4 @@
         }
     </script>
     @endpush
-
 @endsection

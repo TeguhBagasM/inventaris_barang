@@ -5,16 +5,19 @@ namespace App\Http\Controllers;
 use App\Models\ToDoList;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 
 class TodoListController extends Controller
 {
     public function index()
     {
         $title = "Daftar Tugas";
-        $todos = ToDoList::orderBy('created_at', 'desc')
-                        ->paginate(10);
+        $todos = ToDoList::with('user')
+                    ->orderBy('created_at', 'desc')
+                    ->paginate(10);
         return view('pages.todolist.index', compact('todos', 'title'));
     }
+
 
     public function store(Request $request) 
     {
@@ -40,15 +43,50 @@ class TodoListController extends Controller
 
     public function updateStatus(Request $request)
     {
-        $todoIds = $request->todo_ids ?? [];
-        
-        // Update semua todo yang dicentang menjadi selesai
-        ToDoList::whereIn('id', $todoIds)->update(['status' => 'selesai']);
-        
-        return redirect()->back()->with([
-            'status' => 'success',
-            'message' => 'Daftar Pekerjaan telah diselesaikan'
-        ]);
+        try {
+            $todoIds = $request->todo_ids;
+            
+            Log::info('Received todo_ids:', ['ids' => $todoIds]);
+            
+            if (empty($todoIds)) {
+                return redirect()->back()->with([
+                    'status' => 'error',
+                    'message' => 'Pilih minimal satu tugas untuk diselesaikan'
+                ]);
+            }
+    
+            // Validasi bahwa semua ID valid
+            $todos = ToDoList::whereIn('id', $todoIds)->get();
+            if ($todos->count() !== count($todoIds)) {
+                return redirect()->back()->with([
+                    'status' => 'error',
+                    'message' => 'Ada ID tugas yang tidak valid'
+                ]);
+            }
+            
+            $updated = ToDoList::whereIn('id', $todoIds)
+                            ->where('status', 'pending')
+                            ->update(['status' => 'selesai']);
+    
+            if ($updated > 0) {
+                return redirect()->back()->with([
+                    'status' => 'success',
+                    'message' => $updated . ' tugas berhasil diselesaikan'
+                ]);
+            }
+    
+            return redirect()->back()->with([
+                'status' => 'error',
+                'message' => 'Tidak ada tugas yang dapat diselesaikan'
+            ]);
+    
+        } catch (\Exception $e) {
+            Log::error('Error updating todo status: ' . $e->getMessage());
+            return redirect()->back()->with([
+                'status' => 'error',
+                'message' => 'Gagal menyelesaikan tugas: ' . $e->getMessage()
+            ]);
+        }
     }
 
     public function update(Request $request, $id)
@@ -75,7 +113,9 @@ class TodoListController extends Controller
     public function destroy($id)
     {
         try {
-            $todo = ToDoList::findOrFail($id);
+            $todo = ToDoList::where('id', $id)
+                            ->where('user_id', Auth::id())
+                            ->firstOrFail();
             $todo->delete();
 
             return redirect()->route('todolist.index')->with([
@@ -85,8 +125,9 @@ class TodoListController extends Controller
         } catch (\Exception $e) {
             return redirect()->route('todolist.index')->with([
                 'status' => 'error',
-                'message' => 'Gagal menghapus todo'
+                'message' => 'Gagal menghapus tugas'
             ]);
         }
     }
+
 }
