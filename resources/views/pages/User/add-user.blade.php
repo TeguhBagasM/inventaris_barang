@@ -13,21 +13,21 @@
                             @csrf
                             <div class="mb-3">
                                 <label for="name" class="form-label">Nama</label>
-                                <input type="text" class="form-control" id="name" name="name" value="{{ old('name') }}" required>
+                                <input type="text" class="form-control @error('name') is-invalid @enderror" id="name" name="name" value="{{ old('name') }}">
                                 @error('name')
                                         <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
                             </div>
                             <div class="mb-3">
                                 <label for="email" class="form-label">Email</label>
-                                <input type="email" class="form-control" id="email" name="email" value="{{ old('email') }}" required>
+                                <input type="email" class="form-control @error('email') is-invalid @enderror" id="email" name="email" value="{{ old('email') }}">
                                 @error('email')
                                         <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
                             </div>
                             <div class="mb-3">
                                 <label for="level" class="form-label">Level</label>
-                                <select class="form-select" id="level" name="level" required>
+                                <select class="form-select @error('level') is-invalid @enderror" id="level" name="level">
                                     <option value="" disabled selected>Pilih Level</option>
                                     <option value="admin">Admin</option>
                                     <option value="petugas 1">Petugas 1</option>
@@ -36,15 +36,19 @@
                                     <option value="guru">Guru</option>
                                     <option value="siswa">Siswa</option>
                                 </select>
+                                @error('level')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
                             </div>
                             <div class="mb-3">
                                 <label for="password" class="form-label">Password</label>
-                                <input type="password" class="form-control" id="password" name="password" required>
+                                <input type="password" class="form-control @error('level') is-invalid @enderror" id="password" name="password">
                                 @error('password')
                                         <div class="invalid-feedback">{{ $message }}</div>
-                                    @enderror
+                                @enderror
                             </div>
-                            <button type="submit" class="btn btn-success">Tambah</button>
+                            <a href="{{ route('user.index') }}" class="btn bg-gradient-danger">Kembali</a>
+                            <button type="submit" class="btn btn-success float-end">Simpan</button>
                         </form>
                     </div>
                 </div>

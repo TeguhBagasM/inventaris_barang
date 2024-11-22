@@ -74,13 +74,13 @@ class UserController extends Controller
 
         if ($user) {
             session()->flash('status', 'success');
-            session()->flash('message', 'User Berhasil Di Edit.');
+            session()->flash('message', 'User berhasil diperbarui.');
         } else {
             session()->flash('status', 'error');
-            session()->flash('message', 'Gagal Mengedit User.');
+            session()->flash('message', 'Gagal memperbarui user. Silakan coba lagi.');
         }
 
-        return redirect()->route('user.index')->with('status', 'User updated successfully!');
+        return redirect()->route('user.index');
     }
 
 
@@ -89,11 +89,11 @@ class UserController extends Controller
         $user = User::destroy($id);
         if ($user) {
             session()->flash('status', 'success');
-            session()->flash('message', 'User Berhasil Di Hapus.');
+            session()->flash('message', 'User berhasil dihapus.');
         } else {
             session()->flash('status', 'error');
             session()->flash('message', 'Gagal Menghapus User.');
         }
-        return redirect()->route('user.index')->with('status', 'User deleted successfully!');
+        return redirect()->route('user.index');
     }
 }
