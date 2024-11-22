@@ -61,9 +61,9 @@
                                                 </div>
                                             </td>
                                             <td class="align-middle">
-                                                <a href="{{ route('ruang.create-from-gedung', $gedung->id) }}" class="btn bg-gradient-success"><i class="fa-solid fa-plus"></i> Ruangan</a>
+                                                <a href="{{ route('ruang.create-from-gedung', $gedung->id) }}" class="btn btn-sm bg-gradient-success"><i class="fa-solid fa-plus"></i> Ruangan</a>
                                                 <a href="{{ route('gedung.edit', $gedung->id) }}"
-                                                    class="btn bg-gradient-warning"><i class="fa-solid fa-pencil" style="font-size: 14px"></i></a>
+                                                    class="btn btn-sm bg-gradient-warning"><i class="fa-solid fa-pencil" style="font-size: 14px"></i></a>
 
                                                 <form id="delete-form-{{ $gedung->id }}"
                                                     action="{{ route('gedung.destroy', $gedung->id) }}" method="POST"
@@ -72,12 +72,12 @@
                                                     @method('DELETE')
                                                 </form>
                                                 <button onclick="deleteGedung({{ $gedung->id }})" 
-                                                    class="btn bg-gradient-danger">
+                                                    class="btn btn-sm bg-gradient-danger">
                                                     <i class="fa-solid fa-trash" style="font-size: 14px"></i>
                                                 </button>
 
                                                 <a href="{{ route('gedung.show', $gedung->id) }}"
-                                                    class="btn bg-gradient-info"><i class="fa-solid fa-eye" style="font-size: 14px"></i></a>
+                                                    class="btn btn-sm bg-gradient-info"><i class="fa-solid fa-eye" style="font-size: 14px"></i></a>
                                             </td>
                                         </tr>
                                     @endforeach
@@ -92,6 +92,17 @@
 
     @push('scripts')
     <script>
+        // Handle session success message with SweetAlert
+        @if(Session::has('success'))
+            Swal.fire({
+                icon: 'success',
+                title: 'Berhasil!',
+                text: '{{ Session::get('success') }}',
+                showConfirmButton: false,
+                timer: 3000
+            });
+        @endif
+        
         function deleteGedung(id) {
         Swal.fire({
             title: 'Apakah Anda yakin?',
@@ -142,17 +153,6 @@
             }
         });
     }
-
-        // Handle session success message with SweetAlert
-        @if(Session::has('success'))
-            Swal.fire({
-                icon: 'success',
-                title: 'Berhasil!',
-                text: '{{ Session::get('success') }}',
-                showConfirmButton: false,
-                timer: 3000
-            });
-        @endif
     </script>
     @endpush
 @endsection

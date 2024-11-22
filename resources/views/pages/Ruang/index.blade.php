@@ -12,11 +12,6 @@
                         </div>
 
                         <hr class="bg-dark px-auto">
-                        @if (Session::has('success'))
-                            <div class="alert alert-success text-white opacity-5" role="alert">
-                                {{ Session::get('success') }}
-                            </div>
-                        @endif
                         <div class="d-flex justify-content-between">
                             <a href="{{ route('ruang.create') }}">
                                 <div class="mt-2 text-white btn bg-gradient-success">Tambah Ruang</div>
@@ -80,11 +75,13 @@
                                             </td>
                                             <td class="align-middle">
                                                 <a href="{{ route('ruang.edit', $ruang->id) }}"
-                                                    class="btn bg-gradient-warning">Edit</a>
+                                                    class="btn btn-sm bg-gradient-warning"><i class="fa-solid fa-pencil" style="font-size: 14px"></i></a>
 
-                                                <a href="{{ route('ruang.destroy', $ruang->id) }}"
-                                                    onclick="event.preventDefault(); if(confirm('Apakah Anda yakin ingin menghapus ruang ini?')) document.getElementById('delete-form-{{ $ruang->id }}').submit();"
-                                                    class="btn bg-gradient-danger">Hapus</a>
+                                                <button type="button" 
+                                                    class="btn btn-sm bg-gradient-danger"
+                                                    onclick="confirmDelete('{{ $ruang->id }}')">
+                                                    <i class="fa-solid fa-trash" style="font-size: 14px"></i>
+                                                </button>
 
                                                 <form id="delete-form-{{ $ruang->id }}"
                                                     action="{{ route('ruang.destroy', $ruang->id) }}" method="POST"
@@ -92,9 +89,6 @@
                                                     @csrf
                                                     @method('DELETE')
                                                 </form>
-
-                                                <a href="{{ route('ruang.show', $ruang->id) }}"
-                                                    class="btn bg-gradient-info">Detail</a>
                                             </td>
                                         </tr>
                                     @endforeach
@@ -106,4 +100,35 @@
             </div>
         </div>
     </div>
+    @push('scripts')
+    <script>
+        @if(Session::has('status'))
+            Swal.fire({
+                icon: '{{ Session::get("status") }}',
+                title: '{{ Session::get("status") == "success" ? "Berhasil!" : "Oops..." }}',
+                text: '{{ Session::get("message") }}',
+                showConfirmButton: false,
+                timer: 3000
+            });
+        @endif
+
+        // Function untuk konfirmasi delete
+        function confirmDelete(id) {
+            Swal.fire({
+                title: 'Apakah Anda yakin?',
+                text: "Data yang dihapus tidak dapat dikembalikan!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Ya, hapus!',
+                cancelButtonText: 'Batal'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    document.getElementById('delete-form-' + id).submit();
+                }
+            });
+        }
+    </script>
+    @endpush
 @endsection

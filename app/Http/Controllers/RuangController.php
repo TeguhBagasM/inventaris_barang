@@ -35,12 +35,19 @@ class RuangController extends Controller
 
         $ruang = Ruang::create($validated);
 
-        // Update jumlah ruang di gedung
-        $gedung = Gedung::find($request->gedung_id);
-        $gedung->increment('jumlah_ruang');
+        if ($ruang) {
+            // Update jumlah ruang di gedung
+            $gedung = Gedung::find($request->gedung_id);
+            $gedung->increment('jumlah_ruang');
+            
+            session()->flash('status', 'success');
+            session()->flash('message', 'Ruangan berhasil ditambahkan!');
+        } else {
+            session()->flash('status', 'error');
+            session()->flash('message', 'Gagal menambahkan ruang. Silakan coba lagi.');
+        }
 
-        return redirect()->route('ruang.index')
-            ->with('success', 'Ruang berhasil ditambahkan!');
+        return redirect()->route('ruang.index');
     }
 
     public function createFromGedung(Gedung $gedung)
@@ -64,11 +71,17 @@ class RuangController extends Controller
 
         $ruang = Ruang::create($validated);
 
-        // Update jumlah ruang di gedung
-        $gedung->increment('jumlah_ruang');
+        if ($ruang) {
+            // Update jumlah ruang di gedung
+            $gedung->increment('jumlah_ruang');
+            session()->flash('status', 'success');
+            session()->flash('message', 'Ruangan berhasil ditambahkan!');
+            } else {
+                session()->flash('status', 'error');
+                session()->flash('message', 'Gagal menambahkan ruang. Silakan coba lagi.');
+            }
 
-        return redirect()->route('ruang.index')
-            ->with('success', 'Ruang berhasil ditambahkan!');
+            return redirect()->route('ruang.index');
     }
 
     public function edit(Ruang $ruang)
@@ -98,10 +111,17 @@ class RuangController extends Controller
             $newGedung->increment('jumlah_ruang');
         }
 
-        $ruang->update($validated);
+        $updated = $ruang->update($validated);
 
-        return redirect()->route('ruang.index')
-            ->with('success', 'Ruang berhasil diperbarui!');
+        if ($updated) {
+            session()->flash('status', 'success');
+            session()->flash('message', 'Ruangan berhasil diperbarui.');
+        } else {
+            session()->flash('status', 'error');
+            session()->flash('message', 'Gagal memperbarui ruangan. Silakan coba lagi.');
+        }
+
+        return redirect()->route('ruang.index');
     }
 
     public function destroy(Ruang $ruang)
@@ -110,9 +130,16 @@ class RuangController extends Controller
         $gedung = Gedung::find($ruang->gedung_id);
         $gedung->decrement('jumlah_ruang');
 
-        $ruang->delete();
+        $deleted = $ruang->delete();
 
-        return redirect()->route('ruang.index')
-            ->with('success', 'Ruang berhasil dihapus!');
+        if ($deleted) {
+            session()->flash('status', 'success');
+            session()->flash('message', 'Ruangan berhasil dihapus.');
+        } else {
+            session()->flash('status', 'error');
+            session()->flash('message', 'Gagal menghapus ruangan. Silakan coba lagi.');
+        }
+
+        return redirect()->route('ruang.index');
     }
 }

@@ -45,12 +45,13 @@
                                             </td>
                                             <td class="align-middle">
                                                 <a href="{{ route('kategori.edit', $k->id) }}"
-                                                    class="btn btn-sm bg-gradient-warning"><i class="fa-solid fa-pencil" style="font-size: 14px"></i></a>
-                                                    <button type="button" 
+                                                    class="btn btn-sm bg-gradient-warning"><i class="fa-solid fa-pencil" style="font-size: 14px"></i>
+                                                </a>
+                                                <button type="button" 
                                                     class="btn btn-sm bg-gradient-danger"
                                                     onclick="confirmDelete('{{ $k->id }}')">
                                                     <i class="fa-solid fa-trash" style="font-size: 14px"></i>
-                                            </button>
+                                                </button>
 
                                                 <form id="delete-form-{{ $k->id }}"
                                                     action="{{ route('kategori.destroy', $k->id) }}" method="POST"
