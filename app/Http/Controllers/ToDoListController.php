@@ -34,7 +34,7 @@ class TodoListController extends Controller
 
         return redirect()->route('todolist.index')->with([
             'status' => 'success',
-            'message' => 'Todo berhasil ditambahkan'
+            'message' => 'Tugas berhasil ditambahkan'
         ]);
     }
 
@@ -49,5 +49,44 @@ class TodoListController extends Controller
             'status' => 'success',
             'message' => 'Daftar Pekerjaan telah diselesaikan'
         ]);
+    }
+
+    public function update(Request $request, $id)
+    {
+        $request->validate([
+            'judul' => 'required|string|max:255',
+            'deskripsi' => 'nullable|string',
+            'prioritas' => 'required'
+        ]);
+
+        $todo = ToDoList::findOrFail($id);
+        $todo->update([
+            'judul' => $request->judul,
+            'deskripsi' => $request->deskripsi,
+            'prioritas' => $request->prioritas,
+        ]);
+
+        return redirect()->route('todolist.index')->with([
+            'status' => 'success',
+            'message' => 'Tugas berhasil diperbarui'
+        ]);
+    }
+
+    public function destroy($id)
+    {
+        try {
+            $todo = ToDoList::findOrFail($id);
+            $todo->delete();
+
+            return redirect()->route('todolist.index')->with([
+                'status' => 'success',
+                'message' => 'Tugas berhasil dihapus'
+            ]);
+        } catch (\Exception $e) {
+            return redirect()->route('todolist.index')->with([
+                'status' => 'error',
+                'message' => 'Gagal menghapus todo'
+            ]);
+        }
     }
 }

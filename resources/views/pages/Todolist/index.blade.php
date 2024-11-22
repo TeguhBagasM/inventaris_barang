@@ -12,11 +12,6 @@
                         </div>
 
                         <hr class="bg-dark px-auto">
-                        @if (Session::has('status'))
-                            <div class="alert alert-success text-white opacity-5" role="alert">
-                                {{ Session::get('message') }}
-                            </div>
-                        @endif
                         <div class="d-flex justify-content-between mb-3">
                             <button type="button" class="btn bg-gradient-orange text-white" data-bs-toggle="modal" data-bs-target="#addTodoModal">
                                 Tambah Tugas
@@ -35,6 +30,7 @@
                                             <th class="text-uppercase text-dark text-sm font-weight-bolder">Deskripsi</th>
                                             <th class="text-uppercase text-dark text-sm font-weight-bolder">Prioritas</th>
                                             <th class="text-uppercase text-dark text-sm font-weight-bolder">Status</th>
+                                            <th class="text-uppercase text-dark text-sm font-weight-bolder">Aksi</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -65,13 +61,76 @@
                                                         {{ $todo->status }}
                                                     </span>
                                                 </td>
+                                                <td>
+                                                    <button type="button" class="btn btn-sm bg-gradient-info" 
+                                                            data-bs-toggle="modal" 
+                                                            data-bs-target="#editTodoModal{{ $todo->id }}">
+                                                        Edit
+                                                    </button>
+                                                    <button type="button" 
+                                                            class="btn btn-sm bg-gradient-danger"
+                                                            onclick="confirmDelete('{{ $todo->id }}')">
+                                                        Hapus
+                                                    </button>
+                                                    <form id="delete-form-{{ $todo->id }}" 
+                                                          action="{{ route('todolist.destroy', $todo->id) }}" 
+                                                          method="POST" 
+                                                          style="display: none;">
+                                                        @csrf
+                                                        @method('DELETE')
+                                                    </form>
+                                                </td>
                                             </tr>
+
+                                            <div class="modal fade" id="editTodoModal{{ $todo->id }}" tabindex="-1" aria-hidden="true">
+                                                <div class="modal-dialog">
+                                                    <div class="modal-content">
+                                                        <form action="{{ route('todolist.update', $todo->id) }}" method="POST">
+                                                            @csrf
+                                                            @method('PUT')
+                                                            <div class="modal-header">
+                                                                <h5 class="modal-title">Edit Tugas</h5>
+                                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                            </div>
+                                                            <div class="modal-body">
+                                                                <div class="mb-3">
+                                                                    <label for="judul" class="form-label">Judul</label>
+                                                                    <input type="text" class="form-control" id="judul" name="judul" 
+                                                                           value="{{ $todo->judul }}" required>
+                                                                </div>
+                                                                <div class="mb-3">
+                                                                    <label for="deskripsi" class="form-label">Deskripsi</label>
+                                                                    <textarea class="form-control" id="deskripsi" name="deskripsi" 
+                                                                              rows="3">{{ $todo->deskripsi }}</textarea>
+                                                                </div>
+                                                                <div class="mb-3">
+                                                                    <label for="prioritas" class="form-label">Prioritas</label>
+                                                                    <select class="form-control" id="prioritas" name="prioritas" required>
+                                                                        <option value="Tinggi" {{ $todo->prioritas === 'Tinggi' ? 'selected' : '' }}>
+                                                                            Tinggi
+                                                                        </option>
+                                                                        <option value="Rendah" {{ $todo->prioritas === 'Rendah' ? 'selected' : '' }}>
+                                                                            Rendah
+                                                                        </option>
+                                                                    </select>
+                                                                </div>
+                                                            </div>
+                                                            <div class="modal-footer">
+                                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
+                                                                <button type="submit" class="btn btn-primary">Simpan</button>
+                                                            </div>
+                                                        </form>
+                                                    </div>
+                                                </div>
+                                            </div>
                                         @endforeach
                                     </tbody>
                                 </table>
                             </div>
                             <div class="m-3">
-                                <button type="submit" class="btn bg-gradient-success" id="submitButton" style="display: none;">Selesaikan Tugas</button>
+                                <button type="submit" class="btn bg-gradient-success" id="submitButton" style="display: none;">
+                                    Selesaikan Tugas
+                                </button>
                             </div>
                         </form>
                         <div class="mx-5 my-2">
@@ -83,7 +142,6 @@
         </div>
     </div>
 
-    <!-- Modal Tambah Todo -->
     <div class="modal fade" id="addTodoModal" tabindex="-1" aria-labelledby="addTodoModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -119,7 +177,6 @@
             </div>
         </div>
     </div>
-
     @push('scripts')
     <script>
         document.addEventListener('DOMContentLoaded', function() {
@@ -128,14 +185,40 @@
 
             checkboxes.forEach(checkbox => {
                 checkbox.addEventListener('change', function() {
-                    // Cek apakah ada checkbox yang dicentang
                     const isAnyChecked = Array.from(checkboxes).some(cb => cb.checked);
-                    
-                    // Tampilkan atau sembunyikan tombol submit
                     submitButton.style.display = isAnyChecked ? 'block' : 'none';
                 });
             });
         });
+
+        // SweetAlert2 Notifications
+        @if(Session::has('status'))
+            Swal.fire({
+                icon: '{{ Session::get("status") }}',
+                title: '{{ Session::get("status") == "success" ? "Berhasil!" : "Oops..." }}',
+                text: '{{ Session::get("message") }}',
+                showConfirmButton: false,
+                timer: 3000
+            });
+        @endif
+
+        // Function untuk konfirmasi delete
+        function confirmDelete(id) {
+            Swal.fire({
+                title: 'Apakah Anda yakin?',
+                text: "Data yang dihapus tidak dapat dikembalikan!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Ya, hapus!',
+                cancelButtonText: 'Batal'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    document.getElementById('delete-form-' + id).submit();
+                }
+            });
+        }
     </script>
     @endpush
 

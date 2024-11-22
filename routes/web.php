@@ -46,8 +46,7 @@ Route::middleware('auth')->group(function () {
 
     // Routes untuk todolist (bisa diakses admin dan semua petugas)
     Route::middleware(['can.access.todolist'])->group(function() {
-        Route::get('/todolist', [TodoListController::class, 'index'])->name('todolist.index');
-        Route::post('/todolist', [TodoListController::class, 'store'])->name('todolist.store');
+        Route::resource('todolist', TodoListController::class);
         Route::post('/todolist/update-status', [TodoListController::class, 'updateStatus'])->name('todolist.updateStatus');
     });
 

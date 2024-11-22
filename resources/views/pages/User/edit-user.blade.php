@@ -37,7 +37,7 @@
                                 <label for="password" class="form-label">Password (leave blank if not changing)</label>
                                 <input type="password" class="form-control" id="password" name="password">
                             </div>
-                            <button type="submit" class="btn btn-success">Simpan Perubahan</button>
+                            <button type="submit" class="btn btn-success">Simpan</button>
                         </form>
                     </div>
                 </div>
