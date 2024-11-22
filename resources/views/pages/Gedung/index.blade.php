@@ -92,15 +92,15 @@
 
     @push('scripts')
     <script>
-        // Handle session success message with SweetAlert
-        @if(Session::has('success'))
-            Swal.fire({
-                icon: 'success',
-                title: 'Berhasil!',
-                text: '{{ Session::get('success') }}',
-                showConfirmButton: false,
-                timer: 3000
-            });
+        // Show SweetAlert for flash messages
+        @if(Session::has('status'))
+                Swal.fire({
+                    icon: '{{ Session::get("status") }}',
+                    title: '{{ Session::get("status") == "success" ? "Berhasil!" : "Oops..." }}',
+                    text: '{{ Session::get("message") }}',
+                    showConfirmButton: false,
+                    timer: 3000
+                });
         @endif
         
         function deleteGedung(id) {

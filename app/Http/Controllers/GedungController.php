@@ -57,11 +57,16 @@ class GedungController extends Controller
                 $validated['gambar'] = $path;
             }
 
-            Gedung::create($validated);
+            $gedung = Gedung::create($validated);
 
-            session()->flash('status', 'success');
-            session()->flash('message', 'Gedung berhasil ditambahkan!');
-
+            if ($gedung) {
+                session()->flash('status', 'success');
+                session()->flash('message', 'Gedung berhasil ditambahkan!');
+            }
+            else {
+                session()->flash('status', 'success');
+                session()->flash('message', 'Gedung menambahkan gedung, Silakan coba lagi.');
+            }
             return redirect()->route('gedung.index');
 
         } catch (\Exception $e) {
@@ -132,10 +137,15 @@ class GedungController extends Controller
                 }
             }
     
-            $gedung->update($validated);
+            $updated = $gedung->update($validated);
     
-            session()->flash('status', 'success');
-            session()->flash('message', 'Gedung berhasil diperbarui!');
+            if ($updated) {
+                session()->flash('status', 'success');
+                session()->flash('message', 'Gedung berhasil diperbarui.');
+            } else {
+                session()->flash('status', 'error');
+                session()->flash('message', 'Gagal memperbarui gedung. Silakan coba lagi.');
+            }
     
             return redirect()->route('gedung.index');
     

@@ -40,7 +40,7 @@
                                 <div class="mb-3">
                                     <label for="tahun_perolehan" class="form-label text-sm required-label">Tahun Perolehan</label>
                                     <input type="number" class="form-control @error('tahun_perolehan') is-invalid @enderror" 
-                                           name="tahun_perolehan" id="tahun_perolehan" min="1900" max="{{ date('Y') }}" 
+                                           name="tahun_perolehan" id="tahun_perolehan" min="1950" max="{{ date('Y') }}" 
                                            value="{{ old('tahun_perolehan') }}" required>
                                     @error('tahun_perolehan')
                                         <div class="invalid-feedback">{{ $message }}</div>

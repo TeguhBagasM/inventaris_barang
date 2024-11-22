@@ -84,19 +84,6 @@ class KategoriController extends Controller
             'nama' => 'required',
         ]);
 
-        $newName = null; // inisialisasi $newName untuk penanganan gambar
-
-        // // Proses upload gambar
-        // if ($request->hasFile('image') && $request->file('image')->isValid()) {
-        //     $newName = $request->nama . '-' . now()->timestamp . '.' . $request->file('image')->getClientOriginalExtension();
-        //     $request->file('image')->storeAs('public/images', $newName);
-
-        //     // Hapus gambar lama jika ada
-        //     if ($lokasi->gambar && Storage::exists('public/images/' . $lokasi->gambar)) {
-        //         Storage::delete('public/images/' . $lokasi->gambar);
-        //     }
-        // }
-
         $updated = $kategori->update([
             'nama' => $request->nama,
         ]);
