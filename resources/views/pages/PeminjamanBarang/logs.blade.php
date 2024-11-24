@@ -13,7 +13,10 @@
                                 <a href="{{ route('scan-qr') }}" class="mt-2 text-white btn bg-gradient-info me-2">
                                     <i class="fas fa-qrcode me-2"></i> Scan QR
                                 </a>
-                                <a href="{{ route('peminjaman.cetak') }}" class="mt-2 text-white btn bg-gradient-success" target="_blank">Cetak</a>
+                                <a href="{{ route('admin.pinjam') }}" class="mt-2 text-white btn bg-gradient-success me-2">
+                                    <i class="fas fa-plus me-2"></i> Tambah
+                                </a>
+                                <a href="{{ route('peminjaman.cetak') }}" class="mt-2 text-white btn bg-info" target="_blank"><i class="fas fa-print me-2"></i>Cetak</a>
                             </div>
                         </div>
                         <hr class="bg-dark px-auto">

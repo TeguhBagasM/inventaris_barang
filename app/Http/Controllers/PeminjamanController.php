@@ -6,6 +6,7 @@ use Carbon\Carbon;
 use App\Models\Barang;
 use Illuminate\Http\Request;
 use App\Models\DetailPeminjaman;
+use App\Models\User;
 use Barryvdh\DomPDF\Facade\Pdf;
 // use SimpleSoftwareIO\QrCode\Facades\QrCode;
 use Endroid\QrCode\QrCode;
@@ -24,10 +25,58 @@ class PeminjamanController extends Controller
         $barangs = Barang::get();
         return view('pages.PeminjamanBarang.peminjaman', compact('title', 'barangs'));
     }
+    public function indexAdmin()
+    {
+        $title = 'Peminjaman Barang';
+        $barangs = Barang::all();
+        $users = User::whereIn('level', ['siswa', 'guru'])->get();
+        return view('pages.PeminjamanBarang.admin-pinjam', compact('barangs', 'users', 'title'));
+    }
+    public function pinjamAdmin(Request $request)
+    {
+        $barangValidate = Barang::findOrFail($request->barang_id);
+        $user = User::findOrFail($request->user_id);
+
+        // Validasi input
+        $validatedData = $request->validate([
+            'user_id' => 'required|exists:users,id',
+            'keluar' => 'required|date',
+            'jumlah' => [
+                'required',
+                'integer',
+                'min:1',
+                'max:' . $barangValidate->stok,
+            ],
+            'barang_id' => 'required|exists:barangs,id',
+        ]);
+
+        // Simpan detail peminjaman
+        $detailPeminjaman = new DetailPeminjaman();
+        $detailPeminjaman->user_id = $validatedData['user_id'];
+        $detailPeminjaman->keluar = $validatedData['keluar'];
+        $detailPeminjaman->jumlah = $validatedData['jumlah'];
+        $detailPeminjaman->barang_id = $validatedData['barang_id'];
+        $detailPeminjaman->save();
+
+        // Kurangi stok barang
+        $barang = Barang::find($validatedData['barang_id']);
+        if ($barang) {
+            $barang->stok -= $validatedData['jumlah'];
+            $barang->save();
+        }
+
+        if ($barang && $detailPeminjaman) {
+            session()->flash('status', 'success');
+            session()->flash('message', 'Berhasil Meminjam Barang.');
+        } else {
+            session()->flash('status', 'error');
+            session()->flash('message', 'Gagal Meminjam.');
+        }
+
+        return redirect()->route('log.peminjaman');
+    }
     public function pinjam(Request $request)
     {
-        // dd($request);
-        // Cari barang berdasarkan ID atau kembalikan error 404 jika tidak ditemukan
         $barangValidate = Barang::findOrFail($request->barang_id);
 
         // Validasi input
@@ -69,7 +118,7 @@ class PeminjamanController extends Controller
         }
 
         // Redirect atau tampilkan pesan berhasil
-        return redirect('/peminjaman');
+        return redirect('log.peminjaman');
     }
 
     public function detail()
