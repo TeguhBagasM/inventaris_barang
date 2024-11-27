@@ -57,7 +57,7 @@
                                     <label for="jumlah" class="form-label">Jumlah</label>
                                     <input type="number" class="form-control" min="1" id="jumlah" name="jumlah" required>
                                 </div>
-                                <div class="col-md-4 mb-3 align-self-end">
+                                <div class="col-md-4 align-self-end">
                                     <button type="button" id="tambahBarang" class="btn btn-success">
                                         <i class="fas fa-plus"></i> Tambah Barang
                                     </button>
@@ -104,77 +104,128 @@
             let barangDipinjam = [];
 
             $('#tambahBarang').click(function() {
-                const barangId = $('#barang_id').val();
-                const jumlah = $('#jumlah').val();
-                const barangNama = $('#barang_id option:selected').data('nama');
+                        const barangId = $('#barang_id').val();
+                        const jumlah = parseInt($('#jumlah').val());
+                        const stokBarang = parseInt($('#barang_id option:selected').data('stok'));
+                        const barangNama = $('#barang_id option:selected').data('nama');
 
-                if (!barangId || !jumlah || jumlah <= 0) {
-                    alert('Pilih barang dan masukkan jumlah yang valid.');
-                    return;
-                }
-
-                const exists = barangDipinjam.find(b => b.barang_id === barangId);
-                if (exists) {
-                    alert('Barang sudah ada di daftar peminjaman.');
-                    return;
-                }
-
-                barangDipinjam.push({ barang_id: barangId, jumlah: parseInt(jumlah) });
-
-                updateBarangTable();
-
-                $('#barang_id').val('').trigger('change');
-                $('#jumlah').val('');
-                $('#submitPeminjaman').prop('disabled', false);
-            });
-
-            $(document).on('click', '.hapus-barang', function() {
-                const barangId = $(this).data('id');
-                barangDipinjam = barangDipinjam.filter(b => b.barang_id != barangId);
-                updateBarangTable();
-
-                if (barangDipinjam.length === 0) {
-                    $('#submitPeminjaman').prop('disabled', true);
-                }
-            });
-
-            function updateBarangTable() {
-                const tableBody = $('#barangDipinjamBody');
-                tableBody.empty();
-                barangDipinjam.forEach(barang => {
-                    tableBody.append(`
-                        <tr>
-                            <td>${$('#barang_id option[value="' + barang.barang_id + '"]').data('nama')}</td>
-                            <td>${barang.jumlah}</td>
-                            <td>
-                                <button type="button" class="btn btn-danger btn-sm hapus-barang" data-id="${barang.barang_id}">
-                                    <i class="fas fa-trash"></i> Hapus
-                                </button>
-                            </td>
-                        </tr>
-                    `);
-                });
-            }
-
-            $('#submitPeminjaman').click(function() {
-                $.ajax({
-                    url: '{{ route("pinjam") }}',
-                    method: 'POST',
-                    data: {
-                        _token: $('input[name="_token"]').val(),
-                        user_id: $('input[name="user_id"]').val(),
-                        tanggal_peminjaman: $('#tanggal_peminjaman').val(),
-                        barangs: barangDipinjam
-                    },
-                    success: function(response) {
-                        alert(response.message);
-                        location.reload();
-                    },
-                    error: function(xhr) {
-                        alert('Gagal: ' + xhr.responseJSON.message);
+        
+                        if (!barangId || !jumlah || jumlah <= 0) {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Oops...',
+                                text: 'Pilih barang dan masukkan jumlah yang valid.',
+                            });
+                            return;
+                        }
+                        if (jumlah > stokBarang) {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Oops...',
+                                text: `Jumlah barang "${barangNama}" melebihi stok tersedia (${stokBarang}).`,
+                            });
+                            return;
+                        }                               
+        
+                        const exists = barangDipinjam.find(b => b.barang_id === barangId);
+                        if (exists) {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Oops...',
+                                text: 'Barang sudah ada di daftar peminjaman.',
+                            });
+                            return;
+                        }
+        
+                        barangDipinjam.push({ barang_id: barangId, jumlah: parseInt(jumlah) });
+        
+                        updateBarangTable();
+        
+                        $('#barang_id').val('').trigger('change');
+                        $('#jumlah').val('');
+                        $('#submitPeminjaman').prop('disabled', false);
+                    });
+        
+                    $(document).on('click', '.hapus-barang', function() {
+                        const barangId = $(this).data('id');
+                        barangDipinjam = barangDipinjam.filter(b => b.barang_id != barangId);
+                        updateBarangTable();
+        
+                        if (barangDipinjam.length === 0) {
+                            $('#submitPeminjaman').prop('disabled', true);
+                        }
+                    });
+        
+                    function updateBarangTable() {
+                        const tableBody = $('#barangDipinjamBody');
+                        tableBody.empty();
+                        barangDipinjam.forEach(barang => {
+                            tableBody.append(`
+                                <tr>
+                                    <td>${$('#barang_id option[value="' + barang.barang_id + '"]').data('nama')}</td>
+                                    <td>${barang.jumlah}</td>
+                                    <td>
+                                        <button type="button" class="btn btn-danger btn-sm hapus-barang" data-id="${barang.barang_id}">
+                                            <i class="fas fa-trash" style="font-size: 14px;"></i> Hapus
+                                        </button>
+                                    </td>
+                                </tr>
+                            `);
+                        });
                     }
-                });
-            });
+        
+                    $('#submitPeminjaman').click(function() {
+                        $.ajax({
+                            url: '{{ route("pinjam") }}',
+                            method: 'POST',
+                            data: {
+                                _token: $('input[name="_token"]').val(),
+                                user_id: $('input[name="user_id"]').val(),
+                                tanggal_peminjaman: $('#tanggal_peminjaman').val(),
+                                barangs: barangDipinjam
+                            },
+                            success: function(response) {
+                                Swal.fire({
+                                    icon: 'success',
+                                    title: 'Berhasil!',
+                                    text: response.message,
+                                });
+                                location.reload();
+                            },
+                            error: function(xhr) {
+                                // Handle validation errors
+                                if (xhr.status === 422) {
+                                    let errorMessage = xhr.responseJSON.message;
+                                    let detailedErrors = '';
+                                    
+                                    // Jika ada errors spesifik
+                                    if (xhr.responseJSON.errors) {
+                                        if (Array.isArray(xhr.responseJSON.errors)) {
+                                            // Error stok barang
+                                            detailedErrors = xhr.responseJSON.errors.join('\n');
+                                        } else {
+                                            // Error validasi field
+                                            detailedErrors = Object.values(xhr.responseJSON.errors).flat().join('\n');
+                                        }
+                                    }
+
+                                    Swal.fire({
+                                        icon: 'error',
+                                        title: 'Gagal!',
+                                        text: errorMessage,
+                                        html: detailedErrors ? `<div class="text-left">${detailedErrors.replace(/\n/g, '<br>')}</div>` : ''
+                                    });
+                                } else {
+                                    // Error umum
+                                    Swal.fire({
+                                        icon: 'error',
+                                        title: 'Gagal!',
+                                        text: xhr.responseJSON.message || 'Terjadi kesalahan saat memproses peminjaman'
+                                    });
+                                }
+                            }
+                        });
+                    });
         });
     </script>
     @endpush

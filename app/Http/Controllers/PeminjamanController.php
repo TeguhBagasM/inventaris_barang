@@ -159,7 +159,6 @@ class PeminjamanController extends Controller
                     'integer', 
                     'min:1',
                     function($attribute, $value, $fail) {
-                        // Ekstrak barang_id dari attribut
                         preg_match('/barangs\.(\d+)\.jumlah/', $attribute, $matches);
                         $index = $matches[1];
                         $barangId = request('barangs')[$index]['barang_id'];
@@ -167,11 +166,30 @@ class PeminjamanController extends Controller
                         $barang = Barang::find($barangId);
                         
                         if ($value > $barang->stok) {
-                            $fail("Jumlah barang melebihi stok yang tersedia untuk barang {$barang->nama}");
+                            $fail("Stok barang {$barang->nama} tidak mencukupi. Tersedia: {$barang->stok}");
                         }
                     }
                 ],
+            ], [
+                // Custom error messages
+                'user_id.required' => 'Silakan pilih pengguna',
+                'user_id.exists' => 'Pengguna tidak valid',
+                'tanggal_peminjaman.required' => 'Tanggal peminjaman harus diisi',
+                'barangs.required' => 'Minimal satu barang harus dipilih',
             ]);
+    
+            // Validasi tambahan untuk user_id dan tanggal_peminjaman
+            if (empty($validatedData['user_id'])) {
+                return response()->json([
+                    'message' => 'Silakan pilih pengguna terlebih dahulu'
+                ], 422);
+            }
+    
+            if (empty($validatedData['tanggal_peminjaman'])) {
+                return response()->json([
+                    'message' => 'Tanggal peminjaman harus diisi'
+                ], 422);
+            }
     
             // Buat peminjaman utama
             $peminjaman = Peminjaman::create([
@@ -180,13 +198,14 @@ class PeminjamanController extends Controller
                 'status' => 'dipinjam',
             ]);
     
-            // Proses barang
-            $errors = [];
+            // Proses setiap barang
+            $errorMessages = [];
             foreach ($validatedData['barangs'] as $barangData) {
-                $barang = Barang::find($barangData['barang_id']);
-    
+                // Cek stok barang
+                $barang = Barang::findOrFail($barangData['barang_id']);
+                
                 if ($barangData['jumlah'] > $barang->stok) {
-                    $errors[] = "Stok barang {$barang->nama} tidak mencukupi";
+                    $errorMessages[] = "Stok barang {$barang->nama} tidak mencukupi. Tersedia: {$barang->stok}";
                     continue;
                 }
     
@@ -198,35 +217,37 @@ class PeminjamanController extends Controller
                     'peminjaman_id' => $peminjaman->id,
                     'barang_id' => $barangData['barang_id'],
                     'jumlah' => $barangData['jumlah'],
-                    'status' => 'dipinjam',
+                    'tanggal_pinjam' => $validatedData['tanggal_peminjaman'],
+                    'status' => 'dipinjam'
                 ]);
             }
     
-            // Jika ada error stok
-            if (!empty($errors)) {
+            // Jika ada error pada stok
+            if (!empty($errorMessages)) {
                 DB::rollBack();
-    
-                // Set session flash error dan redirect kembali ke halaman sebelumnya
-                session()->flash('status', 'error');
-                session()->flash('message', implode(' | ', $errors));
-    
-                return redirect()->back();
+                return response()->json([
+                    'message' => 'Beberapa barang tidak dapat dipinjam',
+                    'errors' => $errorMessages
+                ], 422);
             }
     
             DB::commit();
-            session()->flash('status', 'success');
-            session()->flash('message', 'Berhasil meminjam barang');
     
-            return redirect()->route('log.peminjaman');
+            return response()->json([
+                'message' => 'Berhasil Meminjam Barang'
+            ], 200);
     
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            DB::rollBack();
+            return response()->json([
+                'message' => 'Validasi gagal',
+                'errors' => $e->errors()
+            ], 422);
         } catch (\Exception $e) {
             DB::rollBack();
-    
-            // Set session flash error dan redirect kembali ke halaman sebelumnya
-            session()->flash('status', 'error');
-            session()->flash('message', $e->getMessage());
-    
-            return redirect()->route('log.peminjaman');
+            return response()->json([
+                'message' => $e->getMessage()
+            ], 500);
         }
     }
     

@@ -63,7 +63,7 @@
                                             <label for="jumlah" class="form-label">Jumlah</label>
                                             <input type="number" class="form-control" min="1" id="jumlah" max="{{ $barang->stok }}" name="jumlah" required>
                                         </div>
-                                        <div class="col-md-4 mt-3 align-self-end">
+                                        <div class="col-md-4 align-self-end">
                                             <button type="button" id="tambahBarang" class="btn btn-success">
                                                 <i class="fas fa-plus"></i> Tambah Barang
                                             </button>
