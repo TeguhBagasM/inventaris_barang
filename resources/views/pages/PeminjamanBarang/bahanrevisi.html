@@ -1,6 +1,22 @@
 @extends('index') @section('content')
 <div class="container-fluid py-4">
     <div class="row">
+        <div class="col-md-6 mb-3">
+            <label for="user_id" class="form-label">Pilih Peminjam</label>
+            <select
+                class="form-select select2-users"
+                id="user_id"
+                name="user_id"
+                required
+            >
+                <option value="">Pilih Peminjam</option>
+                @foreach ($users as $user)
+                <option value="{{ $user->id }}">
+                    {{ $user->name }} - {{ ucfirst($user->level) }}
+                </option>
+                @endforeach
+            </select>
+        </div>
         <div class="col-12">
             <div class="card mb-4 p-4">
                 <div class="card-header pb-0">

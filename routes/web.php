@@ -61,7 +61,7 @@ Route::middleware('auth')->group(function () {
         Route::post('gedung/{gedung}/tambah-ruang', [RuangController::class, 'storeFromGedung'])->name('ruang.store-from-gedung');
         Route::resource('kategori', KategoriController::class);
         Route::get('/admin-peminjam', [PeminjamanController::class, 'indexAdmin'])->name('admin.pinjam');
-        Route::post('/admin-pinjam', [PeminjamanController::class, 'pinjamAdmin']);
+        Route::post('/admin-pinjam', [PeminjamanController::class, 'pinjamAdmin'])->name('admin-pinjam');
     });
 
     // Routes khusus guru
