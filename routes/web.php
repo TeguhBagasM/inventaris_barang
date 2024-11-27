@@ -39,7 +39,7 @@ Route::middleware('auth')->group(function () {
         Route::get('/pengembalian/{id}/form', [PeminjamanController::class, 'showPengembalianForm'])->name('pengembalian.form');
         Route::post('/pengembalian/{id}/process', [PeminjamanController::class, 'processPengembalian'])->name('pengembalian.process');
         Route::get('/cetak-logs', [PeminjamanController::class, 'cetak'])->name('peminjaman.cetak');
-        Route::get('/cetak-bukti', [PeminjamanController::class, 'cetakBukti'])->name('cetak.bukti');
+        Route::get('/cetak-bukti/{id}', [PeminjamanController::class, 'cetakBukti'])->name('cetak.bukti');
         Route::get('/scan-qr', [PeminjamanController::class, 'scanQR'])->name('scan-qr');
         Route::post('/process-qr', [PeminjamanController::class, 'processQR'])->name('process-qr');
     });
@@ -74,7 +74,7 @@ Route::middleware('auth')->group(function () {
     Route::middleware(['can.access.pinjam'])->group(function() {
         Route::get('/peminjaman', [PeminjamanController::class, 'index']);
         Route::get('/detailPeminjaman', [PeminjamanController::class, 'detail']);
-        Route::post('/pinjam', [PeminjamanController::class, 'pinjam']);
+        Route::post('/pinjam', [PeminjamanController::class, 'pinjam'])->name('pinjam');
     });
 
     // Routes untuk manajemen profil

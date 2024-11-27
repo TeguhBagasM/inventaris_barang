@@ -59,66 +59,35 @@
                             <table class="table table-striped align-items-center mb-0">
                                 <thead>
                                     <tr class="text-center">
-                                        <th class="text-uppercase text-dark text-sm font-weight-bolder">No</th>
-                                        <th class="text-uppercase text-dark text-sm font-weight-bolder">Peminjam</th>
-                                        <th class="text-uppercase text-dark text-sm font-weight-bolder">Barang</th>
-                                        <th class="text-uppercase text-dark text-sm font-weight-bolder">Jumlah
-                                        </th>
-                                        <th class="text-uppercase text-dark text-sm font-weight-bolder">Tanggal Di Pinjam
-                                        </th>
-                                        <th class="text-uppercase text-dark text-sm font-weight-bolder">Status
-                                        </th>
-                                        <th class="text-uppercase text-dark text-sm font-weight-bolder">Aksi
-                                        </th>
+                                        <th>No</th>
+                                        <th>Peminjam</th>
+                                        <th>Jumlah Barang</th>
+                                        <th>Tanggal Pinjam</th>
+                                        <th>Status</th>
+                                        <th>Aksi</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     @foreach ($logs as $log)
-                                        <tr class="ps-2">
+                                        <tr>
+                                            <td>{{ $loop->iteration }}</td>
+                                            <td>{{ $log->user->name }}</td>
+                                            <td>{{ $log->total_jumlah }}</td>                                        
+                                            <td>{{ \Carbon\Carbon::parse($log->tanggal_peminjaman)->translatedFormat('l, d M Y') }}</td>
                                             <td>
-                                                <div class="d-flex px-2 py-1">
-                                                    <h6 class="ps-2 text-secondary text-sm font-weight-bold">
-                                                        {{ $loop->iteration }}</h6>
-                                                </div>
-                                            </td>
-                                            <td>
-                                                <div class="d-flex px-2 py-1">
-                                                    <h6 class="text-secondary text-sm font-weight-bold ps-2">
-                                                        {{ $log->user->name }}</h6>
-                                                </div>
-                                            </td>
-                                            <td>
-                                                <div class="d-flex px-2 py-1">
-                                                    <h6 class="text-secondary text-sm font-weight-bold ps-2">
-                                                        {{ $log->barang->nama }}</h6>
-                                                </div>
-                                            </td>
-                                            <td>
-                                                <div class="d-flex px-2 py-1">
-                                                    <h6 class="text-secondary text-sm font-weight-bold ps-2">
-                                                        {{ $log->jumlah }}</h6>
-                                                </div>
-                                            </td>
-                                            <td>
-                                                <div class="d-flex px-2 py-1">
-                                                    <h6 class="text-secondary text-sm font-weight-bold ps-2">
-                                                        {{ \Carbon\Carbon::parse($log->keluar)->translatedFormat('l, d M Y') }}</h6>
-                                                </div>
-                                            </td>
-                                            <td>
-                                                <div class="d-flex px-2 py-1">
-                                                    <h6 class="text-secondary text-sm font-weight-bold ps-2 {{ !$log->masuk ? 'bg-danger badge font-weight-bold py-1 px-2 text-white' : '' }}">
-                                                        {{ $log->masuk ? \Carbon\Carbon::parse($log->masuk)->translatedFormat('l, d M Y') : 'Belum dikembalikan' }}
-                                                    </h6>
-                                                </div>
-                                            </td>
-                                            <td class="align-middle">
-                                                @if (!$log->masuk)
-                                                    <a href="{{ route('pengembalian.form', $log->id) }}" class="btn bg-gradient-warning btn-sm">
-                                                        Kembalikan
-                                                    </a>
+                                                @if ($log->status == 'selesai')
+                                                    <span class="badge bg-success">Dikembalikan</span>
+                                                @else
+                                                    <span class="badge bg-warning">Belum Dikembalikan</span>
                                                 @endif
-                                                <a href="{{ route('cetak.bukti', ['id' => $log->id]) }}" class="text-white btn btn-info py-2 px-3" target="_blank">Cetak</a>
+                                            </td>
+                                            <td>
+                                                @if ($log->status == 'dipinjam')
+                                                <a href="{{ route('pengembalian.form', $log->id) }}"
+                                                   class="btn bg-gradient-warning btn-sm">Kembalikan</a>
+                                                @endif
+                                                <a href="{{ route('cetak.bukti', ['id' => $log->id]) }}"
+                                                   class="text-white btn btn-info btn-sm" target="_blank">Cetak</a>
                                             </td>
                                         </tr>
                                     @endforeach

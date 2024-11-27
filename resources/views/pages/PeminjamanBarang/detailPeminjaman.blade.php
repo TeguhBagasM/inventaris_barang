@@ -59,7 +59,7 @@
                                                 <td>
                                                     <div class="d-flex px-2 py-1">
                                                         <h6 class="text-secondary text-sm font-weight-bold ps-2">
-                                                            {{ \Carbon\Carbon::parse($detail->keluar)->translatedFormat('l, d F Y') }}
+                                                            {{ \Carbon\Carbon::parse($detail->tanggal_dipinjam)->translatedFormat('l, d F Y') }}
                                                         </h6>
                                                     </div>
                                                 </td>

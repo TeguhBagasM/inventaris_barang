@@ -14,38 +14,23 @@ class DetailPeminjaman extends Model
      *
      * @var array
      */
+    protected $table = 'detail_peminjamans';
 
-    protected $table = 'detail_peminjaman';
     protected $fillable = [
-        'barang_id',
-        'peminjaman_id',
-        'user_id',
-        'jumlah',
-        'tanggal_pinjam',
-        'tanggal_kembali',
+        'peminjaman_id', 
+        'barang_id', 
+        'jumlah', 
+        'tanggal_kembali', 
+        'status'
     ];
 
-    /**
-     * Get the barang associated with the detail peminjaman.
-     */
+    public function peminjaman()
+    {
+        return $this->belongsTo(Peminjaman::class);
+    }
+
     public function barang()
     {
         return $this->belongsTo(Barang::class);
-    }
-
-    /**
-     * Get the peminjaman associated with the detail peminjaman.
-     */
-    public function peminjaman()
-    {
-        return $this->belongsTo(DetailPeminjaman::class);
-    }
-
-    /**
-     * Get the user associated with the detail peminjaman.
-     */
-    public function user()
-    {
-        return $this->belongsTo(User::class);
     }
 }

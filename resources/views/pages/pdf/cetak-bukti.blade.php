@@ -74,6 +74,15 @@
             padding: 6px 0;
             vertical-align: top;
         }
+
+        .table-details {
+            flex: 1;
+            max-width: 55%;
+            margin-top: 6px;
+        }
+        .table-details table {
+            width: 100%;
+        }
         
         /* Mengatur QR code container */
         .qr-container {
@@ -147,28 +156,32 @@
             <table>
                 <tr>
                     <td width="140">Tanggal Peminjaman</td>
-                    <td>: {{ \Carbon\Carbon::parse($peminjaman->keluar)->format('d/m/Y') }}</td>
+                    <td>: {{ \Carbon\Carbon::parse($peminjaman->tanggal_pinjam)->format('d/m/Y') }}</td>
                 </tr>
                 <tr>
                     <td>Nama Peminjam</td>
                     <td>: {{ $peminjaman->user->name }}</td>
                 </tr>
-                <tr>
-                    <td>Barang yang Dipinjam</td>
-                    <td>: {{ $peminjaman->barang->nama }}</td>
-                </tr>
-                <tr>
-                    <td>Jumlah</td>
-                    <td>: {{ $peminjaman->jumlah }} unit</td>
-                </tr>
-                @if($peminjaman->masuk)
-                <tr>
-                    <td>Tanggal Pengembalian</td>
-                    <td>: {{ \Carbon\Carbon::parse($peminjaman->masuk)->format('d/m/Y') }}</td>
-                </tr>
-                @endif
             </table>
         </div>
+        <div class="table-details">
+            <table border="1" cellspacing="0" cellpadding="6">
+                <thead>
+                <tr>
+                    <th>Nama Barang</th>
+                    <th>Jumlah</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach($peminjaman->detailPeminjamans as $detail)
+                <tr align="center">
+                    <td>{{ $detail->barang->nama }}</td>
+                    <td>{{ $detail->jumlah }}</td>
+                </tr>
+                @endforeach
+            </tbody>
+        </table>
+    </div>
 
         <div class="qr-container">
             <img src="data:image/png;base64,{{ $qrcode }}" alt="QR Code">
