@@ -14,7 +14,7 @@
                                     <i class="fas fa-qrcode me-2"></i> Scan QR
                                 </a>
                                 <a href="{{ route('admin.pinjam') }}" class="mt-2 text-white btn bg-gradient-success me-2">
-                                    <i class="fas fa-plus me-2"></i> Tambah
+                                    <i class="fas fa-plus me-2"></i> Peminjam
                                 </a>
                                 <a href="{{ route('peminjaman.cetak') }}" class="mt-2 text-white btn bg-info" target="_blank"><i class="fas fa-print me-2"></i>Cetak</a>
                             </div>
