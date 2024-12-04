@@ -106,13 +106,17 @@
             </tr>
         </thead>
         <tbody>
-            @foreach($peminjaman as $item)
+            @foreach($peminjaman as $pinjam)
             <tr>
-                <td>{{ $item->user->name }}</td>
-                <td>{{ $item->barang->nama }}</td>
-                <td>{{ $item->jumlah }}</td>
-                <td>{{ \Carbon\Carbon::parse($item->keluar)->translatedFormat('l, d F') }}</td>
-                <td>{{ $item->masuk ? \Carbon\Carbon::parse($item->masuk)->translatedFormat('l, d F') : 'Belum dikembalikan' }}</td>
+                <td>{{ $pinjam->user->name }}</td>
+                <td>
+                    @foreach($pinjam->detailPeminjamans as $detail)
+                        {{ $detail->barang->nama }}<br>
+                    @endforeach
+            </td>
+                <td>{{ $detail->jumlah }}</td>
+                <td>{{ \Carbon\Carbon::parse($pinjam->tanggal_peminjaman)->translatedFormat('l, d F') }}</td>
+                <td>{{ $pinjam->status }}</td>
             </tr>
             @endforeach
         </tbody>

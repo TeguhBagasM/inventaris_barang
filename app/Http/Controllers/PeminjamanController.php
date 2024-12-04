@@ -264,11 +264,11 @@ class PeminjamanController extends Controller
 
     public function cetak()
     {
-        $peminjaman = DetailPeminjaman::all();
-        $barangs = Barang::get();
+        $peminjaman = Peminjaman::with(['user', 'detailPeminjamans.barang'])
+            ->get();
+        
         $pdf = Pdf::loadView('pages.pdf.cetak-peminjaman', [
-            'peminjaman' => $peminjaman,
-            'barangs' => $barangs
+            'peminjaman' => $peminjaman
         ]);
         return $pdf->stream('laporan-peminjaman-'.date('Y-m-d').'.pdf');
     }

@@ -191,22 +191,22 @@
             const checkboxes = document.querySelectorAll('.todo-checkbox');
             const submitButton = document.getElementById('submitButton');
     
-            // Form submit validation
-            todoForm.addEventListener('submit', function(e) {
-                e.preventDefault();
+            // // Form submit validation
+            // todoForm.addEventListener('submit', function(e) {
+            //     e.preventDefault();
                 
-                const checkedBoxes = Array.from(checkboxes).filter(cb => cb.checked);
-                if (checkedBoxes.length === 0) {
-                    Swal.fire({
-                        icon: 'error',
-                        title: 'Oops...',
-                        text: 'Pilih minimal satu tugas untuk diselesaikan',
-                    });
-                    return;
-                }
+            //     const checkedBoxes = Array.from(checkboxes).filter(cb => cb.checked);
+            //     if (checkedBoxes.length === 0) {
+            //         Swal.fire({
+            //             icon: 'error',
+            //             title: 'Oops...',
+            //             text: 'Pilih minimal satu tugas untuk diselesaikan',
+            //         });
+            //         return;
+            //     }
                 
-                this.submit();
-            });
+            //     this.submit();
+            // });
     
             // Checkbox change handler
             checkboxes.forEach(checkbox => {
