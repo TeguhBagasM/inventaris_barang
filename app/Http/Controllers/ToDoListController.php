@@ -48,12 +48,12 @@ class TodoListController extends Controller
             
             Log::info('Received todo_ids:', ['ids' => $todoIds]);
             
-            // if (empty($todoIds)) {
-            //     return redirect()->back()->with([
-            //         'status' => 'error',
-            //         'message' => 'Pilih minimal satu tugas untuk diselesaikan'
-            //     ]);
-            // }
+            if (empty($todoIds)) {
+                return redirect()->back()->with([
+                    'status' => 'error',
+                    'message' => 'Pilih minimal satu tugas untuk diselesaikan'
+                ]);
+            }
     
             // Validasi bahwa semua ID valid
             $todos = ToDoList::whereIn('id', $todoIds)->get();
