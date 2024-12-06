@@ -186,12 +186,10 @@
     @push('scripts')
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            // Form dan checkbox handling
             const todoForm = document.querySelector('form[action="{{ route("todolist.updateStatus") }}"]');
             const checkboxes = document.querySelectorAll('.todo-checkbox');
             const submitButton = document.getElementById('submitButton');
     
-            // Form submit validation
             todoForm.addEventListener('submit', function(e) {
                 e.preventDefault();
                 
@@ -208,7 +206,6 @@
                 this.submit();
             });
     
-            // Checkbox change handler
             checkboxes.forEach(checkbox => {
                 checkbox.addEventListener('change', function() {
                     const isAnyChecked = Array.from(checkboxes).some(cb => cb.checked);
@@ -217,7 +214,6 @@
             });
         });
     
-        // SweetAlert2 Notifications
         @if(Session::has('status'))
             Swal.fire({
                 icon: '{{ Session::get("status") }}',
@@ -227,7 +223,6 @@
                 timer: 3000
             });
         @endif
-        // Function untuk konfirmasi delete
         function confirmDelete(id) {
             Swal.fire({
                 title: 'Apakah Anda yakin?',

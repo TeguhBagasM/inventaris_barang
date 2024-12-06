@@ -55,7 +55,6 @@ class TodoListController extends Controller
                 ]);
             }
     
-            // Validasi bahwa semua ID valid
             $todos = ToDoList::whereIn('id', $todoIds)->get();
             if ($todos->count() !== count($todoIds)) {
                 return redirect()->back()->with([
