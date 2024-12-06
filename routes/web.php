@@ -15,25 +15,20 @@ use App\Http\Controllers\{
 };
 use Illuminate\Support\Facades\Route;
 
-// Route untuk halaman login
 Route::get('/', function () {
     return view('auth.login');
 })->middleware('guest');
 
-// Middleware untuk autentikasi pengguna
 Route::middleware('auth')->group(function () {
     
-    // Route dashboard
     Route::get('/dashboard', [ViewController::class, 'index'])->name('dashboard');
 
-    // Routes untuk barang (bisa diakses admin, petugas1, petugas3)
     Route::middleware(['can.access.barang'])->group(function() {
         Route::resource('barang', BarangController::class);
         Route::get('barang-data', [BarangController::class, 'getData'])->name('barang.data');
         Route::get('/cetak', [BarangController::class, 'cetak'])->name('barang.cetak');
     });
 
-    // Routes untuk log peminjaman (bisa diakses admin, petugas2)
     Route::middleware(['can.access.log'])->group(function() {
         Route::get('/log-peminjaman', [PeminjamanController::class, 'log'])->name('log.peminjaman');
         Route::get('/pengembalian/{id}/form', [PeminjamanController::class, 'showPengembalianForm'])->name('pengembalian.form');
@@ -44,15 +39,14 @@ Route::middleware('auth')->group(function () {
         Route::post('/process-qr', [PeminjamanController::class, 'processQR'])->name('process-qr');
     });
 
-    // Routes untuk todolist (bisa diakses admin dan semua petugas)
     Route::middleware(['can.access.todolist'])->group(function() {
-        Route::resource('todolist', TodoListController::class);
+        Route::get('todolist', [TodoListController::class, 'index'])->name('todolist.index');
+        Route::post('todolist', [TodoListController::class, 'store'])->name('todolist.store');
         Route::put('/todolist/{id}', [TodoListController::class, 'update'])->name('todolist.update');
         Route::delete('/todolist/{id}', [TodoListController::class, 'destroy'])->name('todolist.destroy');
         Route::post('/todolist/update-status', [TodoListController::class, 'updateStatus'])->name('todolist.updateStatus');
     });
 
-    // Routes khusus admin
     Route::middleware('admin')->group(function () {
         Route::resource('user', UserController::class);
         Route::resource('gedung', GedungController::class);
@@ -64,7 +58,6 @@ Route::middleware('auth')->group(function () {
         Route::post('/admin-pinjam', [PeminjamanController::class, 'pinjamAdmin'])->name('admin-pinjam');
     });
 
-    // Routes khusus guru
     Route::middleware('guru')->group(function() {
         Route::get('/permintaan', [PermintaanController::class, 'index']);
         Route::get('/detailPermintaan', [PermintaanController::class, 'detail']);
@@ -77,7 +70,6 @@ Route::middleware('auth')->group(function () {
         Route::post('/pinjam', [PeminjamanController::class, 'pinjam'])->name('pinjam');
     });
 
-    // Routes untuk manajemen profil
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
