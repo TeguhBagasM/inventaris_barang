@@ -13,11 +13,11 @@ class TodoListController extends Controller
     {
         $title = "Daftar Tugas";
         $todos = ToDoList::with('user')
+                    // ->where('judul', '!=', 'testing')
                     ->orderBy('created_at', 'desc')
                     ->paginate(10);
         return view('pages.todolist.index', compact('todos', 'title'));
     }
-
 
     public function store(Request $request) 
     {
