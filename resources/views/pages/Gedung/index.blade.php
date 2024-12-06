@@ -63,7 +63,7 @@
                                             <td class="align-middle">
                                                 <a href="{{ route('ruang.create-from-gedung', $gedung->id) }}" class="btn btn-sm bg-gradient-success"><i class="fa-solid fa-plus"></i> Ruangan</a>
                                                 <a href="{{ route('gedung.edit', $gedung->id) }}"
-                                                    class="btn btn-sm bg-gradient-warning"><i class="fa-solid fa-pencil" style="font-size: 14px"></i></a>
+                                                    class="btn bg-gradient-dark btn-sm"><i class="fa-solid fa-pencil" style="font-size: 14px"></i></a>
 
                                                 <form id="delete-form-{{ $gedung->id }}"
                                                     action="{{ route('gedung.destroy', $gedung->id) }}" method="POST"

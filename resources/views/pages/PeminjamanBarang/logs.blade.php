@@ -84,7 +84,7 @@
                                             <td>
                                                 @if ($log->status == 'dipinjam')
                                                 <a href="{{ route('pengembalian.form', $log->id) }}"
-                                                   class="btn bg-gradient-warning btn-sm">Kembalikan</a>
+                                                   class="btn bg-gradient-orange text-white btn-sm ps-3 pe-3">Kembalikan</a>
                                                 @endif
                                                 <a href="{{ route('cetak.bukti', ['id' => $log->id]) }}"
                                                    class="text-white btn btn-info btn-sm" target="_blank">Cetak</a>

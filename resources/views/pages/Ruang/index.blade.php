@@ -75,7 +75,7 @@
                                             </td>
                                             <td class="align-middle">
                                                 <a href="{{ route('ruang.edit', $ruang->id) }}"
-                                                    class="btn btn-sm bg-gradient-warning"><i class="fa-solid fa-pencil" style="font-size: 14px"></i></a>
+                                                    class="btn bg-gradient-dark btn-sm"><i class="fa-solid fa-pencil" style="font-size: 14px"></i></a>
 
                                                 <button type="button" 
                                                     class="btn btn-sm bg-gradient-danger"

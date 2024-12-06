@@ -45,7 +45,7 @@
                                             </td>
                                             <td class="align-middle">
                                                 <a href="{{ route('kategori.edit', $k->id) }}"
-                                                    class="btn btn-sm bg-gradient-warning"><i class="fa-solid fa-pencil" style="font-size: 14px"></i>
+                                                    class="btn bg-gradient-dark btn-sm"><i class="fa-solid fa-pencil" style="font-size: 14px"></i>
                                                 </a>
                                                 <button type="button" 
                                                     class="btn btn-sm bg-gradient-danger"

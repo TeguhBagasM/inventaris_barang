@@ -59,7 +59,7 @@
                                             </td>
                                             <td class="align-middle">
                                                 <a href="{{ route('user.edit', $user->id) }}"
-                                                    class="btn btn-sm bg-gradient-warning">
+                                                    class="btn bg-gradient-dark btn-sm">
                                                     <i class="fa-solid fa-pencil" style="font-size: 14px"></i>
                                                 </a>
 
