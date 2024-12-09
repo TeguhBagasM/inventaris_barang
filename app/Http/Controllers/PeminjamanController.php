@@ -41,7 +41,6 @@ class PeminjamanController extends Controller
     {
         DB::beginTransaction();
         try {
-            // Validasi input
             $validatedData = $request->validate([
                 'user_id' => 'required|exists:users,id',
                 'tanggal_peminjaman' => 'required|date',
@@ -64,14 +63,12 @@ class PeminjamanController extends Controller
                     }
                 ],
             ], [
-                // Custom error messages
                 'user_id.required' => 'Silakan pilih pengguna',
                 'user_id.exists' => 'Pengguna tidak valid',
                 'tanggal_peminjaman.required' => 'Tanggal peminjaman harus diisi',
                 'barangs.required' => 'Minimal satu barang harus dipilih',
             ]);
     
-            // Validasi tambahan untuk user_id dan tanggal_peminjaman
             if (empty($validatedData['user_id'])) {
                 return response()->json([
                     'message' => 'Silakan pilih pengguna terlebih dahulu'
@@ -84,17 +81,14 @@ class PeminjamanController extends Controller
                 ], 422);
             }
     
-            // Buat peminjaman utama
             $peminjaman = Peminjaman::create([
                 'user_id' => $validatedData['user_id'],
                 'tanggal_peminjaman' => $validatedData['tanggal_peminjaman'],
                 'status' => 'dipinjam'
             ]);
     
-            // Proses setiap barang
             $errorMessages = [];
             foreach ($validatedData['barangs'] as $barangData) {
-                // Cek stok barang
                 $barang = Barang::findOrFail($barangData['barang_id']);
                 
                 if ($barangData['jumlah'] > $barang->stok) {
@@ -102,10 +96,8 @@ class PeminjamanController extends Controller
                     continue;
                 }
     
-                // Kurangi stok barang
                 $barang->decrement('stok', $barangData['jumlah']);
     
-                // Buat detail peminjaman
                 DetailPeminjaman::create([
                     'peminjaman_id' => $peminjaman->id,
                     'barang_id' => $barangData['barang_id'],
@@ -115,7 +107,6 @@ class PeminjamanController extends Controller
                 ]);
             }
     
-            // Jika ada error pada stok
             if (!empty($errorMessages)) {
                 DB::rollBack();
                 return response()->json([
@@ -148,7 +139,6 @@ class PeminjamanController extends Controller
     {
         DB::beginTransaction();
         try {
-            // Validasi input
             $validatedData = $request->validate([
                 'user_id' => 'required|exists:users,id',
                 'tanggal_peminjaman' => 'required|date',
@@ -171,14 +161,12 @@ class PeminjamanController extends Controller
                     }
                 ],
             ], [
-                // Custom error messages
                 'user_id.required' => 'Silakan pilih pengguna',
                 'user_id.exists' => 'Pengguna tidak valid',
                 'tanggal_peminjaman.required' => 'Tanggal peminjaman harus diisi',
                 'barangs.required' => 'Minimal satu barang harus dipilih',
             ]);
     
-            // Validasi tambahan untuk user_id dan tanggal_peminjaman
             if (empty($validatedData['user_id'])) {
                 return response()->json([
                     'message' => 'Silakan pilih pengguna terlebih dahulu'
@@ -191,17 +179,14 @@ class PeminjamanController extends Controller
                 ], 422);
             }
     
-            // Buat peminjaman utama
             $peminjaman = Peminjaman::create([
                 'user_id' => $validatedData['user_id'],
                 'tanggal_peminjaman' => $validatedData['tanggal_peminjaman'],
                 'status' => 'dipinjam',
             ]);
     
-            // Proses setiap barang
             $errorMessages = [];
             foreach ($validatedData['barangs'] as $barangData) {
-                // Cek stok barang
                 $barang = Barang::findOrFail($barangData['barang_id']);
                 
                 if ($barangData['jumlah'] > $barang->stok) {
@@ -209,10 +194,8 @@ class PeminjamanController extends Controller
                     continue;
                 }
     
-                // Kurangi stok barang
                 $barang->decrement('stok', $barangData['jumlah']);
     
-                // Buat detail peminjaman
                 DetailPeminjaman::create([
                     'peminjaman_id' => $peminjaman->id,
                     'barang_id' => $barangData['barang_id'],
@@ -222,7 +205,6 @@ class PeminjamanController extends Controller
                 ]);
             }
     
-            // Jika ada error pada stok
             if (!empty($errorMessages)) {
                 DB::rollBack();
                 return response()->json([
@@ -278,11 +260,9 @@ class PeminjamanController extends Controller
         $peminjaman = Peminjaman::with(['user', 'detailPeminjamans.barang'])
             ->findOrFail($id);
         
-        // Generate kode peminjaman
         $kodePeminjaman = date('dmY', strtotime($peminjaman->tanggal_peminjaman)) . 
             str_pad($peminjaman->id, 4, '0', STR_PAD_LEFT);
         
-        // Generate QR Code menggunakan Endroid
         $qrCode = QrCode::create($kodePeminjaman)
             ->setSize(300)  
             ->setMargin(10)
@@ -293,7 +273,6 @@ class PeminjamanController extends Controller
         $writer = new PngWriter();
         $result = $writer->write($qrCode);
         
-        // Convert ke base64
         $qrcode = base64_encode($result->getString());
 
         $pdf = Pdf::loadView('pages.pdf.cetak-bukti', [
@@ -312,7 +291,6 @@ class PeminjamanController extends Controller
         $peminjaman = Peminjaman::with(['detailPeminjamans.barang', 'user'])
             ->findOrFail($id);
         
-        // Filter hanya detail peminjaman yang masih dipinjam
         $detailPeminjamans = $peminjaman->detailPeminjamans
             ->where('status', 'dipinjam');
         
@@ -343,32 +321,26 @@ class PeminjamanController extends Controller
             foreach ($request->detail_peminjamans as $detail) {
                 $detailPeminjaman = DetailPeminjaman::findOrFail($detail['id']);
                 
-                // Validasi jumlah kembali tidak melebihi yang dipinjam
                 if ($detail['jumlah_kembali'] > $detailPeminjaman->jumlah) {
                     throw ValidationException::withMessages([
                         'detail_peminjamans' => 'Jumlah kembali tidak valid.'
                     ]);
                 }
-
-                // Update barang
                 $barang = $detailPeminjaman->barang;
                 $barang->stok += $detail['jumlah_kembali'];
                 $barang->kondisi = $detail['kondisi'];
                 $barang->save();
 
-                // Update detail peminjaman
                 $detailPeminjaman->update([
                     'tanggal_kembali' => now(),
                     'status' => $detail['jumlah_kembali'] == $detailPeminjaman->jumlah ? 'kembali' : 'dipinjam'
                 ]);
 
-                // Cek apakah masih ada barang yang belum kembali
                 if ($detailPeminjaman->status != 'kembali') {
                     $semuaBarangKembali = false;
                 }
             }
 
-            // Update status peminjaman jika semua barang sudah kembali
             if ($semuaBarangKembali) {
                 $peminjaman->update(['status' => 'selesai']);
             }
@@ -400,12 +372,10 @@ class PeminjamanController extends Controller
         $kodePeminjaman = $request->kode;
         
         try {
-            // Extract ID dari kode peminjaman (4 karakter terakhir)
             $id = intval(substr($kodePeminjaman, -4));
             
             $detailPeminjaman = Peminjaman::findOrFail($id);
         
-            // Cek apakah sudah dikembalikan
             if ($detailPeminjaman->masuk !== null) {
                 return response()->json([
                     'status' => 'error',
@@ -413,7 +383,6 @@ class PeminjamanController extends Controller
                 ], 400);
             }
         
-            // Return URL untuk redirect ke form pengembalian
             return response()->json([
                 'status' => 'success',
                 'message' => 'QR Code valid',
@@ -451,15 +420,12 @@ class PeminjamanController extends Controller
     {
         $title = 'Logs Peminjaman Barang';
 
-        // Ambil logs dan detail peminjaman
         $logs = Peminjaman::with('detailPeminjamans')->paginate(10);
 
-        // Tambahkan total jumlah untuk setiap log
         foreach ($logs as $log) {
             $log->total_jumlah = $log->detailPeminjamans->isEmpty() ? 0 : $log->detailPeminjamans->sum('jumlah');
         }
 
-        // Kirim data ke view
         return view('pages.peminjamanBarang.logs', compact('title', 'logs'));
     }
 
