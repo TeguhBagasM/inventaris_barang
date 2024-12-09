@@ -74,7 +74,7 @@
                                                     </h6>
                                                 </td>
                                                 <td>
-                                                    <button type="button" class="btn btn-sm btn-info" 
+                                                    <button type="button" class="btn bg-gradient-dark btn-sm" 
                                                             data-bs-toggle="modal" 
                                                             data-bs-target="#editTodoModal{{ $todo->id }}">
                                                         <i class="fa-solid fa-pencil" style="font-size: 14px"></i>

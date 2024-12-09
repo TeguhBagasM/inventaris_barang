@@ -26,8 +26,8 @@
                         <form action="{{ route('log.peminjaman') }}" method="GET" class="row mb-4 ms-4">
                             <div class="col-md-4">
                                 <label>Tanggal Pinjam</label>
-                                <input type="date" name="tanggal_pinjam" class="form-control" 
-                                       value="{{ request('tanggal_pinjam') }}">
+                                <input type="date" name="tanggal_peminjaman" class="form-control" 
+                                       value="{{ request('tanggal_peminjaman') }}">
                             </div>
                             <div class="col-md-4 align-self-end mt-4">
                                 <button type="submit" class="btn btn-primary me-2">Filter</button>
@@ -47,8 +47,8 @@
                         <form action="{{ route('log.peminjaman') }}" method="GET" class="row mb-4 ms-4">
                             <div class="col-md-4">
                                 <label>Tanggal Pinjam</label>
-                                <input type="date" name="tanggal_pinjam" class="form-control" 
-                                       value="{{ request('tanggal_pinjam') }}">
+                                <input type="date" name="tanggal_peminjaman" class="form-control" 
+                                       value="{{ request('tanggal_peminjaman') }}">
                             </div>
                             <div class="col-md-4 align-self-end mt-4">
                                 <button type="submit" class="btn btn-primary me-2">Filter</button>

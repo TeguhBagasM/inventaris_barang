@@ -68,7 +68,7 @@
           <h6 class="ps-4 ms-2 text-uppercase text-xs font-weight-bolder opacity-6">Fitur Kelola</h6>
         </li>
         <li class="nav-item">
-          <a class="nav-link {{ $title == 'Log Peminjaman' ? 'active' : '' }}" href="/log-peminjaman">
+          <a class="nav-link {{ $title == 'Logs Peminjaman' ? 'active' : '' }}" href="/log-peminjaman">
             <div class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
               <i class="fas fa-history text-dark"></i>
             </div>
@@ -118,7 +118,7 @@
           </a>
         </li>
         <li class="nav-item">
-          <a class="nav-link {{ $title == 'Log Peminjaman' ? 'active' : '' }}" href="/log-peminjaman">
+          <a class="nav-link {{ $title == 'Logs Peminjaman' ? 'active' : '' }}" href="/log-peminjaman">
             <div class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
               <i class="fas fa-history text-dark"></i>
             </div>
@@ -129,7 +129,7 @@
           <h6 class="ps-4 ms-2 text-uppercase text-xs font-weight-bolder opacity-6">Fitur Admin</h6>
         </li>
         <li class="nav-item">
-          <a class="nav-link {{ $title == 'User' ? 'active' : '' }}" href="/user">
+          <a class="nav-link {{ $title == 'Kelola User' ? 'active' : '' }}" href="/user">
             <div class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
               <i class="fas fa-user text-dark"></i>
             </div>
@@ -162,7 +162,7 @@
           <div class="docs-info">
             <h6 class="text-white up mb-0">Hello, {{ auth()->user()->name }}</h6>
             @php
-            $level = auth()->user()->level; // Mengambil peran pengguna yang sedang login
+            $level = auth()->user()->level;
             @endphp
   
             @if (auth()->user()->level == 'admin')

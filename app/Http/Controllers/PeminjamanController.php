@@ -420,7 +420,15 @@ class PeminjamanController extends Controller
     {
         $title = 'Logs Peminjaman Barang';
 
-        $logs = Peminjaman::with('detailPeminjamans')->paginate(10);
+        $tanggalPinjam = $request->input('tanggal_peminjaman');
+
+        $query = Peminjaman::with('detailPeminjamans');
+
+        if ($tanggalPinjam) {
+            $query->whereDate('tanggal_peminjaman', $tanggalPinjam);
+        }
+
+        $logs = $query->orderBy('tanggal_peminjaman', 'desc')->paginate(10);
 
         foreach ($logs as $log) {
             $log->total_jumlah = $log->detailPeminjamans->isEmpty() ? 0 : $log->detailPeminjamans->sum('jumlah');
@@ -428,6 +436,7 @@ class PeminjamanController extends Controller
 
         return view('pages.peminjamanBarang.logs', compact('title', 'logs'));
     }
+
 
 
 }
