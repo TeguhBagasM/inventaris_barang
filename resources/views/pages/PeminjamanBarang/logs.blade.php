@@ -87,7 +87,7 @@
                                                    class="btn bg-gradient-orange text-white btn-sm ps-3 pe-3">Kembalikan</a>
                                                 @endif
                                                 <a href="{{ route('cetak.bukti', ['id' => $log->id]) }}"
-                                                   class="text-white btn btn-info btn-sm" target="_blank">Cetak</a>
+                                                   class="text-white btn btn-info btn-sm ps-3 pe-3" target="_blank"><i class="fas fa-print me-2" style="font-size: 11px"></i>Cetak</a>
                                             </td>
                                         </tr>
                                     @endforeach
