@@ -61,7 +61,7 @@
                         </div>
                     </div>
                 </div>
-                {{-- <div class="col-xl-3 col-sm-6">
+                <div class="col-xl-3 col-sm-6">
                     <div class="card">
                         <div class="card-body p-3">
                             <div class="row">
@@ -79,7 +79,7 @@
                             </div>
                         </div>
                     </div>
-                </div> --}}
+                </div>
             </div>
 
     </div>
@@ -98,7 +98,7 @@
             </div>
         </div>
     </div>
-{{-- 
+
     <!-- Monthly Loans Chart -->
     <div class="col-lg-6">
         <div class="card z-index-2">
@@ -112,7 +112,7 @@
             </div>
         </div>
     </div>
-</div> --}}
+</div>
 
 <div class="row mt-4">
 <div class="col-lg-12">
@@ -278,13 +278,92 @@ options: {
 }
 });
 
-// Prepare data for room inventory chart
+// Prepare data for loans chart
+var loansData = @json($monthlyLoans);
+var months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+var monthlyData = Array(12).fill(0);
+loansData.forEach(item => {
+monthlyData[item.month - 1] = item.total;
+});
+
+// Create monthly loans chart
+var ctxLoans = document.getElementById("loansChart").getContext("2d");
+new Chart(ctxLoans, {
+type: "line",
+data: {
+    labels: months,
+    datasets: [{
+        label: "Peminjaman",
+        tension: 0.4,
+        borderWidth: 2,
+        borderColor: "#5e72e4",
+        backgroundColor: "rgba(94, 114, 228, 0.2)",
+        fill: true,
+        data: monthlyData,
+    }],
+},
+options: {
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: {
+        legend: {
+            display: false,
+        }
+    },
+    interaction: {
+        intersect: false,
+        mode: 'index',
+    },
+    scales: {
+        y: {
+            grid: {
+                drawBorder: false,
+                display: true,
+                drawOnChartArea: true,
+                drawTicks: false,
+                borderDash: [5, 5]
+            },
+            ticks: {
+                display: true,
+                padding: 10,
+                color: '#fbfbfb',
+                font: {
+                    size: 11,
+                    family: "Open Sans",
+                    style: 'normal',
+                    lineHeight: 2
+                },
+            }
+        },
+        x: {
+            grid: {
+                drawBorder: false,
+                display: false,
+                drawOnChartArea: false,
+                drawTicks: false,
+                borderDash: [5, 5]
+            },
+            ticks: {
+                display: true,
+                color: '#ccc',
+                padding: 20,
+                font: {
+                    size: 11,
+                    family: "Open Sans",
+                    style: 'normal',
+                    lineHeight: 2
+                },
+            }
+        },
+    },
+},
+});
+
 var roomData = @json($ruangData);
 var roomLabels = roomData.map(item => `${item.nama_ruang} (${item.nama_gedung})`);
 var roomValues = roomData.map(item => item.total_barang);
 var roomConditions = roomData.map(item => item.kondisi.toLowerCase());
 
-// Create colors based on room conditions
 var roomColors = roomConditions.map(condition => {
     switch(condition) {
         case 'Baik':

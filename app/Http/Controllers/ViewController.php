@@ -21,7 +21,7 @@ class ViewController extends Controller
         $jumlahBarang = Barang::count();
         $jumlahKategori = Kategori::count();
         $jumlahRuang = Ruang::count();
-        // $jumlahPeminjam = DetailPeminjaman::whereNull('masuk')->count();
+        $jumlahPeminjam = DetailPeminjaman::whereNull('tanggal_kembali')->count();
 
         $kategoriData = DB::table('kategoris')
             ->leftJoin('barangs', 'kategoris.id', '=', 'barangs.kategori_id')
@@ -29,12 +29,12 @@ class ViewController extends Controller
             ->groupBy('kategoris.nama')
             ->get();
 
-        // $monthlyLoans = DB::table('detail_peminjaman')
-        //     ->select(DB::raw('MONTH(created_at) as month'), DB::raw('count(*) as total'))
-        //     ->whereYear('created_at', date('Y'))
-        //     ->groupBy('month')
-        //     ->orderBy('month')
-        //     ->get();
+        $monthlyLoans = DB::table('detail_peminjamans')
+            ->select(DB::raw('MONTH(created_at) as month'), DB::raw('count(*) as total'))
+            ->whereYear('created_at', date('Y'))
+            ->groupBy('month')
+            ->orderBy('month')
+            ->get();
 
         // Tambahkan query untuk data distribusi barang per ruangan
         $ruangData = DB::table('ruangs')
@@ -60,9 +60,9 @@ class ViewController extends Controller
             'jumlahBarang', 
             'jumlahKategori', 
             'jumlahRuang', 
-            // 'jumlahPeminjam',
+            'jumlahPeminjam',
             'kategoriData',
-            // 'monthlyLoans',
+            'monthlyLoans',
             'ruangData',
             'todos'
         ));
