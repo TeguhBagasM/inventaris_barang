@@ -83,9 +83,7 @@
             </div>
 
     </div>
-<!-- Add Charts Section -->
 <div class="row mt-4">
-    <!-- Category Distribution Chart -->
     <div class="col-lg-6 mb-lg-0 mb-4">
         <div class="card z-index-2">
             <div class="card-header pb-0">
@@ -99,7 +97,6 @@
         </div>
     </div>
 
-    <!-- Monthly Loans Chart -->
     <div class="col-lg-6">
         <div class="card z-index-2">
             <div class="card-header pb-0">
@@ -190,7 +187,6 @@
     </div>
 </div>
 
-<!-- Add new chart for room inventory -->
 <div class="row mt-4">
     <div class="col-12">
         <div class="card z-index-2">
@@ -240,12 +236,10 @@
 
 @push('scripts')
 <script>
-// Prepare data for category chart
 var categoryData = @json($kategoriData);
 var categoryLabels = categoryData.map(item => item.nama_kategori);
 var categoryValues = categoryData.map(item => item.total);
 
-// Create category distribution chart
 var ctxCategory = document.getElementById("categoryChart").getContext("2d");
 new Chart(ctxCategory, {
 type: "doughnut",
@@ -278,7 +272,6 @@ options: {
 }
 });
 
-// Prepare data for loans chart
 var loansData = @json($monthlyLoans);
 var months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 var monthlyData = Array(12).fill(0);
@@ -286,7 +279,6 @@ loansData.forEach(item => {
 monthlyData[item.month - 1] = item.total;
 });
 
-// Create monthly loans chart
 var ctxLoans = document.getElementById("loansChart").getContext("2d");
 new Chart(ctxLoans, {
 type: "line",
@@ -367,17 +359,16 @@ var roomConditions = roomData.map(item => item.kondisi.toLowerCase());
 var roomColors = roomConditions.map(condition => {
     switch(condition) {
         case 'Baik':
-            return '#4ade80'; // green
+            return '#4ade80'; 
         case 'Rusak Ringan':
-            return '#fbbf24'; // yellow
+            return '#fbbf24'; 
         case 'Rusak Berat':
-            return '#f87171'; // red
+            return '#f87171'; 
         default:
-            return '#94a3b8'; // gray
+            return '#94a3b8'; 
     }
 });
 
-// Create room inventory chart
 var ctxRoom = document.getElementById("roomInventoryChart").getContext("2d");
 new Chart(ctxRoom, {
     type: "bar",
@@ -451,17 +442,14 @@ new Chart(ctxRoom, {
     }
 });
 
-// todolist
 document.addEventListener('DOMContentLoaded', function() {
             const checkboxes = document.querySelectorAll('.todo-checkbox');
             const submitButton = document.getElementById('submitButton');
 
             checkboxes.forEach(checkbox => {
                 checkbox.addEventListener('change', function() {
-                    // Cek apakah ada checkbox yang dicentang
                     const isAnyChecked = Array.from(checkboxes).some(cb => cb.checked);
                     
-                    // Tampilkan atau sembunyikan tombol submit
                     submitButton.style.display = isAnyChecked ? 'block' : 'none';
                 });
             });

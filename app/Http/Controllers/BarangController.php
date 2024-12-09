@@ -244,12 +244,9 @@ class BarangController extends Controller
     public function destroy(Barang $barang)
     {
         try {
-            // Hapus gambar dari storage jika ada
             if ($barang->gambar) {
-                // Full debug logging
                 Log::info('Attempting to delete image: ' . $barang->gambar);
                 
-                // Try different path variations
                 $paths = [
                     'images/' . $barang->gambar,
                     $barang->gambar,
