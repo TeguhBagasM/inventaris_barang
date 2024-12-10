@@ -19,6 +19,11 @@ class TodoListController extends Controller
         return view('pages.todolist.index', compact('todos', 'title'));
     }
 
+    public function create() {
+        $title = "Tambah Tugas Baru";
+        return view('pages.Todolist.create', compact('title'));
+    }
+
     public function store(Request $request) 
     {
         $request->validate([
@@ -45,16 +50,16 @@ class TodoListController extends Controller
     {
         try {
             $todoIds = $request->todo_ids;
-            
+
             Log::info('Received todo_ids:', ['ids' => $todoIds]);
-            
+
             if (empty($todoIds)) {
                 return redirect()->back()->with([
                     'status' => 'error',
                     'message' => 'Pilih minimal satu tugas untuk diselesaikan'
                 ]);
             }
-    
+
             $todos = ToDoList::whereIn('id', $todoIds)->get();
             if ($todos->count() !== count($todoIds)) {
                 return redirect()->back()->with([
@@ -62,23 +67,23 @@ class TodoListController extends Controller
                     'message' => 'Ada ID tugas yang tidak valid'
                 ]);
             }
-            
+
             $updated = ToDoList::whereIn('id', $todoIds)
                             ->where('status', 'pending')
                             ->update(['status' => 'selesai']);
-    
+
             if ($updated > 0) {
                 return redirect()->back()->with([
                     'status' => 'success',
                     'message' => $updated . ' tugas berhasil diselesaikan'
                 ]);
             }
-    
+
             return redirect()->back()->with([
                 'status' => 'error',
                 'message' => 'Tidak ada tugas yang dapat diselesaikan'
             ]);
-    
+
         } catch (\Exception $e) {
             Log::error('Error updating todo status: ' . $e->getMessage());
             return redirect()->back()->with([

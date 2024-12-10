@@ -13,9 +13,9 @@
 
                         <hr class="bg-dark px-auto">
                         <div class="d-flex justify-content-between mb-1">
-                            <button type="button" class="btn bg-gradient-orange text-white" data-bs-toggle="modal" data-bs-target="#addTodoModal">
-                                Tambah Tugas
-                            </button>
+                            <a href="{{ route('todolist.create') }}">
+                                <div class="mt-2 text-white btn bg-gradient-success">Tambah Tugas</div>
+                            </a>
                         </div>
                     </div>
                     <div class="card-body px-0 pt-0 pb-2">
@@ -40,104 +40,50 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        @foreach ($todos as $todo)
+                                        @forelse ($todos as $todo)
                                             <tr>
                                                 <td class="text-center">
-                                                    @if($todo->status === 'pending')
+                                                    @if ($todo->status === 'pending')
                                                         <input type="checkbox" name="todo_ids[]" value="{{ $todo->id }}" class="todo-checkbox cursor-pointer">
                                                     @endif
-                                                </form>
                                                 </td>
                                                 <td>
-                                                    <h6 class="text-secondary text-sm font-weight-bold ps-2">
-                                                        {{ $todo->judul }}
-                                                    </h6>
+                                                    <h6 class="text-secondary text-sm font-weight-bold ps-2">{{ $todo->judul }}</h6>
                                                 </td>
                                                 <td>
-                                                    <h6 class="text-secondary text-sm font-weight-bold ps-2">
-                                                        {{ $todo->deskripsi }}
-                                                    </h6>
+                                                    <h6 class="text-secondary text-sm font-weight-bold ps-2">{{ $todo->deskripsi }}</h6>
                                                 </td>
                                                 <td>
-                                                    <span class="badge bg-{{ $todo->prioritas === 'Tinggi' ? 'danger' : 'info' }}">
-                                                        {{ $todo->prioritas }}
-                                                    </span>
+                                                    <span class="badge bg-{{ $todo->prioritas === 'Tinggi' ? 'danger' : 'info' }}">{{ $todo->prioritas }}</span>
                                                 </td>
                                                 <td>
-                                                    <span class="badge bg-{{ $todo->status === 'selesai' ? 'success' : 'warning' }}">
-                                                        {{ $todo->status }}
-                                                    </span>
+                                                    <span class="badge bg-{{ $todo->status === 'selesai' ? 'success' : 'warning' }}">{{ $todo->status }}</span>
                                                 </td>
                                                 <td>
-                                                    <h6 class="text-secondary text-sm font-weight-bold ps-2">
-                                                        {{ $todo->user->level ?? 'Tidak Diketahui' }}
-                                                    </h6>
+                                                    <h6 class="text-secondary text-sm font-weight-bold ps-2">{{ $todo->user->level ?? 'Tidak Diketahui' }}</h6>
                                                 </td>
                                                 <td>
-                                                    <button type="button" class="btn bg-gradient-dark btn-sm" 
-                                                            data-bs-toggle="modal" 
-                                                            data-bs-target="#editTodoModal{{ $todo->id }}">
+                                                    <button type="button" class="btn bg-gradient-dark btn-sm" data-bs-toggle="modal" data-bs-target="#editTodoModal{{ $todo->id }}">
                                                         <i class="fa-solid fa-pencil" style="font-size: 14px"></i>
                                                     </button>
-                                                    <button type="button" 
-                                                            class="btn btn-sm bg-gradient-danger"
-                                                            onclick="confirmDelete('{{ $todo->id }}')">
-                                                            <i class="fa-solid fa-trash" style="font-size: 14px"></i>
+                                                    <button type="button" class="btn btn-sm bg-gradient-danger" onclick="confirmDelete('{{ $todo->id }}')">
+                                                        <i class="fa-solid fa-trash" style="font-size: 14px"></i>
                                                     </button>
-                                                    <form id="delete-form-{{ $todo->id }}" 
-                                                          action="{{ route('todolist.destroy', $todo->id) }}" 
-                                                          method="POST" 
-                                                          style="display: none;">
+                                                    <form id="delete-form-{{ $todo->id }}" action="{{ route('todolist.destroy', $todo->id) }}" method="POST" style="display: none;">
                                                         @csrf
                                                         @method('DELETE')
                                                     </form>
                                                 </td>
                                             </tr>
-
-                                            <div class="modal fade" id="editTodoModal{{ $todo->id }}" tabindex="-1" aria-hidden="true">
-                                                <div class="modal-dialog">
-                                                    <div class="modal-content">
-                                                        <form action="{{ route('todolist.update', $todo->id) }}" method="POST">
-                                                            @csrf
-                                                            @method('PUT')
-                                                            <div class="modal-header">
-                                                                <h5 class="modal-title">Edit Tugas</h5>
-                                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                                            </div>
-                                                            <div class="modal-body">
-                                                                <div class="mb-3">
-                                                                    <label for="judul" class="form-label">Judul</label>
-                                                                    <input type="text" class="form-control" id="judul" name="judul" 
-                                                                           value="{{ $todo->judul }}" required>
-                                                                </div>
-                                                                <div class="mb-3">
-                                                                    <label for="deskripsi" class="form-label">Deskripsi</label>
-                                                                    <textarea class="form-control" id="deskripsi" name="deskripsi" 
-                                                                              rows="3">{{ $todo->deskripsi }}</textarea>
-                                                                </div>
-                                                                <div class="mb-3">
-                                                                    <label for="prioritas" class="form-label">Prioritas</label>
-                                                                    <select class="form-control" id="prioritas" name="prioritas" required>
-                                                                        <option value="Tinggi" {{ $todo->prioritas === 'Tinggi' ? 'selected' : '' }}>
-                                                                            Tinggi
-                                                                        </option>
-                                                                        <option value="Rendah" {{ $todo->prioritas === 'Rendah' ? 'selected' : '' }}>
-                                                                            Rendah
-                                                                        </option>
-                                                                    </select>
-                                                                </div>
-                                                            </div>
-                                                            <div class="modal-footer">
-                                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
-                                                                <button type="submit" class="btn btn-primary">Simpan</button>
-                                                            </div>
-                                                        </form>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        @endforeach
+                                        @empty
+                                            <tr>
+                                                <td colspan="7" class="text-center py-2">
+                                                    <p class="text-secondary text-sm mb-0">Tidak ada tugas yang tersedia</p>
+                                                </td>
+                                            </tr>
+                                        @endforelse
                                     </tbody>
-                                </table>
+                                </table>                                
                             </div>
                         <div class="mx-5 my-2">
                             {{ $todos->links() }}
@@ -147,98 +93,91 @@
             </div>
         </div>
     </div>
-
-    <div class="modal fade" id="addTodoModal" tabindex="-1" aria-labelledby="addTodoModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <form action="{{ route('todolist.store') }}" method="POST">
-                    @csrf
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="addTodoModalLabel">Tambah Tugas Baru</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body">
-                        <div class="mb-3">
-                            <label for="judul" class="form-label">Judul</label>
-                            <input type="text" class="form-control" id="judul" name="judul" required>
-                        </div>
-                        <div class="mb-3">
-                            <label for="deskripsi" class="form-label">Deskripsi</label>
-                            <textarea class="form-control" id="deskripsi" name="deskripsi" rows="3"></textarea>
-                        </div>
-                        <div class="mb-3">
-                            <label for="prioritas" class="form-label">Prioritas</label>
-                            <select class="form-control" id="prioritas" name="prioritas" required>
-                                <option value="">Pilih Prioritas</option>
-                                <option value="Tinggi">Tinggi</option>
-                                <option value="Rendah">Rendah</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
-                        <button type="submit" class="btn btn-primary">Simpan</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
     @push('scripts')
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            const todoForm = document.querySelector('form[action="{{ route("todolist.updateStatus") }}"]');
-            const checkboxes = document.querySelectorAll('.todo-checkbox');
-            const submitButton = document.getElementById('submitButton');
-    
-            todoForm.addEventListener('submit', function(e) {
+        const addTodoForm = document.querySelector('#addTodoModal form');
+        const todoUpdateForm = document.querySelector('form[action="{{ route("todolist.updateStatus") }}"]');
+        const checkboxes = document.querySelectorAll('.todo-checkbox');
+        const submitButton = document.getElementById('submitButton');
+
+        if (addTodoForm) {
+        addTodoForm.addEventListener('submit', function(e) {
+            const judul = document.getElementById('judul');
+            const prioritas = document.getElementById('prioritas');
+            
+            if (!judul || !judul.value.trim() || !prioritas || prioritas.value === '') {
                 e.preventDefault();
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'Validasi Gagal',
+                    text: 'Harap lengkapi judul dan prioritas tugas',
+                    confirmButtonText: 'Oke'
+                });
+                return false;
+            }
+        });
+    }
+
+        @if(Session::has('status') && Session::get('error_type') == 'update_status')
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: '{{ Session::get("message") }}',
+            });
+        @endif
+
+        if (todoUpdateForm) {
+            todoUpdateForm.addEventListener('submit', function(e) {
+                const checkedBoxes = document.querySelectorAll('.todo-checkbox:checked');
                 
-                const checkedBoxes = Array.from(checkboxes).filter(cb => cb.checked);
                 if (checkedBoxes.length === 0) {
+                    e.preventDefault();
                     Swal.fire({
                         icon: 'error',
                         title: 'Oops...',
                         text: 'Pilih minimal satu tugas untuk diselesaikan',
                     });
-                    return;
                 }
-                
-                this.submit();
             });
-    
+        }
+
+        if (checkboxes.length > 0 && submitButton) {
             checkboxes.forEach(checkbox => {
                 checkbox.addEventListener('change', function() {
                     const isAnyChecked = Array.from(checkboxes).some(cb => cb.checked);
                     submitButton.style.display = isAnyChecked ? 'block' : 'none';
                 });
             });
-        });
-    
-        @if(Session::has('status'))
-            Swal.fire({
-                icon: '{{ Session::get("status") }}',
-                title: '{{ Session::get("status") == "success" ? "Berhasil!" : "Oops..." }}',
-                text: '{{ Session::get("message") }}',
-                showConfirmButton: false,
-                timer: 3000
-            });
-        @endif
-        function confirmDelete(id) {
-            Swal.fire({
-                title: 'Apakah Anda yakin?',
-                text: "Data yang dihapus tidak dapat dikembalikan!",
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#3085d6',
-                cancelButtonColor: '#d33',
-                confirmButtonText: 'Ya, hapus!',
-                cancelButtonText: 'Batal'
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    document.getElementById('delete-form-' + id).submit();
-                }
-            });
         }
+    });
+
+    @if(Session::has('status') && Session::get('error_type') !== 'update_status')
+        Swal.fire({
+            icon: '{{ Session::get("status") }}',
+            title: '{{ Session::get("status") == "success" ? "Berhasil!" : "Oops..." }}',
+            text: '{{ Session::get("message") }}',
+            showConfirmButton: false,
+            timer: 3000
+        });
+    @endif
+
+    function confirmDelete(id) {
+        Swal.fire({
+            title: 'Apakah Anda yakin?',
+            text: "Data yang dihapus tidak dapat dikembalikan!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Ya, hapus!',
+            cancelButtonText: 'Batal'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                document.getElementById('delete-form-' + id).submit();
+            }
+        });
+    }
     </script>
     @endpush
 @endsection

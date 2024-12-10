@@ -41,7 +41,8 @@ Route::middleware('auth')->group(function () {
 
     Route::middleware(['can.access.todolist'])->group(function() {
         Route::get('todolist', [TodoListController::class, 'index'])->name('todolist.index');
-        Route::post('todolist', [TodoListController::class, 'store'])->name('todolist.store');
+        Route::get('todolist-add', [TodoListController::class, 'create'])->name('todolist.create');
+        Route::post('/todolist', [TodoListController::class, 'store'])->name('todolist.store');
         Route::put('/todolist/{id}', [TodoListController::class, 'update'])->name('todolist.update');
         Route::delete('/todolist/{id}', [TodoListController::class, 'destroy'])->name('todolist.destroy');
         Route::post('/todolist/update-status', [TodoListController::class, 'updateStatus'])->name('todolist.updateStatus');
