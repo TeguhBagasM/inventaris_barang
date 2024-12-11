@@ -47,6 +47,7 @@
                                                         <input type="checkbox" name="todo_ids[]" value="{{ $todo->id }}" class="todo-checkbox cursor-pointer">
                                                     @endif
                                                 </td>
+                                            </form>
                                                 <td>
                                                     <h6 class="text-secondary text-sm font-weight-bold ps-2">{{ $todo->judul }}</h6>
                                                 </td>
@@ -75,6 +76,41 @@
                                                     </form>
                                                 </td>
                                             </tr>
+                                            <div class="modal fade" id="editTodoModal{{ $todo->id }}" tabindex="-1" aria-labelledby="editTodoModalLabel{{ $todo->id }}" aria-hidden="true">
+                                                <div class="modal-dialog">
+                                                    <div class="modal-content">
+                                                        <form action="{{ route('todolist.update', $todo->id) }}" method="POST">
+                                                            @csrf
+                                                            @method('PUT')
+                                                            <div class="modal-header">
+                                                                <h5 class="modal-title" id="editTodoModalLabel{{ $todo->id }}">Edit Tugas</h5>
+                                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                            </div>
+                                                            <div class="modal-body">
+                                                                <div class="mb-3">
+                                                                    <label for="judul" class="form-label">Judul</label>
+                                                                    <input type="text" class="form-control" id="judul" name="judul" value="{{ $todo->judul }}" required>
+                                                                </div>
+                                                                <div class="mb-3">
+                                                                    <label for="deskripsi" class="form-label">Deskripsi</label>
+                                                                    <textarea class="form-control" id="deskripsi" name="deskripsi" rows="3">{{ $todo->deskripsi }}</textarea>
+                                                                </div>
+                                                                <div class="mb-3">
+                                                                    <label for="prioritas" class="form-label">Prioritas</label>
+                                                                    <select class="form-control" id="prioritas" name="prioritas" required>
+                                                                        <option value="Tinggi" {{ $todo->prioritas === 'Tinggi' ? 'selected' : '' }}>Tinggi</option>
+                                                                        <option value="Rendah" {{ $todo->prioritas === 'Rendah' ? 'selected' : '' }}>Rendah</option>
+                                                                    </select>
+                                                                </div>
+                                                            </div>
+                                                            <div class="modal-footer">
+                                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
+                                                                <button type="submit" class="btn btn-primary">Simpan</button>
+                                                            </div>
+                                                        </form>
+                                                    </div>
+                                                </div>
+                                            </div>
                                         @empty
                                             <tr>
                                                 <td colspan="7" class="text-center py-2">
