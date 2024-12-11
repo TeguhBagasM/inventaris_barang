@@ -418,7 +418,7 @@ class PeminjamanController extends Controller
     // }
     public function log(Request $request)
     {
-        $title = 'Logs Peminjaman Barang';
+        $title = 'Logs Peminjaman';
 
         $tanggalPinjam = $request->input('tanggal_peminjaman');
 
