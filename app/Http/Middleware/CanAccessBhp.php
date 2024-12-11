@@ -6,7 +6,7 @@ use Closure;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 
-class CanAccessBarang
+class CanAccessBhp
 {
     /**
      * Handle an incoming request.
@@ -16,10 +16,9 @@ class CanAccessBarang
     public function handle(Request $request, Closure $next): Response
     {
         $level = auth()->user()->level;
-        if (in_array($level, ['admin', 'petugas 1'])) {
+        if (in_array($level, ['admin', 'petugas 3'])) {
             return $next($request);
         }
         abort(404);
     }
-
 }

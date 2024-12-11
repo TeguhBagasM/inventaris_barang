@@ -397,25 +397,6 @@ class PeminjamanController extends Controller
             ], 400);
         }
     }
-
-    // public function log(Request $request)
-    // {
-    //     $title = 'Logs Peminjaman';
-        
-    //     $query = DetailPeminjaman::with(['barang', 'user']);
-
-    //     // Filter tanggal
-    //     if ($request->filled('start_date') && $request->filled('end_date')) {
-    //         $query->whereBetween('keluar', [
-    //             $request->start_date, 
-    //             $request->end_date
-    //         ]);
-    //     }
-
-    //     $logs = $query->orderBy('keluar', 'desc')->paginate(10);
-        
-    //     return view('pages.peminjamanBarang.logs', compact('logs', 'title'));
-    // }
     public function log(Request $request)
     {
         $title = 'Logs Peminjaman';

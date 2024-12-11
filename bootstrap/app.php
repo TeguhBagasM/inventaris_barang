@@ -24,6 +24,7 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->alias([
             'admin' => IsAdmin::class,
             'can.access.barang' => CanAccessBarang::class,
+            'can.access.bhp' => CanAccessBarang::class,
             'can.access.log' => CanAccessLogPeminjaman::class,
             'can.access.todolist' => CanAccessTodolist::class,
             'can.access.pinjam' => CanAccessPinjam::class,

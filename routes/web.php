@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\{
     BarangController,
+    BhpController,
     DetailPeminjamanController,
     GedungController,
     KategoriController,
@@ -27,6 +28,11 @@ Route::middleware('auth')->group(function () {
         Route::resource('barang', BarangController::class);
         Route::get('barang-data', [BarangController::class, 'getData'])->name('barang.data');
         Route::get('/cetak', [BarangController::class, 'cetak'])->name('barang.cetak');
+    });
+
+    Route::middleware(['can.access.barang'])->group(function() {
+        Route::resource('bhp', BhpController::class);
+        Route::get('/cetak', [BhpController::class, 'cetak'])->name('bhp.cetak');
     });
 
     Route::middleware(['can.access.log'])->group(function() {
