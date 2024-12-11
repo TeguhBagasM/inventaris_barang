@@ -7,7 +7,7 @@
                 <div class="col-12">
                     <div class="card mb-4">
                         <div class="card-header pb-0">
-                            <h4 class="">Edit Produk</h4>
+                            <h4 class="">Edit Asset</h4>
                             <hr style="background-color: black">
                         </div>
 
@@ -17,7 +17,7 @@
                                 @csrf
                                 @method('PUT')
                                 <div class="mb-3">
-                                    <label for="nama" class="form-label text-sm required-label">Nama Barang</label>
+                                    <label for="nama" class="form-label text-sm required-label">Nama Asset</label>
                                     <input type="text" class="form-control" name="nama" id="nama"
                                         value="{{ $barang->nama }}" required>
                                 </div>

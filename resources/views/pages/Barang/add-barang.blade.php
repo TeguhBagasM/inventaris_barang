@@ -7,7 +7,7 @@
                 <div class="col-12">
                     <div class="card mb-4">
                         <div class="card-header pb-0">
-                            <h4 class="">Tambah Barang</h4>
+                            <h4 class="">Tambah Asset</h4>
                             <hr style="background-color: black">
                         </div>
 
@@ -16,7 +16,7 @@
                                 enctype="multipart/form-data">
                                 @csrf
                                 <div class="mb-3">
-                                    <label for="nama" class="form-label text-sm required-label">Nama Barang</label>
+                                    <label for="nama" class="form-label text-sm required-label">Nama Asset</label>
                                     <input type="text" class="form-control" name="nama" id="nama" required>
                                 </div>
                                 <div class="mb-3">

@@ -7,7 +7,7 @@
             <div class="col-lg-8 mx-auto">
                 <div class="card mb-4 shadow">
                     <div class="card-header pb-0 bg-gradient-info">
-                        <h4 class="text-center text-white mb-3">Detail Barang</h4>
+                        <h4 class="text-center text-white mb-3">Detail Asset</h4>
                     </div>
 
                     <div class="card-body px-4 pt-4 pb-4">
@@ -25,7 +25,7 @@
                                     <table class="table table-striped align-items-center mb-4">
                                         <tbody>
                                             <tr>
-                                                <th class="text-uppercase text-dark text-xs font-weight-bolder" width="30%">Nama Barang</th>
+                                                <th class="text-uppercase text-dark text-xs font-weight-bolder" width="30%">Nama Asset</th>
                                                 <td class="text-sm">{{ $barang->nama }}</td>
                                             </tr>
                                             <tr>

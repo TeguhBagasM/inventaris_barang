@@ -21,7 +21,7 @@ class BarangController extends Controller
      */
     public function index()
     {
-        $title = 'Kelola Barang';
+        $title = 'Kelola Asset';
         return view('pages.barang.kelola-barang', compact('title'));
     }
 
@@ -63,7 +63,7 @@ class BarangController extends Controller
     {
         $ruang = Ruang::all();
         $kategori = Kategori::all();
-        $title = 'Kelola Barang';
+        $title = 'Tambah Asset';
         return view('pages.barang.add-barang', compact('title', 'ruang', 'kategori'));
     }
 
@@ -137,7 +137,7 @@ class BarangController extends Controller
     public function show(Barang $barang)
     {
         $barang->load('kategori', 'ruang');
-        $title = 'Kelola Barang';
+        $title = 'Detail Asset';
 
         // Ambil detail peminjaman, kemudian grup berdasarkan user_id dan hitung jumlahnya
         $detail = DetailPeminjaman::select('user_id', DB::raw('SUM(jumlah) as total_peminjaman'))
@@ -156,7 +156,7 @@ class BarangController extends Controller
     {
         $ruang = Ruang::all();
         $kategori = Kategori::all();
-        $title = 'Kelola Barang';
+        $title = 'Edit Asset';
         return view('pages.barang.edit-barang', compact('barang', 'title', 'ruang', 'kategori'));
     }
     /**

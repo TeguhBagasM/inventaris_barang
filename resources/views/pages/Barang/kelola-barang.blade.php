@@ -7,14 +7,14 @@
                     <div class="card-header pb-0">
                         <div class="d-flex justify-content-between">
                             <div>
-                                <h4 class="">Pendataan Barang</h4>
+                                <h4 class="">Pendataan Asset</h4>
                             </div>
                         </div>
 
                         <hr class="bg-dark px-auto">
                         <div class="d-flex justify-content-between">
                             <a href="{{ route('barang.create') }}">
-                                <div class="mt-2 text-white btn bg-gradient-success">Tambah Barang</div>
+                                <div class="mt-2 text-white btn bg-gradient-success">Tambah Asset</div>
                             </a>
                             <a href="{{ route('barang.cetak') }}" class="mt-2 text-white btn bg-info" target="_blank"><i class="fas fa-print me-2"></i>Cetak</a>
                         </div>
