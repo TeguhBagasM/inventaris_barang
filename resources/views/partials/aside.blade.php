@@ -56,11 +56,11 @@
           <h6 class="ps-4 ms-2 text-uppercase text-xs font-weight-bolder opacity-6">Fitur Kelola</h6>
         </li>
         <li class="nav-item">
-          <a class="nav-link {{ $title == 'Kelola Barang' ? 'active' : '' }}" href="/barang">
+          <a class="nav-link {{ $title == 'Kelola Asset' ? 'active' : '' }}" href="/barang">
             <div class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
               <i class="fas fa-box text-dark"></i>
             </div>
-            <span class="nav-link-text ms-1">Kelola Barang</span>
+            <span class="nav-link-text ms-1">Kelola Asset</span>
           </a>
         </li>
         @elseif (auth()->user()->level == 'petugas 2')
@@ -174,13 +174,13 @@
             @endphp
   
             @if (auth()->user()->level == 'admin')
-            <p class="text-xs font-weight-bold">Mulai kelola pengguna dan pantau aktivitas mereka dengan efisien.</p>
+            <p class="text-xs font-weight-bold">Mulai kelola semua data dan pantau aktivitas mereka dengan efisien.</p>
             @elseif(auth()->user()->level == 'petugas 1')
-            <p class="text-xs font-weight-bold">Mulai kelola inventaris dan pantau aktivitas peminjaman dengan efisien.</p>
+            <p class="text-xs font-weight-bold">Mulai kelola data asset dan pantau aktivitas peminjaman dengan efisien.</p>
             @elseif(auth()->user()->level == 'petugas 2')
-            <p class="text-xs font-weight-bold">Mulai kelola inventaris dan pantau aktivitas peminjaman dengan efisien.</p>
+            <p class="text-xs font-weight-bold">Mulai kelola peminjaman dan pantau aktivitas peminjaman dengan efisien.</p>
             @elseif(auth()->user()->level == 'petugas 3')
-            <p class="text-xs font-weight-bold">Mulai kelola inventaris dan pantau aktivitas peminjaman dengan efisien.</p>
+            <p class="text-xs font-weight-bold">Mulai kelola data barang habis pakai dan pantau aktivitas peminjaman dengan efisien.</p>
             @else
             <p class="text-xs font-weight-bold">Mulai pinjam barang dan kelola barang pinjaman Anda dengan mudah.</p>
             @endif
