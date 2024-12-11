@@ -20,7 +20,7 @@
                             </div>
                             <div class="mb-3">
                                 <label for="deskripsi" class="form-label">deskripsi</label>
-                                <input type="deskripsi" class="form-control @error('deskripsi') is-invalid @enderror" id="deskripsi" name="deskripsi" value="{{ old('deskripsi') }}">
+                                <input type="text" class="form-control @error('deskripsi') is-invalid @enderror" id="deskripsi" name="deskripsi" value="{{ old('deskripsi') }}">
                                 @error('deskripsi')
                                         <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror

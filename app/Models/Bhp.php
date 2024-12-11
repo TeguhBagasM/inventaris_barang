@@ -6,5 +6,5 @@ use Illuminate\Database\Eloquent\Model;
 
 class Bhp extends Model
 {
-    protected $fillable = ['nama', 'merk', 'spek', 'jumlah', 'satuan'];
+    protected $fillable = ['nama', 'spesifikasi', 'tahun_pengadaan', 'stok', 'sumber_dana'];
 }

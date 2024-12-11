@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('spesifikasi');
             $table->integer('tahun_pengadaan');
             $table->integer('stok');
-            $table->integer('sumber_dana');
+            $table->string('sumber_dana');
             $table->timestamps();
         });
     }

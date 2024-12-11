@@ -3,7 +3,6 @@
 use App\Http\Controllers\{
     BarangController,
     BhpController,
-    DetailPeminjamanController,
     GedungController,
     KategoriController,
     PeminjamanController,
@@ -30,9 +29,9 @@ Route::middleware('auth')->group(function () {
         Route::get('/cetak', [BarangController::class, 'cetak'])->name('barang.cetak');
     });
 
-    Route::middleware(['can.access.barang'])->group(function() {
+    Route::middleware(['can.access.bhp'])->group(function() {
         Route::resource('bhp', BhpController::class);
-        Route::get('/cetak', [BhpController::class, 'cetak'])->name('bhp.cetak');
+        Route::get('/cetak-bhp', [BhpController::class, 'cetak'])->name('bhp.cetak');
     });
 
     Route::middleware(['can.access.log'])->group(function() {
@@ -82,5 +81,4 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-// Route untuk autentikasi
 require __DIR__ . '/auth.php';
