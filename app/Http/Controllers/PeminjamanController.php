@@ -84,7 +84,7 @@ class PeminjamanController extends Controller
             $peminjaman = Peminjaman::create([
                 'user_id' => $validatedData['user_id'],
                 'tanggal_peminjaman' => $validatedData['tanggal_peminjaman'],
-                'status' => 'dipinjam'
+                'status' => 'menunggu konfirmasi'
             ]);
     
             $errorMessages = [];
@@ -103,7 +103,7 @@ class PeminjamanController extends Controller
                     'barang_id' => $barangData['barang_id'],
                     'jumlah' => $barangData['jumlah'],
                     'tanggal_pinjam' => $validatedData['tanggal_peminjaman'],
-                    'status' => 'dipinjam'
+                    'status' => 'menunggu konfirmasi'
                 ]);
             }
     
@@ -182,7 +182,7 @@ class PeminjamanController extends Controller
             $peminjaman = Peminjaman::create([
                 'user_id' => $validatedData['user_id'],
                 'tanggal_peminjaman' => $validatedData['tanggal_peminjaman'],
-                'status' => 'dipinjam',
+                'status' => 'menunggu konfirmasi',
             ]);
     
             $errorMessages = [];
@@ -201,7 +201,7 @@ class PeminjamanController extends Controller
                     'barang_id' => $barangData['barang_id'],
                     'jumlah' => $barangData['jumlah'],
                     'tanggal_pinjam' => $validatedData['tanggal_peminjaman'],
-                    'status' => 'dipinjam'
+                    'status' => 'menunggu konfirmasi'
                 ]);
             }
     
@@ -418,6 +418,62 @@ class PeminjamanController extends Controller
         return view('pages.peminjamanBarang.logs', compact('title', 'logs'));
     }
 
-
-
+    public function konfirmasiPeminjaman($id)
+    {
+        DB::beginTransaction();
+        try {
+            $peminjaman = Peminjaman::findOrFail($id);
+            
+            $peminjaman->update([
+                'status' => 'dipinjam'
+            ]);
+    
+            $peminjaman->detailPeminjamans()->update([
+                'status' => 'dipinjam'
+            ]);
+    
+            DB::commit();
+    
+            return response()->json([
+                'message' => 'Peminjaman berhasil dikonfirmasi'
+            ], 200);
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return response()->json([
+                'message' => 'Gagal mengkonfirmasi peminjaman: ' . $e->getMessage()
+            ], 500);
+        }
+    }
+    
+    public function tolakPeminjaman($id)
+    {
+        DB::beginTransaction();
+        try {
+            $peminjaman = Peminjaman::findOrFail($id);
+            
+            foreach ($peminjaman->detailPeminjamans as $detail) {
+                $barang = Barang::findOrFail($detail->barang_id);
+                $barang->increment('stok', $detail->jumlah);
+            }
+    
+            $peminjaman->update([
+                'status' => 'ditolak'
+            ]);
+    
+            $peminjaman->detailPeminjamans()->update([
+                'status' => 'ditolak'
+            ]);
+    
+            DB::commit();
+    
+            return response()->json([
+                'message' => 'Peminjaman berhasil ditolak'
+            ], 200);
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return response()->json([
+                'message' => 'Gagal menolak peminjaman: ' . $e->getMessage()
+            ], 500);
+        }
+    }
 }

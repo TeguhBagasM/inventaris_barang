@@ -17,7 +17,7 @@ return new class extends Migration
             $table->foreignId('barang_id')->constrained('barangs')->onDelete('cascade');
             $table->integer('jumlah');
             $table->date('tanggal_kembali')->nullable();
-            $table->enum('status', ['dipinjam', 'kembali'])->default('dipinjam');
+            $table->enum('status', ['menunggu konfirmasi', 'dipinjam', 'ditolak' ,'kembali'])->default('menunggu konfirmasi');
             $table->timestamps();
         });
     }

@@ -75,19 +75,28 @@
                                             <td>{{ $log->total_jumlah }}</td>                                        
                                             <td>{{ \Carbon\Carbon::parse($log->tanggal_peminjaman)->translatedFormat('l, d M Y') }}</td>
                                             <td>
-                                                @if ($log->status == 'selesai')
-                                                    <span class="badge bg-success">Dikembalikan</span>
-                                                @else
+                                                @if ($log->status == 'menunggu konfirmasi')
+                                                    <span class="badge bg-secondary">Belum Dikonfirmasi</span>
+                                                @elseif ($log->status == 'dipinjam')
                                                     <span class="badge bg-warning">Belum Dikembalikan</span>
+                                                @elseif ($log->status == 'ditolak')
+                                                    <span class="badge bg-danger">Ditolak</span>
+                                                @else
+                                                <span class="badge bg-success">Dikembalikan</span>
                                                 @endif
                                             </td>
                                             <td>
-                                                @if ($log->status == 'dipinjam')
+                                                @if ($log->status == 'menunggu konfirmasi')
+                                                <a href="#" onclick="konfirmasiPeminjaman({{ $log->id }})"
+                                                    class="btn bg-gradient-success text-white btn-sm ps-3 pe-3">Konfirmasi</a>
+                                                 <a href="#" onclick="tolakPeminjaman({{ $log->id }})"
+                                                    class="btn bg-gradient-danger text-white btn-sm ps-3 pe-3">Tolak</a>
+                                                @elseif ($log->status == 'dipinjam')
                                                 <a href="{{ route('pengembalian.form', $log->id) }}"
                                                    class="btn bg-gradient-orange text-white btn-sm ps-3 pe-3">Kembalikan</a>
-                                                @endif
                                                 <a href="{{ route('cetak.bukti', ['id' => $log->id]) }}"
-                                                   class="text-white btn btn-info btn-sm ps-3 pe-3" target="_blank"><i class="fas fa-print me-2" style="font-size: 11px"></i>Cetak</a>
+                                                      class="text-white btn btn-info btn-sm ps-3 pe-3" target="_blank"><i class="fas fa-print me-2" style="font-size: 11px"></i>Cetak</a>
+                                                @endif
                                             </td>
                                         </tr>
                                     @endforeach
@@ -105,7 +114,6 @@
     </div>
     @push('scripts')
     <script>
-        // Check if there's a flash message
         @if(Session::has('status'))
             Swal.fire({
                 icon: '{{ Session::get("status") }}',
@@ -115,6 +123,90 @@
                 timer: 3000
             });
         @endif
+        function konfirmasiPeminjaman(id) {
+        Swal.fire({
+            title: 'Konfirmasi Peminjaman',
+            text: 'Apakah Anda yakin ingin mengkonfirmasi peminjaman ini?',
+            icon: 'question',
+            showCancelButton: true,
+            confirmButtonColor: '#28a745',
+            cancelButtonColor: '#6c757d',
+            confirmButtonText: 'Ya, Konfirmasi',
+            cancelButtonText: 'Batal'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                fetch(`/peminjaman/${id}/konfirmasi`, {
+                    method: 'PUT',
+                    headers: {
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                        'Content-Type': 'application/json'
+                    }
+                })
+                .then(response => response.json())
+                .then(data => {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Berhasil!',
+                        text: data.message,
+                        showConfirmButton: false,
+                        timer: 3000
+                    }).then(() => {
+                        location.reload();
+                    });
+                })
+                .catch(error => {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Gagal!',
+                        text: error.message || 'Terjadi kesalahan saat mengkonfirmasi peminjaman'
+                    });
+                });
+            }
+        });
+    }
+
+    function tolakPeminjaman(id) {
+        Swal.fire({
+            title: 'Tolak Peminjaman',
+            text: 'Apakah Anda yakin ingin menolak peminjaman ini?',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#dc3545',
+            cancelButtonColor: '#6c757d',
+            confirmButtonText: 'Ya, Tolak',
+            cancelButtonText: 'Batal'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                fetch(`/peminjaman/${id}/tolak`, {
+                    method: 'PUT',
+                    headers: {
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                        'Content-Type': 'application/json'
+                    }
+                })
+                .then(response => response.json())
+                .then(data => {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Berhasil!',
+                        text: data.message,
+                        showConfirmButton: false,
+                        timer: 3000
+                    }).then(() => {
+                        location.reload();
+                    });
+                })
+                .catch(error => {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Gagal!',
+                        text: error.message || 'Terjadi kesalahan saat menolak peminjaman'
+                    });
+                });
+            }
+        });
+    }
+
     </script>
     @endpush
     <style>

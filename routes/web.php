@@ -42,6 +42,8 @@ Route::middleware('auth')->group(function () {
         Route::get('/cetak-bukti/{id}', [PeminjamanController::class, 'cetakBukti'])->name('cetak.bukti');
         Route::get('/scan-qr', [PeminjamanController::class, 'scanQR'])->name('scan-qr');
         Route::post('/process-qr', [PeminjamanController::class, 'processQR'])->name('process-qr');
+        Route::put('/peminjaman/{id}/konfirmasi', [PeminjamanController::class, 'konfirmasiPeminjaman'])->name('peminjaman.konfirmasi');
+        Route::put('/peminjaman/{id}/tolak', [PeminjamanController::class, 'tolakPeminjaman'])->name('peminjaman.tolak');
     });
 
     Route::middleware(['can.access.todolist'])->group(function() {
