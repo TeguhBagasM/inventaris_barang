@@ -238,7 +238,8 @@ class PeminjamanController extends Controller
     {
         $title = 'Detail Peminjaman';
         $details = Peminjaman::where('user_id', Auth::id())
-            ->with('barang')
+            ->with(['detailPeminjamans.barang'])
+            ->orderBy('created_at', 'desc')
             ->paginate(12); 
 
         return view('pages.peminjamanBarang.detailPeminjaman', compact('title', 'details'));

@@ -29,46 +29,58 @@
                                     <thead>
                                         <tr>
                                             <th class="text-uppercase text-dark text-sm font-weight-bolder">No</th>
-                                            <th class="text-uppercase text-dark text-sm font-weight-bolder">Nama Barang</th>
-                                            <th class="text-uppercase text-dark text-sm font-weight-bolder">Jumlah Peminjaman</th>
-                                            <th class="text-uppercase text-dark text-sm font-weight-bolder">Tanggal Di Pinjam</th>
+                                            <th class="text-uppercase text-dark text-sm font-weight-bolder">Tanggal Peminjaman</th>
+                                            <th class="text-uppercase text-dark text-sm font-weight-bolder">Total Barang</th>
                                             <th class="text-uppercase text-dark text-sm font-weight-bolder">Status</th>
+                                            <th class="text-uppercase text-dark text-sm font-weight-bolder">Aksi</th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        @foreach ($details as $detail)
-                                            <tr class="ps-2">
+                                        @foreach ($details as $peminjaman)
+                                            <tr>
                                                 <td>
-                                                    <div class="d-flex px-2 py-1">
-                                                        <h6 class="ps-2 text-secondary text-sm font-weight-bold">
-                                                            {{ $loop->iteration }}</h6>
-                                                    </div>
+                                                    <h6 class="text-secondary text-sm font-weight-bold ps-2">
+                                                        {{ $loop->iteration }}
+                                                    </h6>
                                                 </td>
                                                 <td>
-                                                    <div class="d-flex px-2 py-1">
-                                                        <h6 class="text-secondary text-sm font-weight-bold ps-2">
-                                                            {{ $detail->barang->nama }}</h6>
-                                                    </div>
+                                                    <h6 class="text-secondary text-sm font-weight-bold ps-2">
+                                                        {{ \Carbon\Carbon::parse($peminjaman->tanggal_peminjaman)->translatedFormat('l, d F Y') }}
+                                                    </h6>
                                                 </td>
                                                 <td>
-                                                    <div class="d-flex px-2 py-1">
-                                                        <h6 class="text-secondary text-sm font-weight-bold ps-2">
-                                                            {{ $detail->jumlah }}</h6>
-                                                    </div>
+                                                    <h6 class="text-secondary text-sm font-weight-bold ps-2">
+                                                        {{ $peminjaman->detailPeminjamans->sum('jumlah') }} Barang
+                                                    </h6>
                                                 </td>
                                                 <td>
-                                                    <div class="d-flex px-2 py-1">
-                                                        <h6 class="text-secondary text-sm font-weight-bold ps-2">
-                                                            {{ \Carbon\Carbon::parse($detail->tanggal_dipinjam)->translatedFormat('l, d F Y') }}
-                                                        </h6>
-                                                    </div>
+                                                    @switch($peminjaman->status)
+                                                        @case('menunggu konfirmasi')
+                                                            <span class="badge bg-secondary">Menunggu Konfirmasi</span>
+                                                            @break
+                                                        @case('dipinjam')
+                                                            <span class="badge bg-warning">Dipinjam</span>
+                                                            @break
+                                                        @case('ditolak')
+                                                            <span class="badge bg-danger">Ditolak</span>
+                                                            @break
+                                                        @case('selesai')
+                                                            <span class="badge bg-success">Selesai</span>
+                                                            @break
+                                                    @endswitch
                                                 </td>
                                                 <td>
-                                                    <div class="d-flex px-2 py-1">
-                                                        @if ($detail->masuk)
-                                                            <span class="badge bg-success">Di Kembalikan</span>
-                                                        @else
-                                                            <span class="badge bg-warning text-dark">Di Pinjam</span>
+                                                    <div class="d-flex">
+                                                        <a href="{{ route('peminjaman.detail', $peminjaman->id) }}" 
+                                                           class="btn btn-info btn-sm me-2 ps-3 pe-3">
+                                                            <i class="fas fa-eye me-1" style="font-size: 14px"></i> Detail
+                                                        </a>
+                                                        
+                                                        @if($peminjaman->status == 'ditolak')
+                                                            <a href="{{ route('admin.pinjam', ['ajukan_ulang' => $peminjaman->id]) }}" 
+                                                               class="btn btn-warning btn-sm">
+                                                                <i class="fas fa-redo" style="font-size: 14px"></i> Ajukan Ulang
+                                                            </a>
                                                         @endif
                                                     </div>
                                                 </td>

@@ -76,6 +76,7 @@ Route::middleware('auth')->group(function () {
         Route::get('/peminjaman', [PeminjamanController::class, 'index']);
         Route::get('/detailPeminjaman', [PeminjamanController::class, 'detail']);
         Route::post('/pinjam', [PeminjamanController::class, 'pinjam'])->name('pinjam');
+        Route::get('/peminjaman/detail/{id}', [PeminjamanController::class, 'detailPeminjamanSpesifik'])->name('peminjaman.detail');
     });
 
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
