@@ -88,12 +88,12 @@
                                             <td>
                                                 @if ($log->status == 'menunggu konfirmasi')
                                                 <a href="#" onclick="konfirmasiPeminjaman({{ $log->id }})"
-                                                    class="btn bg-gradient-success text-white btn-sm ps-3 pe-3">Konfirmasi</a>
+                                                    class="btn bg-gradient-success text-white btn-sm ps-3 pe-3"><i class="fas fa-check-circle me-2" style="font-size: 11px"></i>Konfirmasi</a>
                                                  <a href="#" onclick="tolakPeminjaman({{ $log->id }})"
-                                                    class="btn bg-gradient-danger text-white btn-sm ps-3 pe-3">Tolak</a>
+                                                    class="btn bg-gradient-danger text-white btn-sm ps-3 pe-3"><i class="fas fa-times-circle me-2" style="font-size: 11px"></i>Tolak</a>
                                                 @elseif ($log->status == 'dipinjam')
                                                 <a href="{{ route('pengembalian.form', $log->id) }}"
-                                                   class="btn bg-gradient-orange text-white btn-sm ps-3 pe-3">Kembalikan</a>
+                                                   class="btn bg-gradient-orange text-white btn-sm ps-3 pe-3"><i class="fas fa-undo-alt me-2" style="font-size: 11px"></i>Kembalikan</a>
                                                 <a href="{{ route('cetak.bukti', ['id' => $log->id]) }}"
                                                       class="text-white btn btn-info btn-sm ps-3 pe-3" target="_blank"><i class="fas fa-print me-2" style="font-size: 11px"></i>Cetak</a>
                                                 @endif
