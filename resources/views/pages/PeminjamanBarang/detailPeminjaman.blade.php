@@ -7,7 +7,7 @@
                     <div class="card-header pb-0">
                         <div class="d-flex justify-content-between">
                             <div>
-                                <h4 class="">Detail Peminjaman Barang</h4>
+                                <h4 class="">Data Peminjaman Barang</h4>
                             </div>
                         </div>
                         <hr class="bg-dark px-auto">
@@ -76,12 +76,12 @@
                                                             <i class="fas fa-eye me-1" style="font-size: 14px"></i> Detail
                                                         </a>
                                                         
-                                                        @if($peminjaman->status == 'ditolak')
+                                                        {{-- @if($peminjaman->status == 'ditolak')
                                                             <a href="{{ route('admin.pinjam', ['ajukan_ulang' => $peminjaman->id]) }}" 
                                                                class="btn btn-warning btn-sm">
                                                                 <i class="fas fa-redo" style="font-size: 14px"></i> Ajukan Ulang
                                                             </a>
-                                                        @endif
+                                                        @endif --}}
                                                     </div>
                                                 </td>
                                             </tr>

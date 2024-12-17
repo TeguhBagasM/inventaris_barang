@@ -236,13 +236,23 @@ class PeminjamanController extends Controller
 
     public function detail()
     {
-        $title = 'Detail Peminjaman';
+        $title = 'Data Peminjaman';
         $details = Peminjaman::where('user_id', Auth::id())
             ->with(['detailPeminjamans.barang'])
             ->orderBy('created_at', 'desc')
             ->paginate(12); 
 
         return view('pages.peminjamanBarang.detailPeminjaman', compact('title', 'details'));
+    }
+
+    public function detailPeminjamanSpesifik($id)
+    {
+        $title = 'Detail Peminjaman Spesifik';
+        $peminjaman = Peminjaman::with('detailPeminjamans.barang')
+            ->where('user_id', Auth::id())
+            ->findOrFail($id);
+    
+        return view('pages.peminjamanBarang.detailPeminjamanSpesifik', compact('title', 'peminjaman'));
     }
 
     public function cetak()
