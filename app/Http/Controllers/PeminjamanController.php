@@ -455,9 +455,19 @@ class PeminjamanController extends Controller
             ], 500);
         }
     }
-    
-    public function tolakPeminjaman($id)
+    public function konfirmasiTolak($id)
     {
+        $title = 'Form Tolak Peminjaman';
+        $peminjaman = Peminjaman::findOrFail($id);
+        return view('pages.PeminjamanBarang.konfirmasi-tolak', compact('title', 'peminjaman'));
+    }
+    
+    public function tolakPeminjaman(Request $request, $id)
+    {
+        $request->validate([
+            'keterangan' => 'required|string|max:255'
+        ]);
+    
         DB::beginTransaction();
         try {
             $peminjaman = Peminjaman::findOrFail($id);
@@ -468,7 +478,8 @@ class PeminjamanController extends Controller
             }
     
             $peminjaman->update([
-                'status' => 'ditolak'
+                'status' => 'ditolak',
+                'keterangan' => $request->keterangan
             ]);
     
             $peminjaman->detailPeminjamans()->update([
@@ -477,14 +488,13 @@ class PeminjamanController extends Controller
     
             DB::commit();
     
-            return response()->json([
-                'message' => 'Peminjaman berhasil ditolak'
-            ], 200);
+            session()->flash('status', 'success');
+            session()->flash('message', 'Peminjaman berhasil ditolak');
+
+            return redirect()->route('log.peminjaman');
         } catch (\Exception $e) {
             DB::rollBack();
-            return response()->json([
-                'message' => 'Gagal menolak peminjaman: ' . $e->getMessage()
-            ], 500);
+            return back()->with('error', 'Gagal menolak peminjaman: ' . $e->getMessage());
         }
     }
 }

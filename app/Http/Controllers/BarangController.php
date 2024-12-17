@@ -6,6 +6,7 @@ use App\Models\Barang;
 use App\Models\Kategori;
 use Illuminate\Http\Request;
 use App\Models\DetailPeminjaman;
+use App\Models\Peminjaman;
 use App\Models\Ruang;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Support\Facades\DB;
@@ -135,18 +136,25 @@ class BarangController extends Controller
     }
 
     public function show(Barang $barang)
-    {
-        $barang->load('kategori', 'ruang');
-        $title = 'Detail Asset';
+{
+    $barang->load('kategori', 'ruang');
+    $title = 'Detail Asset';
 
-        // Ambil detail peminjaman, kemudian grup berdasarkan user_id dan hitung jumlahnya
-        $detail = DetailPeminjaman::select('user_id', DB::raw('SUM(jumlah) as total_peminjaman'))
-            ->where('barang_id', $barang->id)
-            ->groupBy('user_id')
-            ->get();
+    $detail = Peminjaman::with(['user', 'detailPeminjamans' => function($query) use ($barang) {
+        $query->where('barang_id', $barang->id);
+    }])
+    ->whereHas('detailPeminjamans', function($query) use ($barang) {
+        $query->where('barang_id', $barang->id);
+    })
+    ->select('peminjamans.user_id')
+    ->selectRaw('SUM(detail_peminjamans.jumlah) as total_peminjaman')
+    ->join('detail_peminjamans', 'peminjamans.id', '=', 'detail_peminjamans.peminjaman_id')
+    ->where('detail_peminjamans.barang_id', $barang->id)
+    ->groupBy('peminjamans.user_id')
+    ->get();
 
-        return view('pages.Barang.detail-barang', compact('barang', 'title', 'detail'));
-    }
+    return view('pages.Barang.detail-barang', compact('barang', 'title', 'detail'));
+}
 
 
     /**

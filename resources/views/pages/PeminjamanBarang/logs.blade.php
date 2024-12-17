@@ -89,7 +89,7 @@
                                                 @if ($log->status == 'menunggu konfirmasi')
                                                 <a href="#" onclick="konfirmasiPeminjaman({{ $log->id }})"
                                                     class="btn bg-gradient-success text-white btn-sm ps-3 pe-3"><i class="fas fa-check-circle me-2" style="font-size: 11px"></i>Konfirmasi</a>
-                                                 <a href="#" onclick="tolakPeminjaman({{ $log->id }})"
+                                                 <a href="{{ route('peminjaman.konfirmasi-tolak', $log->id) }}"
                                                     class="btn bg-gradient-danger text-white btn-sm ps-3 pe-3"><i class="fas fa-times-circle me-2" style="font-size: 11px"></i>Tolak</a>
                                                 @elseif ($log->status == 'dipinjam')
                                                 <a href="{{ route('pengembalian.form', $log->id) }}"
@@ -159,48 +159,6 @@
                         icon: 'error',
                         title: 'Gagal!',
                         text: error.message || 'Terjadi kesalahan saat mengkonfirmasi peminjaman'
-                    });
-                });
-            }
-        });
-    }
-
-    function tolakPeminjaman(id) {
-        Swal.fire({
-            title: 'Tolak Peminjaman',
-            text: 'Apakah Anda yakin ingin menolak peminjaman ini?',
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonColor: '#dc3545',
-            cancelButtonColor: '#6c757d',
-            confirmButtonText: 'Ya, Tolak',
-            cancelButtonText: 'Batal'
-        }).then((result) => {
-            if (result.isConfirmed) {
-                fetch(`/peminjaman/${id}/tolak`, {
-                    method: 'PUT',
-                    headers: {
-                        'X-CSRF-TOKEN': '{{ csrf_token() }}',
-                        'Content-Type': 'application/json'
-                    }
-                })
-                .then(response => response.json())
-                .then(data => {
-                    Swal.fire({
-                        icon: 'success',
-                        title: 'Berhasil!',
-                        text: data.message,
-                        showConfirmButton: false,
-                        timer: 3000
-                    }).then(() => {
-                        location.reload();
-                    });
-                })
-                .catch(error => {
-                    Swal.fire({
-                        icon: 'error',
-                        title: 'Gagal!',
-                        text: error.message || 'Terjadi kesalahan saat menolak peminjaman'
                     });
                 });
             }

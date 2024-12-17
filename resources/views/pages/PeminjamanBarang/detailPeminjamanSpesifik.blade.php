@@ -4,7 +4,7 @@
         <div class="row justify-content-center">
             <div class="col-md-8">
                 <div class="card shadow-lg border-0">
-                    <div class="card-header bg-blue text-white d-flex justify-content-between align-items-center">
+                    <div class="card-header bg-gradient-info text-white d-flex justify-content-between align-items-center">
                         <h4 class="mb-0">Detail Peminjaman Barang</h4>
                         <a href="/detailPeminjaman" class="btn btn-outline-light">
                             <i class="fas fa-arrow-left me-2"></i>Kembali

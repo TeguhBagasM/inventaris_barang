@@ -20301,7 +20301,7 @@ fieldset:disabled .btn {
 }
 
 .alert-warning {
-    background-image: linear-gradient(310deg, #f53939 0%, #fac60b 100%);
+    background-color: #fac60b;
 }
 
 .alert-danger {
