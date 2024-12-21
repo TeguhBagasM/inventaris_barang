@@ -118,7 +118,7 @@ class TodoListController extends Controller
     {
         try {
             $todo = ToDoList::where('id', $id)
-                            ->where('user_id', Auth::id())
+                            // ->where('user_id', Auth::id())
                             ->firstOrFail();
             $todo->delete();
 
