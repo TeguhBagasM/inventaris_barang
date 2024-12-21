@@ -89,7 +89,7 @@
                                                 @if ($log->status == 'menunggu konfirmasi')
                                                 <a href="#" onclick="konfirmasiPeminjaman({{ $log->id }})"
                                                     class="btn bg-gradient-success text-white btn-sm ps-3 pe-3"><i class="fas fa-check-circle me-2" style="font-size: 11px"></i>Konfirmasi</a>
-                                                 <a href="{{ route('peminjaman.konfirmasi-tolak', $log->id) }}"
+                                                 <a href="{{ route('peminjaman.tolak', $log->id) }}"
                                                     class="btn bg-gradient-danger text-white btn-sm ps-3 pe-3"><i class="fas fa-times-circle me-2" style="font-size: 11px"></i>Tolak</a>
                                                 @elseif ($log->status == 'dipinjam')
                                                 <a href="{{ route('pengembalian.form', $log->id) }}"
