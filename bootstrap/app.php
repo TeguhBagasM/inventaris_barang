@@ -3,6 +3,7 @@
 use App\Http\Middleware\CanAccessBarang;
 use App\Http\Middleware\CanAccessBhp;
 use App\Http\Middleware\CanAccessLogPeminjaman;
+use App\Http\Middleware\CanAccessPermintaan;
 use App\Http\Middleware\CanAccessPinjam;
 use App\Http\Middleware\CanAccessTodolist;
 use App\Http\Middleware\IsAdmin;
@@ -29,6 +30,7 @@ return Application::configure(basePath: dirname(__DIR__))
             'can.access.log' => CanAccessLogPeminjaman::class,
             'can.access.todolist' => CanAccessTodolist::class,
             'can.access.pinjam' => CanAccessPinjam::class,
+            'can.access.permintaan' => CanAccessPermintaan::class,
             'guru' => isGuru::class,
         ]);
     })
