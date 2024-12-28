@@ -96,9 +96,77 @@ class PermintaanController extends Controller
             ], 500);
         }
     }
+    public function mintaAdmin(Request $request)
+    {
+        try {
+            $validator = Validator::make($request->all(), [
+                'user_id' => 'required|exists:users,id',
+                'tanggal_minta' => 'required|date',
+                'keterangan' => 'nullable|string',
+                'bhps' => 'required|array|min:1',
+                'bhps.*.bhp_id' => 'required|exists:bhps,id',
+                'bhps.*.jumlah' => 'required|integer|min:1'
+            ]);
+
+            if ($validator->fails()) {
+                return response()->json([
+                    'status' => false,
+                    'message' => 'Validasi gagal',
+                    'errors' => $validator->errors()
+                ], 422);
+            }
+
+            $errors = [];
+            foreach ($request->bhps as $item) {
+                $bhp = Bhp::find($item['bhp_id']);
+                if ($item['jumlah'] > $bhp->stok) {
+                    $errors[] = "Stok {$bhp->nama} tidak mencukupi. Stok tersedia: {$bhp->stok}";
+                }
+            }
+
+            if (!empty($errors)) {
+                return response()->json([
+                    'status' => false,
+                    'message' => 'Validasi stok gagal',
+                    'errors' => $errors
+                ], 422);
+            }
+
+            DB::beginTransaction();
+
+            $barangKeluar = BarangKeluar::create([
+                'user_id' => $request->user_id,
+                'tanggal_minta' => $request->tanggal_minta,
+                'keterangan' => $request->keterangan,
+                'status' => 'diajukan'
+            ]);
+
+            foreach ($request->bhps as $item) {
+                DetailBarangKeluar::create([
+                    'barang_keluar_id' => $barangKeluar->id,
+                    'bhp_id' => $item['bhp_id'],
+                    'jumlah' => $item['jumlah']
+                ]);
+            }
+
+            DB::commit();
+
+            return response()->json([
+                'status' => true,
+                'message' => 'Permintaan BHP berhasil diajukan'
+            ]);
+
+        } catch (\Exception $e) {
+            DB::rollback();
+            return response()->json([
+                'status' => false,
+                'message' => 'Terjadi kesalahan saat memproses permintaan'
+            ], 500);
+        }
+    }
     public function log(Request $request)
     {
-        $title = 'Logs Permintaan BHP';
+        $title = 'Logs Permintaan';
 
         $tanggalMinta = $request->input('tanggal_minta');
 

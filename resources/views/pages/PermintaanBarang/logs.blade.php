@@ -10,7 +10,7 @@
                                 <h4>Logs Permintaan BHP</h4>
                             </div>
                             <div>
-                                <a href="{{ route('permintaan.index') }}" class="mt-2 text-white btn bg-gradient-success me-2">
+                                <a href="{{ route('admin.minta') }}" class="mt-2 text-white btn bg-gradient-success me-2">
                                     <i class="fas fa-plus me-2"></i> Permintaan Baru
                                 </a>
                                 <a href="{{ route('permintaan.cetak') }}" class="mt-2 text-white btn bg-info" target="_blank">

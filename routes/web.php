@@ -65,6 +65,13 @@ Route::middleware('auth')->group(function () {
         Route::resource('kategori', KategoriController::class);
         Route::get('/admin-peminjam', [PeminjamanController::class, 'indexAdmin'])->name('admin.pinjam');
         Route::post('/admin-pinjam', [PeminjamanController::class, 'pinjamAdmin'])->name('admin-pinjam');
+        Route::get('/admin-permintaan', [PermintaanController::class, 'indexAdmin'])->name('admin.minta');
+        Route::post('/admin-minta', [PeminjamanController::class, 'mintaAdmin'])->name('admin-minta');
+        Route::get('/log-permintaan', [PermintaanController::class, 'log'])->name('log.permintaan');
+        Route::get('/permintaan/{id}/konfirmasi-tolak', [PermintaanController::class, 'konfirmasiTolak'])->name('permintaan.konfirmasi-tolak');
+        Route::put('permintaan/{id}/konfirmasi', [PermintaanController::class, 'konfirmasi'])->name('permintaan.konfirmasi');
+        Route::put('permintaan/{id}/tolak', [PermintaanController::class, 'tolak'])->name('permintaan.tolak');
+        Route::get('permintaan/cetak', [PermintaanController::class, 'cetak'])->name('permintaan.cetak');
     });
 
     Route::middleware('guru')->group(function() {
@@ -80,13 +87,9 @@ Route::middleware('auth')->group(function () {
         Route::post('/pinjam', [PeminjamanController::class, 'pinjam'])->name('pinjam');
         Route::get('/peminjaman/detail/{id}', [PeminjamanController::class, 'detailPeminjamanSpesifik'])->name('peminjaman.detail');
     });
-    Route::middleware(['can.access.permintaan'])->group(function() {
-        Route::get('/log-permintaan', [PermintaanController::class, 'log'])->name('log.permintaan');
-        Route::get('/permintaan/{id}/konfirmasi-tolak', [PermintaanController::class, 'konfirmasiTolak'])->name('permintaan.konfirmasi-tolak');
-        Route::put('permintaan/{id}/konfirmasi', [PermintaanController::class, 'konfirmasi'])->name('permintaan.konfirmasi');
-        Route::put('permintaan/{id}/tolak', [PermintaanController::class, 'tolak'])->name('permintaan.tolak');
-        Route::get('permintaan/cetak', [PermintaanController::class, 'cetak'])->name('permintaan.cetak');
-    });
+    // Route::middleware(['can.access.permintaan'])->group(function() {
+        
+    // });
 
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');

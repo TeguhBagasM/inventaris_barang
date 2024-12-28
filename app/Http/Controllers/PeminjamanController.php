@@ -142,7 +142,7 @@ class PeminjamanController extends Controller
             $validatedData = $request->validate([
                 'user_id' => 'required|exists:users,id',
                 'tanggal_peminjaman' => 'required|date',
-                'keterangan' => 'nullable|string|max:255', // Menambahkan validasi untuk field keterangan
+                'keterangan' => 'nullable|string|max:255',
                 'barangs' => 'required|array',
                 'barangs.*.barang_id' => 'required|exists:barangs,id',
                 'barangs.*.jumlah' => [
