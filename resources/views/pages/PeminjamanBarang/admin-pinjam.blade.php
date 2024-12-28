@@ -99,7 +99,6 @@
             @push('scripts')
             <script>
                 $(document).ready(function() {
-                    // Inisialisasi Select2 untuk pemilihan user
                     $('.select2-users').select2({
                         placeholder: 'Pilih Peminjam',
                         allowClear: true,
@@ -112,7 +111,6 @@
                         }
                     });
         
-                    // Inisialisasi Select2 untuk pemilihan barang
                     $('.select2-barang').select2({
                         placeholder: 'Pilih Barang',
                         allowClear: true,

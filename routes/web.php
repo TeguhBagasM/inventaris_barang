@@ -66,7 +66,7 @@ Route::middleware('auth')->group(function () {
         Route::get('/admin-peminjam', [PeminjamanController::class, 'indexAdmin'])->name('admin.pinjam');
         Route::post('/admin-pinjam', [PeminjamanController::class, 'pinjamAdmin'])->name('admin-pinjam');
         Route::get('/admin-permintaan', [PermintaanController::class, 'indexAdmin'])->name('admin.minta');
-        Route::post('/admin-minta', [PeminjamanController::class, 'mintaAdmin'])->name('admin-minta');
+        Route::post('/admin-minta', [PermintaanController::class, 'mintaAdmin'])->name('admin-minta');
         Route::get('/log-permintaan', [PermintaanController::class, 'log'])->name('log.permintaan');
         Route::get('/permintaan/{id}/konfirmasi-tolak', [PermintaanController::class, 'konfirmasiTolak'])->name('permintaan.konfirmasi-tolak');
         Route::put('permintaan/{id}/konfirmasi', [PermintaanController::class, 'konfirmasi'])->name('permintaan.konfirmasi');

@@ -30,9 +30,9 @@
                             @csrf
                             <div class="row">
                                 <div class="col-md-6 mb-3">
-                                    <label for="user_id" class="form-label">Pilih Peminjam</label>
+                                    <label for="user_id" class="form-label">Pilih Peminta</label>
                                     <select class="form-select select2-users" id="user_id" name="user_id" required>
-                                        <option value="">Pilih Peminjam</option>
+                                        <option value="">Pilih Peminta</option>
                                         @foreach ($users as $user)
                                             <option value="{{ $user->id }}">
                                                 {{ $user->name }} - {{ ucfirst($user->level) }}
@@ -49,7 +49,7 @@
                             <div class="row">
                                 <div class="col-md-4 mb-3">
                                     <label for="bhp_id" class="form-label">BHP</label>
-                                    <select class="form-select select2" id="bhp_id" name="bhp_id" required>
+                                    <select class="form-select select2-bhp" id="bhp_id" name="bhp_id" required>
                                         <option value="">Pilih BHP</option>
                                         @foreach ($bhps as $bhp)
                                             <option value="{{ $bhp->id }}" 
@@ -106,12 +106,28 @@
     @push('scripts')
     <script>
         $(document).ready(function() {
-            $('.select2').select2({
-                placeholder: 'Pilih BHP',
-                allowClear: true,
-                width: '100%',
-                theme: 'bootstrap-5'
-            });
+            $('.select2-users').select2({
+                        placeholder: 'Pilih Peminta',
+                        allowClear: true,
+                        width: '100%',
+                        theme: 'bootstrap-5',
+                        language: {
+                            noResults: function() {
+                                return "Data tidak ditemukan";
+                            }
+                        }
+                    });
+                    $('.select2-bhp').select2({
+                        placeholder: 'Pilih BHP',
+                        allowClear: true,
+                        width: '100%',
+                        theme: 'bootstrap-5',
+                        language: {
+                            noResults: function() {
+                                return "Data tidak ditemukan";
+                            }
+                        }
+                    });
 
             let bhpDiminta = [];
 
@@ -187,11 +203,11 @@
 
             $('#submitPermintaan').click(function() {
                 $.ajax({
-                    url: '{{ route("permintaan.store") }}',
+                    url: '{{ route("admin-minta") }}',
                     method: 'POST',
                     data: {
                         _token: $('input[name="_token"]').val(),
-                        user_id: $('input[name="user_id"]').val(),
+                        user_id: $('#user_id').val(),
                         tanggal_minta: $('#tanggal_minta').val(),
                         keterangan: $('#keterangan').val(),
                         bhps: bhpDiminta
@@ -203,7 +219,7 @@
                             text: response.message,
                         }).then((result) => {
                             if (result.isConfirmed) {
-                                window.location.href = '{{ route("permintaan.index") }}';
+                                window.location.href = '{{ route("log.permintaan") }}';
                             }
                         });
                     },

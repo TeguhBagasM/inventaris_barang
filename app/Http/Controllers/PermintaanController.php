@@ -98,72 +98,91 @@ class PermintaanController extends Controller
     }
     public function mintaAdmin(Request $request)
     {
+        DB::beginTransaction();
         try {
-            $validator = Validator::make($request->all(), [
+            $validatedData = $request->validate([
                 'user_id' => 'required|exists:users,id',
                 'tanggal_minta' => 'required|date',
-                'keterangan' => 'nullable|string',
-                'bhps' => 'required|array|min:1',
+                'keterangan' => 'nullable|string|max:255',
+                'bhps' => 'required|array',
                 'bhps.*.bhp_id' => 'required|exists:bhps,id',
-                'bhps.*.jumlah' => 'required|integer|min:1'
+                'bhps.*.jumlah' => [
+                    'required', 
+                    'integer', 
+                    'min:1',
+                    function ($attribute, $value, $fail) {
+                        preg_match('/bhps\.(\d+)\.jumlah/', $attribute, $matches);
+                        $index = $matches[1];
+                        $bhpId = request('bhps')[$index]['bhp_id'];
+    
+                        $bhp = Bhp::find($bhpId);
+    
+                        if ($value > $bhp->stok) {
+                            $fail("Stok BHP {$bhp->nama} tidak mencukupi. Tersedia: {$bhp->stok}");
+                        }
+                    }
+                ],
+            ], [
+                'user_id.required' => 'Silakan pilih pengguna',
+                'user_id.exists' => 'Pengguna tidak valid',
+                'tanggal_minta.required' => 'Tanggal permintaan harus diisi',
+                'bhps.required' => 'Minimal satu BHP harus dipilih',
+                'keterangan.max' => 'Keterangan tidak boleh lebih dari 255 karakter',
             ]);
-
-            if ($validator->fails()) {
-                return response()->json([
-                    'status' => false,
-                    'message' => 'Validasi gagal',
-                    'errors' => $validator->errors()
-                ], 422);
-            }
-
-            $errors = [];
-            foreach ($request->bhps as $item) {
-                $bhp = Bhp::find($item['bhp_id']);
-                if ($item['jumlah'] > $bhp->stok) {
-                    $errors[] = "Stok {$bhp->nama} tidak mencukupi. Stok tersedia: {$bhp->stok}";
+    
+            $permintaan = BarangKeluar::create([
+                'user_id' => $validatedData['user_id'],
+                'tanggal_minta' => $validatedData['tanggal_minta'],
+                'keterangan' => $validatedData['keterangan'] ?? null,
+                'status' => 'diajukan',
+            ]);
+    
+            $errorMessages = [];
+            foreach ($validatedData['bhps'] as $bhpData) {
+                $bhp = Bhp::findOrFail($bhpData['bhp_id']);
+    
+                if ($bhpData['jumlah'] > $bhp->stok) {
+                    $errorMessages[] = "Stok BHP {$bhp->nama} tidak mencukupi. Tersedia: {$bhp->stok}";
+                    continue;
                 }
-            }
-
-            if (!empty($errors)) {
-                return response()->json([
-                    'status' => false,
-                    'message' => 'Validasi stok gagal',
-                    'errors' => $errors
-                ], 422);
-            }
-
-            DB::beginTransaction();
-
-            $barangKeluar = BarangKeluar::create([
-                'user_id' => $request->user_id,
-                'tanggal_minta' => $request->tanggal_minta,
-                'keterangan' => $request->keterangan,
-                'status' => 'diajukan'
-            ]);
-
-            foreach ($request->bhps as $item) {
+    
+                $bhp->decrement('stok', $bhpData['jumlah']);
+    
                 DetailBarangKeluar::create([
-                    'barang_keluar_id' => $barangKeluar->id,
-                    'bhp_id' => $item['bhp_id'],
-                    'jumlah' => $item['jumlah']
+                    'barang_keluar_id' => $permintaan->id,
+                    'bhp_id' => $bhpData['bhp_id'],
+                    'jumlah' => $bhpData['jumlah'],
                 ]);
             }
-
+    
+            if (!empty($errorMessages)) {
+                DB::rollBack();
+                return response()->json([
+                    'message' => 'Beberapa BHP tidak dapat diproses',
+                    'errors' => $errorMessages
+                ], 422);
+            }
+    
             DB::commit();
-
+    
             return response()->json([
-                'status' => true,
-                'message' => 'Permintaan BHP berhasil diajukan'
-            ]);
-
+                'message' => 'Berhasil Meminta BHP'
+            ], 200);
+    
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            DB::rollBack();
+            return response()->json([
+                'message' => 'Validasi gagal',
+                'errors' => $e->errors()
+            ], 422);
         } catch (\Exception $e) {
-            DB::rollback();
+            DB::rollBack();
             return response()->json([
-                'status' => false,
-                'message' => 'Terjadi kesalahan saat memproses permintaan'
+                'message' => $e->getMessage()
             ], 500);
         }
     }
+    
     public function log(Request $request)
     {
         $title = 'Logs Permintaan';
@@ -237,26 +256,34 @@ class PermintaanController extends Controller
         $request->validate([
             'keterangan' => 'required|string|max:255'
         ]);
-
+    
         DB::beginTransaction();
         try {
-            $barangKeluar = BarangKeluar::findOrFail($id);
-
+            $barangKeluar = BarangKeluar::with('detailBarangKeluars.bhp')->findOrFail($id);
+    
             if ($barangKeluar->status !== 'diajukan') {
                 return back()->with([
                     'status' => 'error',
                     'message' => 'Status permintaan tidak valid untuk ditolak'
                 ]);
             }
-
-            $barangKeluar->status = 'ditolak';
-            $barangKeluar->keterangan = $request->keterangan;
-            $barangKeluar->save();
-
+    
+            // Kembalikan stok BHP
+            foreach ($barangKeluar->detailBarangKeluars as $detail) {
+                $bhp = $detail->bhp;
+                $bhp->increment('stok', $detail->jumlah);
+            }
+    
+            // Update status barang keluar
+            $barangKeluar->update([
+                'status' => 'ditolak',
+                'keterangan' => $request->keterangan
+            ]);
+    
             DB::commit(); 
             session()->flash('status', 'success');
             session()->flash('message', 'Permintaan berhasil ditolak');
-
+    
             return redirect()->route('log.permintaan');
         } catch (\Exception $e) {
             DB::rollBack();
