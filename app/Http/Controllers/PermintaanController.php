@@ -169,11 +169,11 @@ class PermintaanController extends Controller
         $request->validate([
             'keterangan' => 'required|string|max:255'
         ]);
-    
+
         DB::beginTransaction();
         try {
             $barangKeluar = BarangKeluar::findOrFail($id);
-            
+
             if ($barangKeluar->status !== 'diajukan') {
                 return back()->with([
                     'status' => 'error',
@@ -185,18 +185,20 @@ class PermintaanController extends Controller
             $barangKeluar->keterangan = $request->keterangan;
             $barangKeluar->save();
 
-            return back()->with([
-                'status' => 'success',
-                'message' => 'Permintaan BHP berhasil ditolak'
-            ]);
+            DB::commit(); 
+            session()->flash('status', 'success');
+            session()->flash('message', 'Permintaan berhasil ditolak');
 
+            return redirect()->route('log.permintaan');
         } catch (\Exception $e) {
+            DB::rollBack();
             return back()->with([
                 'status' => 'error',
-                'message' => 'Terjadi kesalahan saat menolak permintaan'
+                'message' => 'Terjadi kesalahan saat menolak permintaan: ' . $e->getMessage()
             ]);
         }
     }
+
     public function konfirmasiTolak($id)
     {
         $title = 'Form Tolak Permintaan';

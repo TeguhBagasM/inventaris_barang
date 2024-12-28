@@ -90,10 +90,6 @@
                                                         </a>
                                                         <a href="{{ route('permintaan.konfirmasi-tolak', $log->id) }}"
                                                             class="btn bg-gradient-danger text-white btn-sm ps-3 pe-3"><i class="fas fa-times-circle me-2" style="font-size: 11px"></i>Tolak</a>
-                                                        <a href="{{ route('permintaan.tolak', $log->id) }}"
-                                                            class="btn bg-gradient-danger text-white btn-sm ps-3 pe-3">
-                                                            <i class="fas fa-times-circle me-2" style="font-size: 11px"></i>Tolak lgsg
-                                                        </a>
                                                     @endif
                                                 </td>
                                             </tr>
