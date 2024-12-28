@@ -44,6 +44,7 @@ class PeminjamanController extends Controller
             $validatedData = $request->validate([
                 'user_id' => 'required|exists:users,id',
                 'tanggal_peminjaman' => 'required|date',
+                'keterangan' => 'nullable|string|max:255',
                 'barangs' => 'required|array',
                 'barangs.*.barang_id' => 'required|exists:barangs,id',
                 'barangs.*.jumlah' => [
@@ -67,6 +68,7 @@ class PeminjamanController extends Controller
                 'user_id.exists' => 'Pengguna tidak valid',
                 'tanggal_peminjaman.required' => 'Tanggal peminjaman harus diisi',
                 'barangs.required' => 'Minimal satu barang harus dipilih',
+                'keterangan.max' => 'Keterangan tidak boleh lebih dari 255 karakter', 
             ]);
     
             if (empty($validatedData['user_id'])) {
@@ -84,6 +86,7 @@ class PeminjamanController extends Controller
             $peminjaman = Peminjaman::create([
                 'user_id' => $validatedData['user_id'],
                 'tanggal_peminjaman' => $validatedData['tanggal_peminjaman'],
+                'keterangan' => $validatedData['keterangan'] ?? null,
                 'status' => 'menunggu konfirmasi'
             ]);
     
@@ -166,7 +169,7 @@ class PeminjamanController extends Controller
                 'user_id.exists' => 'Pengguna tidak valid',
                 'tanggal_peminjaman.required' => 'Tanggal peminjaman harus diisi',
                 'barangs.required' => 'Minimal satu barang harus dipilih',
-                'keterangan.max' => 'Keterangan tidak boleh lebih dari 255 karakter', // Menambahkan pesan error
+                'keterangan.max' => 'Keterangan tidak boleh lebih dari 255 karakter', 
             ]);
     
             if (empty($validatedData['user_id'])) {

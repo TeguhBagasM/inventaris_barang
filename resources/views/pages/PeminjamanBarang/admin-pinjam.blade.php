@@ -84,7 +84,10 @@
                                             </tbody>
                                         </table>
                                     </div>
-        
+                                    <div class="mb-3">
+                                        <label for="keterangan" class="form-label">Keterangan</label>
+                                        <textarea class="form-control" id="keterangan" name="keterangan" rows="3"></textarea>
+                                    </div>
                                     <div class="col-12 mt-3">
                                         <button type="button" id="submitPeminjaman" class="btn btn-primary w-100" disabled>
                                             Submit Peminjaman
