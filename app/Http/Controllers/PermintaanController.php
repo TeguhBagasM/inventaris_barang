@@ -269,13 +269,11 @@ class PermintaanController extends Controller
                 ]);
             }
     
-            // Kembalikan stok BHP
             foreach ($barangKeluar->detailBarangKeluars as $detail) {
                 $bhp = $detail->bhp;
                 $bhp->increment('stok', $detail->jumlah);
             }
     
-            // Update status barang keluar
             $barangKeluar->update([
                 'status' => 'ditolak',
                 'keterangan' => $request->keterangan
@@ -316,7 +314,6 @@ class PermintaanController extends Controller
     public function detailSpesifik(BarangKeluar $barangKeluar)
     {
         $title = "Detail Spesifik Permintaan";
-        // Memastikan user hanya bisa melihat permintaannya sendiri
         if ($barangKeluar->user_id !== Auth::id()) {
             abort(403);
         }
@@ -327,7 +324,6 @@ class PermintaanController extends Controller
     {
         $barangKeluar = BarangKeluar::with(['user', 'detailBarangKeluars.bhp'])->get();
         
-        // Pastikan ada data barang keluar
         if ($barangKeluar->isEmpty()) {
             abort(404, 'Data permintaan barang tidak ditemukan.');
         }
