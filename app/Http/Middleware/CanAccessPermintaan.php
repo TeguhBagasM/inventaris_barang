@@ -16,7 +16,7 @@ class CanAccessPermintaan
     public function handle(Request $request, Closure $next): Response
     {
         $level = auth()->user()->level;
-        if (in_array($level, ['guru'])) {
+        if (in_array($level, ['admin', 'petugas 2'])) {
             return $next($request);
         }
         abort(404);

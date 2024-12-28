@@ -96,4 +96,24 @@ class PermintaanController extends Controller
             ], 500);
         }
     }
+    public function log(Request $request)
+    {
+        $title = 'Logs Permintaan BHP';
+
+        $tanggalMinta = $request->input('tanggal_minta');
+
+        $query = BarangKeluar::with(['detailBarangKeluars', 'user']);
+
+        if ($tanggalMinta) {
+            $query->whereDate('tanggal_minta', $tanggalMinta);
+        }
+
+        $logs = $query->orderBy('tanggal_minta', 'desc')->paginate(10);
+
+        foreach ($logs as $log) {
+            $log->total_jumlah = $log->detailBarangKeluars->isEmpty() ? 0 : $log->detailBarangKeluars->sum('jumlah');
+        }
+
+        return view('pages.PermintaanBarang.logs', compact('title', 'logs'));
+    }
 }

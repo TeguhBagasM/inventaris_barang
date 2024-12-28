@@ -79,6 +79,9 @@ Route::middleware('auth')->group(function () {
         Route::post('/pinjam', [PeminjamanController::class, 'pinjam'])->name('pinjam');
         Route::get('/peminjaman/detail/{id}', [PeminjamanController::class, 'detailPeminjamanSpesifik'])->name('peminjaman.detail');
     });
+    Route::middleware(['can.access.permintaan'])->group(function() {
+        Route::get('/log-permintaan', [PeminjamanController::class, 'log'])->name('log.permintaan');
+    });
 
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
