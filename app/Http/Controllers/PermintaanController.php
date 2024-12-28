@@ -116,4 +116,91 @@ class PermintaanController extends Controller
 
         return view('pages.PermintaanBarang.logs', compact('title', 'logs'));
     }
+    public function konfirmasi($id)
+    {
+        try {
+            DB::beginTransaction();
+            
+            $barangKeluar = BarangKeluar::with('detailBarangKeluars.bhp')->findOrFail($id);
+            
+            if ($barangKeluar->status !== 'diajukan') {
+                return response()->json([
+                    'status' => false,
+                    'message' => 'Status permintaan tidak valid untuk dikonfirmasi'
+                ], 422);
+            }
+
+            foreach ($barangKeluar->detailBarangKeluars as $detail) {
+                if ($detail->jumlah > $detail->bhp->stok) {
+                    return response()->json([
+                        'status' => false,
+                        'message' => "Stok {$detail->bhp->nama} tidak mencukupi"
+                    ], 422);
+                }
+            }
+
+            foreach ($barangKeluar->detailBarangKeluars as $detail) {
+                $bhp = $detail->bhp;
+                $bhp->stok -= $detail->jumlah;
+                $bhp->save();
+            }
+
+            $barangKeluar->status = 'disetujui';
+            $barangKeluar->save();
+
+            DB::commit();
+
+            return response()->json([
+                'status' => true,
+                'message' => 'Permintaan BHP berhasil dikonfirmasi'
+            ]);
+
+        } catch (\Exception $e) {
+            DB::rollback();
+            return response()->json([
+                'status' => false,
+                'message' => 'Terjadi kesalahan saat mengkonfirmasi permintaan'
+            ], 500);
+        }
+    }
+
+    public function tolak(Request $request, $id)
+    {
+        $request->validate([
+            'keterangan' => 'required|string|max:255'
+        ]);
+    
+        DB::beginTransaction();
+        try {
+            $barangKeluar = BarangKeluar::findOrFail($id);
+            
+            if ($barangKeluar->status !== 'diajukan') {
+                return back()->with([
+                    'status' => 'error',
+                    'message' => 'Status permintaan tidak valid untuk ditolak'
+                ]);
+            }
+
+            $barangKeluar->status = 'ditolak';
+            $barangKeluar->keterangan = $request->keterangan;
+            $barangKeluar->save();
+
+            return back()->with([
+                'status' => 'success',
+                'message' => 'Permintaan BHP berhasil ditolak'
+            ]);
+
+        } catch (\Exception $e) {
+            return back()->with([
+                'status' => 'error',
+                'message' => 'Terjadi kesalahan saat menolak permintaan'
+            ]);
+        }
+    }
+    public function konfirmasiTolak($id)
+    {
+        $title = 'Form Tolak Permintaan';
+        $permintaan = BarangKeluar::findOrFail($id);
+        return view('pages.PermintaanBarang.konfirmasi-tolak', compact('title', 'permintaan'));
+    }
 }
