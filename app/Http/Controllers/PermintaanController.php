@@ -15,7 +15,7 @@ class PermintaanController extends Controller
 {
     public function index()
     {
-        $title = 'Pemintaan Barang';
+        $title = 'Permintaan Barang';
         $bhps = Bhp::where('stok', '>', 0)->get();
         return view('pages.PermintaanBarang.index', compact('title', 'bhps'));
     }
@@ -48,7 +48,6 @@ class PermintaanController extends Controller
                 ], 422);
             }
 
-            // Validasi stok
             $errors = [];
             foreach ($request->bhps as $item) {
                 $bhp = Bhp::find($item['bhp_id']);
@@ -209,12 +208,23 @@ class PermintaanController extends Controller
 
     public function detailPermintaan()
     {
-        $title = 'Data Permintaan Barang';
+        $title = 'Data Permintaan';
         $details = BarangKeluar::where('user_id', Auth::id())
             ->with(['detailBarangKeluars.bhp'])
             ->orderBy('created_at', 'desc')
             ->paginate(12);
-
+    
         return view('pages.permintaanBarang.detailPermintaan', compact('title', 'details'));
+    }
+    
+    public function detailSpesifik(BarangKeluar $barangKeluar)
+    {
+        $title = "Detail Spesifik Permintaan";
+        // Memastikan user hanya bisa melihat permintaannya sendiri
+        if ($barangKeluar->user_id !== Auth::id()) {
+            abort(403);
+        }
+    
+        return view('pages.permintaanBarang.detailSpesifik', compact('barangKeluar', 'title'));
     }
 }
