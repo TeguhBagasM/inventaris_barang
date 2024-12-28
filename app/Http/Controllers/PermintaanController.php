@@ -7,6 +7,7 @@ use App\Models\Bhp;
 use App\Models\DetailBarangKeluar;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 
@@ -204,5 +205,16 @@ class PermintaanController extends Controller
         $title = 'Form Tolak Permintaan';
         $permintaan = BarangKeluar::findOrFail($id);
         return view('pages.PermintaanBarang.konfirmasi-tolak', compact('title', 'permintaan'));
+    }
+
+    public function detailPermintaan()
+    {
+        $title = 'Data Permintaan Barang';
+        $details = BarangKeluar::where('user_id', Auth::id())
+            ->with(['detailBarangKeluars.bhp'])
+            ->orderBy('created_at', 'desc')
+            ->paginate(12);
+
+        return view('pages.permintaanBarang.detailPermintaan', compact('title', 'details'));
     }
 }

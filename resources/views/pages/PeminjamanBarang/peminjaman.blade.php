@@ -6,7 +6,7 @@
                 <div class="card mb-4 p-4">
                     <div class="card-header pb-0">
                         <div class="d-flex justify-content-between">
-                            <h4 class="">Peminjaman Barang</h4>
+                            <h4 class="">Peminjaman Asset</h4>
                         </div>
                         <hr class="bg-dark px-auto">
                     </div>
@@ -43,9 +43,9 @@
                             </div>
                             <div class="row">
                                 <div class="col-md-4 mb-3">
-                                    <label for="barang_id" class="form-label">Barang</label>
+                                    <label for="barang_id" class="form-label">Asset</label>
                                     <select class="form-select select2" id="barang_id" name="barang_id" required>
-                                        <option value="">Pilih Barang</option>
+                                        <option value="">Pilih Asset</option>
                                         @foreach ($barangs as $barang)
                                             <option value="{{ $barang->id }}" data-nama="{{ $barang->nama }}">
                                                 {{ $barang->nama }}
@@ -79,6 +79,11 @@
                                 </table>
                             </div>
 
+                            <div class="mb-3">
+                                <label for="keterangan" class="form-label">Keterangan</label>
+                                <textarea class="form-control" id="keterangan" name="keterangan" rows="3"></textarea>
+                            </div>
+
                             <div class="col-12 mt-3">
                                 <button type="button" id="submitPeminjaman" class="btn btn-primary w-100" disabled>
                                     Submit Peminjaman
@@ -95,7 +100,7 @@
     <script>
         $(document).ready(function() {
             $('.select2').select2({
-                placeholder: 'Pilih Barang',
+                placeholder: 'Pilih Asset',
                 allowClear: true,
                 width: '100%',
                 theme: 'bootstrap-5'
@@ -193,18 +198,14 @@
                                 location.reload();
                             },
                             error: function(xhr) {
-                                // Handle validation errors
                                 if (xhr.status === 422) {
                                     let errorMessage = xhr.responseJSON.message;
                                     let detailedErrors = '';
                                     
-                                    // Jika ada errors spesifik
                                     if (xhr.responseJSON.errors) {
                                         if (Array.isArray(xhr.responseJSON.errors)) {
-                                            // Error stok barang
                                             detailedErrors = xhr.responseJSON.errors.join('\n');
                                         } else {
-                                            // Error validasi field
                                             detailedErrors = Object.values(xhr.responseJSON.errors).flat().join('\n');
                                         }
                                     }
@@ -216,7 +217,6 @@
                                         html: detailedErrors ? `<div class="text-left">${detailedErrors.replace(/\n/g, '<br>')}</div>` : ''
                                     });
                                 } else {
-                                    // Error umum
                                     Swal.fire({
                                         icon: 'error',
                                         title: 'Gagal!',

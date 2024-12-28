@@ -75,13 +75,6 @@
                                                            class="btn btn-info btn-sm me-2 ps-3 pe-3">
                                                             <i class="fas fa-eye me-1" style="font-size: 14px"></i> Detail
                                                         </a>
-                                                        
-                                                        {{-- @if($peminjaman->status == 'ditolak')
-                                                            <a href="{{ route('admin.pinjam', ['ajukan_ulang' => $peminjaman->id]) }}" 
-                                                               class="btn btn-warning btn-sm">
-                                                                <i class="fas fa-redo" style="font-size: 14px"></i> Ajukan Ulang
-                                                            </a>
-                                                        @endif --}}
                                                     </div>
                                                 </td>
                                             </tr>
