@@ -6,6 +6,7 @@ use App\Models\BarangKeluar;
 use App\Models\Bhp;
 use App\Models\DetailBarangKeluar;
 use App\Models\User;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -322,4 +323,20 @@ class PermintaanController extends Controller
     
         return view('pages.permintaanBarang.detailSpesifik', compact('barangKeluar', 'title'));
     }
+    public function cetakPermintaan()
+    {
+        $barangKeluar = BarangKeluar::with(['user', 'detailBarangKeluars.bhp'])->get();
+        
+        // Pastikan ada data barang keluar
+        if ($barangKeluar->isEmpty()) {
+            abort(404, 'Data permintaan barang tidak ditemukan.');
+        }
+
+        $pdf = Pdf::loadView('pages.pdf.cetak-permintaan', [
+            'barangKeluar' => $barangKeluar
+        ]);
+        
+        return $pdf->stream('laporan-permintaan-'.date('Y-m-d').'.pdf');
+    }
+
 }

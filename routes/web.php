@@ -71,7 +71,7 @@ Route::middleware('auth')->group(function () {
         Route::get('/permintaan/{id}/konfirmasi-tolak', [PermintaanController::class, 'konfirmasiTolak'])->name('permintaan.konfirmasi-tolak');
         Route::put('permintaan/{id}/konfirmasi', [PermintaanController::class, 'konfirmasi'])->name('permintaan.konfirmasi');
         Route::put('permintaan/{id}/tolak', [PermintaanController::class, 'tolak'])->name('permintaan.tolak');
-        Route::get('permintaan/cetak', [PermintaanController::class, 'cetak'])->name('permintaan.cetak');
+        Route::get('/cetak-permintaan', [PermintaanController::class, 'cetakPermintaan'])->name('permintaan.cetak');
     });
 
     Route::middleware('guru')->group(function() {
