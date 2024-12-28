@@ -36,11 +36,19 @@
         </li>
         @elseif (auth()->user()->level == 'guru')
         <li class="nav-item">
-          <a class="nav-link {{ $title == 'Peminjaman Barang' ? 'active' : '' }}" href="/peminjaman">
+          <a class="nav-link {{ $title == 'Peminjaman Asset' ? 'active' : '' }}" href="/peminjaman">
             <div class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
               <i class="fas fa-tools text-dark"></i>
             </div>
-            <span class="nav-link-text ms-1">Peminjam Barang</span>
+            <span class="nav-link-text ms-1">Peminjam Asset</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link {{ $title == 'Permintaan Barang' ? 'active' : '' }}" href="/peminjaman">
+            <div class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
+              <i class="fas fa-tools text-dark"></i>
+            </div>
+            <span class="nav-link-text ms-1">Permintaan Barang</span>
           </a>
         </li>
         <li class="nav-item">
@@ -73,6 +81,14 @@
               <i class="fas fa-history text-dark"></i>
             </div>
             <span class="nav-link-text ms-1">Logs Peminjaman</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link {{ $title == 'Logs Permintaan' ? 'active' : '' }}" href="/log-peminjaman">
+            <div class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
+              <i class="fas fa-history text-dark"></i>
+            </div>
+            <span class="nav-link-text ms-1">Logs Permintaan</span>
           </a>
         </li>
         @elseif (auth()->user()->level == 'petugas 3')
@@ -131,6 +147,14 @@
               <i class="fas fa-history text-dark"></i>
             </div>
             <span class="nav-link-text ms-1">Logs Peminjaman</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link {{ $title == 'Logs Permintaan' ? 'active' : '' }}" href="/log-permintaan">
+            <div class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
+              <i class="fas fa-history text-dark"></i>
+            </div>
+            <span class="nav-link-text ms-1">Logs Permintaan</span>
           </a>
         </li>
         <li class="nav-item mt-3">

@@ -24,14 +24,14 @@ class PeminjamanController extends Controller
 {
     public function index()
     {
-        $title = 'Peminjaman Barang';
+        $title = 'Peminjaman Asset';
         $barangs = Barang::where('stok', '>', 0)->get();
         return view('pages.PeminjamanBarang.peminjaman', compact('title', 'barangs'));
     }
 
     public function indexAdmin()
     {
-        $title = 'Peminjaman Barang';
+        $title = 'Peminjaman Asset';
         $barangs = Barang::where('stok', '>', 0)->get();
         $users = User::whereIn('level', ['siswa', 'guru'])->get();
         return view('pages.PeminjamanBarang.admin-pinjam', compact('barangs', 'users', 'title'));
