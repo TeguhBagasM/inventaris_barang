@@ -5,15 +5,37 @@ namespace App\Http\Controllers;
 use App\Models\Gedung;
 use App\Models\Ruang;
 use Illuminate\Http\Request;
+use Yajra\DataTables\Facades\DataTables;
 
 class RuangController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
+        if ($request->ajax()) {
+            $ruangs = Ruang::with('gedung')->select(['id', 'nama_ruang', 'ukuran', 'kondisi', 'peruntukkan', 'gedung_id']);
+    
+            return DataTables::of($ruangs)
+                ->addIndexColumn()
+                ->addColumn('gedung', function ($row) {
+                    return $row->gedung->nama_gedung ?? '-';
+                })
+                ->addColumn('aksi', function ($row) {
+                    $editBtn = '<a href="'.route('ruang.edit', $row->id).'" class="btn bg-gradient-dark btn-sm">
+                                    <i class="fa-solid fa-pencil" style="font-size: 14px"></i>
+                                </a>';
+                    $deleteBtn = '<button class="btn btn-sm bg-gradient-danger" onclick="confirmDelete('.$row->id.')">
+                                    <i class="fa-solid fa-trash" style="font-size: 14px"></i>
+                                </button>';
+                    return $editBtn . ' ' . $deleteBtn;
+                })
+                ->rawColumns(['aksi']) // Jika ada HTML di kolom
+                ->make(true);
+        }
+    
         $title = 'Kelola Ruangan';
-        $ruangs = Ruang::with('gedung')->latest()->get();
-        return view('pages.ruang.index', compact('ruangs', 'title'));
+        return view('pages.ruang.index', compact('title'));
     }
+    
 
     public function create()
     {
