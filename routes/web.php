@@ -36,6 +36,7 @@ Route::middleware('auth')->group(function () {
 
     Route::middleware(['can.access.log'])->group(function() {
         Route::get('/log-peminjaman', [PeminjamanController::class, 'log'])->name('log.peminjaman');
+        Route::get('/log-permintaan', [PermintaanController::class, 'log'])->name('log.permintaan');
         Route::get('/pengembalian/{id}/form', [PeminjamanController::class, 'showPengembalianForm'])->name('pengembalian.form');
         Route::post('/pengembalian/{id}/process', [PeminjamanController::class, 'processPengembalian'])->name('pengembalian.process');
         Route::get('/cetak-logs', [PeminjamanController::class, 'cetak'])->name('peminjaman.cetak');
