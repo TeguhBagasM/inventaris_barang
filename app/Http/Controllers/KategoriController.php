@@ -36,10 +36,8 @@ class KategoriController extends Controller
             'nama' => 'required|max:255|unique:kategoris,nama',
         ]);
 
-        $newName = null; // inisialisasi $newName untuk penanganan gambar
+        $newName = null; 
 
-
-        // Simpan data lokasi ke dalam tabel 'lokasis'
         $kategori = Kategori::create([
             'nama' => $request->nama,
         ]);

@@ -34,7 +34,6 @@ class GedungController extends Controller
 
     public function store(Request $request)
     {
-        // Validasi input
         $validated = $request->validate([
             'nama_gedung' => 'required|string|max:255',
             'luas_gedung' => 'required|numeric',
@@ -46,7 +45,6 @@ class GedungController extends Controller
         ]);
 
         try {
-            // Handle upload gambar
             if ($request->hasFile('gambar') && $request->file('gambar')->isValid()) {
                 $gambar = $request->file('gambar');
                 $timestamp = date('dmYHis');
@@ -70,7 +68,6 @@ class GedungController extends Controller
             return redirect()->route('gedung.index');
 
         } catch (\Exception $e) {
-            // Jika terjadi error, hapus file yang sudah terupload (jika ada)
             if (isset($fileName) && Storage::disk('public')->exists('gedung-images/' . $fileName)) {
                 Storage::disk('public')->delete('gedung-images/' . $fileName);
             }
@@ -103,9 +100,7 @@ class GedungController extends Controller
         ]);
     
         try {
-            // Jika ada file gambar baru yang diupload
             if ($request->hasFile('gambar') && $request->file('gambar')->isValid()) {
-                // Hapus gambar lama jika ada
                 if ($gedung->gambar) {
                     Storage::disk('public')->delete($gedung->gambar);
                 }
@@ -118,19 +113,16 @@ class GedungController extends Controller
                 $path = $gambar->storeAs('gedung-images', $fileName, 'public');
                 $validated['gambar'] = $path;
             }
-            // Jika nama gedung berubah dan ada gambar lama, rename file gambar
             elseif ($gedung->nama_gedung !== $request->nama_gedung && $gedung->gambar) {
                 $oldPath = $gedung->gambar;
                 $extension = pathinfo($oldPath, PATHINFO_EXTENSION);
                 
-                // Ambil timestamp dari nama file lama atau generate baru jika tidak ada
                 $oldNameParts = explode('-', pathinfo($oldPath, PATHINFO_FILENAME));
                 $timestamp = count($oldNameParts) > 1 ? end($oldNameParts) : date('dmYHis');
                 
                 $newFileName = Str::slug($request->nama_gedung) . '-' . $timestamp . '.' . $extension;
                 $newPath = 'gedung-images/' . $newFileName;
                 
-                // Rename file di storage
                 if (Storage::disk('public')->exists($oldPath)) {
                     Storage::disk('public')->move($oldPath, $newPath);
                     $validated['gambar'] = $newPath;
@@ -161,14 +153,12 @@ class GedungController extends Controller
 
     public function destroy(Gedung $gedung)
     {
-        // Hapus gambar terkait jika ada
         if ($gedung->gambar) {
             Storage::disk('public')->delete($gedung->gambar);
         }
         
         $gedung->delete();
 
-        // Return JSON response instead of redirect
         return response()->json([
             'message' => 'Gedung berhasil dihapus!',
             'success' => true

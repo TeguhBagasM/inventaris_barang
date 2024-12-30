@@ -36,7 +36,6 @@ class RuangController extends Controller
         $ruang = Ruang::create($validated);
 
         if ($ruang) {
-            // Update jumlah ruang di gedung
             $gedung = Gedung::find($request->gedung_id);
             $gedung->increment('jumlah_ruang');
             
