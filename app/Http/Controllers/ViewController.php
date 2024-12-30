@@ -36,7 +36,6 @@ class ViewController extends Controller
             ->orderBy('month')
             ->get();
 
-        // Tambahkan query untuk data distribusi barang per ruangan
         $ruangData = DB::table('ruangs')
             ->leftJoin('barangs', 'ruangs.id', '=', 'barangs.ruang_id')
             ->leftJoin('gedungs', 'ruangs.gedung_id', '=', 'gedungs.id')
