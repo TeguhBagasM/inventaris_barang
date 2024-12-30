@@ -71,7 +71,6 @@ class RuangController extends Controller
         $ruang = Ruang::create($validated);
 
         if ($ruang) {
-            // Update jumlah ruang di gedung
             $gedung->increment('jumlah_ruang');
             session()->flash('status', 'success');
             session()->flash('message', 'Ruangan berhasil ditambahkan!');
@@ -101,7 +100,6 @@ class RuangController extends Controller
             'keterangan' => 'nullable|string'
         ]);
 
-        // Jika gedung berubah, update jumlah ruang di gedung lama dan baru
         if ($ruang->gedung_id != $request->gedung_id) {
             $oldGedung = Gedung::find($ruang->gedung_id);
             $newGedung = Gedung::find($request->gedung_id);
@@ -125,7 +123,6 @@ class RuangController extends Controller
 
     public function destroy(Ruang $ruang)
     {
-        // Kurangi jumlah ruang di gedung
         $gedung = Gedung::find($ruang->gedung_id);
         $gedung->decrement('jumlah_ruang');
 
