@@ -30,20 +30,20 @@
                             @csrf
                             <div class="row">
                                 <div class="col-md-6 mb-3">
-                                    <label for="user_id" class="form-label">Nama</label>
+                                    <label for="user_id" class="form-label text-sm required-label">Nama</label>
                                     <input type="text" class="form-control" id="user_id" 
                                         value="{{ auth()->user()->name }}" readonly>
                                     <input type="hidden" name="user_id" value="{{ auth()->user()->id }}">
                                 </div>
                                 <div class="col-md-6 mb-3">
-                                    <label for="tanggal_peminjaman" class="form-label">Tanggal Peminjaman</label>
+                                    <label for="tanggal_peminjaman" class="form-label text-sm required-label">Tanggal Peminjaman</label>
                                     <input type="date" class="form-control" id="tanggal_peminjaman" name="tanggal_peminjaman" 
                                         value="{{ date('Y-m-d') }}" required readonly>
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="col-md-4 mb-3">
-                                    <label for="barang_id" class="form-label">Asset</label>
+                                    <label for="barang_id" class="form-label text-sm required-label">Asset</label>
                                     <select class="form-select select2" id="barang_id" name="barang_id" required>
                                         <option value="">Pilih Asset</option>
                                         @foreach ($barangs as $barang)
@@ -54,7 +54,7 @@
                                     </select>
                                 </div>
                                 <div class="col-md-4 mb-3">
-                                    <label for="jumlah" class="form-label">Jumlah</label>
+                                    <label for="jumlah" class="form-label text-sm required-label">Jumlah</label>
                                     <input type="number" class="form-control" min="1" id="jumlah" name="jumlah" required>
                                 </div>
                                 <div class="col-md-4 align-self-end">
@@ -80,7 +80,7 @@
                             </div>
 
                             <div class="mb-3">
-                                <label for="keterangan" class="form-label">Keterangan</label>
+                                <label for="keterangan" class="form-label text-sm required-label">Keterangan</label>
                                 <textarea class="form-control" id="keterangan" name="keterangan" rows="3"></textarea>
                             </div>
 

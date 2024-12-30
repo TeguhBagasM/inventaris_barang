@@ -30,7 +30,7 @@
                             @csrf
                             <div class="row">
                                 <div class="col-md-6 mb-3">
-                                    <label for="user_id" class="form-label">Pilih Peminta</label>
+                                    <label for="user_id" class="form-label text-sm required-label">Pilih Peminta</label>
                                     <select class="form-select select2-users" id="user_id" name="user_id" required>
                                         <option value="">Pilih Peminta</option>
                                         @foreach ($users as $user)
@@ -41,14 +41,14 @@
                                     </select>
                                 </div>
                                 <div class="col-md-6 mb-3">
-                                    <label for="tanggal_minta" class="form-label">Tanggal Permintaan</label>
+                                    <label for="tanggal_minta" class="form-label text-sm required-label">Tanggal Permintaan</label>
                                     <input type="date" class="form-control" id="tanggal_minta" name="tanggal_minta" 
                                         value="{{ date('Y-m-d') }}" required readonly>
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="col-md-4 mb-3">
-                                    <label for="bhp_id" class="form-label">BHP</label>
+                                    <label for="bhp_id" class="form-label text-sm required-label">BHP</label>
                                     <select class="form-select select2-bhp" id="bhp_id" name="bhp_id" required>
                                         <option value="">Pilih BHP</option>
                                         @foreach ($bhps as $bhp)
@@ -61,7 +61,7 @@
                                     </select>
                                 </div>
                                 <div class="col-md-4 mb-3">
-                                    <label for="jumlah" class="form-label">Jumlah</label>
+                                    <label for="jumlah" class="form-label text-sm required-label">Jumlah</label>
                                     <input type="number" class="form-control" min="1" id="jumlah" name="jumlah" required>
                                 </div>
                                 <div class="col-md-4 align-self-end">
@@ -87,7 +87,7 @@
                             </div>
 
                             <div class="mb-3">
-                                <label for="keterangan" class="form-label">Keterangan</label>
+                                <label for="keterangan" class="form-label text-sm required-label">Keterangan</label>
                                 <textarea class="form-control" id="keterangan" name="keterangan" rows="3"></textarea>
                             </div>
 

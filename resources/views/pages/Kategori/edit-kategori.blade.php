@@ -27,7 +27,7 @@
                                         <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
                                 </div>
-                                <a href="{{ url()->previous() }}" class="btn bg-gradient-danger ">Back</a>
+                                <a href="{{ url()->previous() }}" class="btn bg-gradient-danger ">Kembali</a>
                                 <button type="submit" class="btn btn-success float-end">Simpan</button>
                             </form>
                         </div>

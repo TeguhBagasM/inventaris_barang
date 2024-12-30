@@ -13,7 +13,7 @@
                         @method('PUT')
                         
                         <div class="mb-3">
-                            <label for="keterangan" class="form-label">Alasan Penolakan</label>
+                            <label for="keterangan" class="form-label text-sm required-label">Alasan Penolakan</label>
                             <textarea 
                                 name="keterangan" 
                                 id="keterangan" 

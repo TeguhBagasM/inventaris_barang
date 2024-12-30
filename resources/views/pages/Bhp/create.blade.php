@@ -12,14 +12,14 @@
                         <form action="{{ route('bhp.store') }}" method="POST">
                             @csrf
                             <div class="mb-3">
-                                <label for="nama" class="form-label">Nama Barang</label>
+                                <label for="nama" class="form-label text-sm required-label">Nama Barang</label>
                                 <input type="text" class="form-control @error('nama') is-invalid @enderror" id="nama" name="nama" value="{{ old('nama') }}">
                                 @error('nama')
                                         <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
                             </div>
                             <div class="mb-3">
-                                <label for="spesifikasi" class="form-label">Spesifikasi</label>
+                                <label for="spesifikasi" class="form-label text-sm required-label">Spesifikasi</label>
                                 <input type="text" class="form-control @error('spesifikasi') is-invalid @enderror" id="spesifikasi" name="spesifikasi" value="{{ old('spesifikasi') }}">
                                 @error('spesifikasi')
                                         <div class="invalid-feedback">{{ $message }}</div>
@@ -33,7 +33,7 @@
                                 @enderror
                             </div>
                             <div class="mb-3">
-                                <label for="sumber_dana" class="form-label">sumber_dana</label>
+                                <label for="sumber_dana" class="form-label text-sm required-label">Sumber Dana</label>
                                 <input type="text" class="form-control @error('sumber_dana') is-invalid @enderror" id="sumber_dana" name="sumber_dana" value="{{ old('sumber_dana') }}">
                                 @error('sumber_dana')
                                         <div class="invalid-feedback">{{ $message }}</div>
@@ -41,7 +41,7 @@
                             </div>
                             
                             <div class="mb-3">
-                                <label for="stok" class="form-label">Stok</label>
+                                <label for="stok" class="form-label text-sm required-label">Stok</label>
                                 <input type="number" class="form-control @error('stok') is-invalid @enderror" id="stok" name="stok" value="{{ old('stok') }}">
                                 @error('stok')
                                         <div class="invalid-feedback">{{ $message }}</div>

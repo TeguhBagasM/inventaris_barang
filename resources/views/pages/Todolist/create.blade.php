@@ -12,21 +12,21 @@
                         <form action="{{ route('todolist.store') }}" method="POST">
                             @csrf
                             <div class="mb-3">
-                                <label for="judul" class="form-label">Judul</label>
+                                <label for="judul" class="form-label text-sm required-label">Judul</label>
                                 <input type="text" class="form-control @error('judul') is-invalid @enderror" id="judul" name="judul" value="{{ old('judul') }}">
                                 @error('judul')
                                         <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
                             </div>
                             <div class="mb-3">
-                                <label for="deskripsi" class="form-label">deskripsi</label>
+                                <label for="deskripsi" class="form-label text-sm required-label">deskripsi</label>
                                 <input type="text" class="form-control @error('deskripsi') is-invalid @enderror" id="deskripsi" name="deskripsi" value="{{ old('deskripsi') }}">
                                 @error('deskripsi')
                                         <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
                             </div>
                             <div class="mb-3">
-                                <label for="prioritas" class="form-label">Prioritas</label>
+                                <label for="prioritas" class="form-label text-sm required-label">Prioritas</label>
                                 <select class="form-select @error('prioritas') is-invalid @enderror" id="prioritas" name="prioritas">
                                     <option value="" disabled selected>Pilih Prioritas</option>
                                     <option value="Tinggi">Tinggi</option>
