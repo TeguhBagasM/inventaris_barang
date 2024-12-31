@@ -10,7 +10,7 @@
                             <div class="row">
                                 <div class="col-8">
                                     <div class="numbers">
-                                        <p class="text-sm mb-0 text-capitalize font-weight-bold">Jumlah Barang</p>
+                                        <p class="text-sm mb-0 text-capitalize font-weight-bold">Jumlah Asset</p>
                                         <h5 class="font-weight-bolder mb-0">{{ $jumlahBarang }}</h5>
                                     </div>
                                 </div>
@@ -29,7 +29,7 @@
                             <div class="row">
                                 <div class="col-8">
                                     <div class="numbers">
-                                        <p class="text-sm mb-0 text-capitalize font-weight-bold">Kategori Barang</p>
+                                        <p class="text-sm mb-0 text-capitalize font-weight-bold">Jumlah Kategori</p>
                                         <h5 class="font-weight-bolder mb-0">{{ $jumlahKategori }}</h5>
                                     </div>
                                 </div>
@@ -67,7 +67,7 @@
                             <div class="row">
                                 <div class="col-8">
                                     <div class="numbers">
-                                        <p class="text-sm mb-0 text-capitalize font-weight-bold">Barang Di Pinjam</p>
+                                        <p class="text-sm mb-0 text-capitalize font-weight-bold">Asset Di Pinjam</p>
                                         <h5 class="font-weight-bolder mb-0">{{ $jumlahPeminjam }}</h5>
                                     </div>
                                 </div>
@@ -100,7 +100,7 @@
     <div class="col-lg-6">
         <div class="card z-index-2">
             <div class="card-header pb-0">
-                <h6>Trend Peminjaman Barang</h6>
+                <h6>Trend Peminjaman Asset</h6>
             </div>
             <div class="card-body p-3">
                 <div class="chart">
@@ -375,7 +375,7 @@ new Chart(ctxRoom, {
     data: {
         labels: roomLabels,
         datasets: [{
-            label: "Jumlah Barang",
+            label: "Jumlah Asset",
             data: roomValues,
             backgroundColor: roomColors,
             borderColor: roomColors,
@@ -392,7 +392,7 @@ new Chart(ctxRoom, {
             tooltip: {
                 callbacks: {
                     label: function(context) {
-                        return `Jumlah Barang: ${context.raw}`;
+                        return `Jumlah Asset: ${context.raw}`;
                     },
                     afterLabel: function(context) {
                         return `Kondisi: ${roomConditions[context.dataIndex]}`;

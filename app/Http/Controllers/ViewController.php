@@ -7,6 +7,7 @@ use App\Models\Barang;
 use App\Models\Kategori;
 use Illuminate\Http\Request;
 use App\Models\DetailPeminjaman;
+use App\Models\Gedung;
 use App\Models\Ruang;
 use App\Models\ToDoList;
 use Illuminate\Support\Facades\Auth;
@@ -21,6 +22,7 @@ class ViewController extends Controller
         $jumlahBarang = Barang::count();
         $jumlahKategori = Kategori::count();
         $jumlahRuang = Ruang::count();
+        $jumlahGedung = Gedung::count();
         $jumlahPeminjam = DetailPeminjaman::whereNull('tanggal_kembali')->count();
 
         $kategoriData = DB::table('kategoris')
@@ -59,6 +61,7 @@ class ViewController extends Controller
             'jumlahBarang', 
             'jumlahKategori', 
             'jumlahRuang', 
+            'jumlahGedung', 
             'jumlahPeminjam',
             'kategoriData',
             'monthlyLoans',
