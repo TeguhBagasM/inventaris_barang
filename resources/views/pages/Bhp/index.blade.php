@@ -16,6 +16,7 @@
                             <a href="{{ route('bhp.create') }}">
                                 <div class="mt-2 text-white btn bg-gradient-success">Tambah BHP</div>
                             </a>
+                            <a href="{{ route('bhp.cetak') }}" class="mt-2 text-white btn bg-info" target="_blank"><i class="fas fa-print me-2"></i>Cetak</a>
                         </div>
                     </div>
                     <div class="card-body px-0 pt-0 pb-2">
@@ -24,7 +25,7 @@
                                 <thead>
                                     <tr>
                                         <th class="text-uppercase text-dark text-sm font-weight-bolder">No</th>
-                                        <th class="text-uppercase text-dark text-sm font-weight-bolder">Nama Barang</th>
+                                        <th class="text-uppercase text-dark text-sm font-weight-bolder">Nama BHP</th>
                                         <th class="text-uppercase text-dark text-sm font-weight-bolder">Spesifikasi</th>
                                         <th class="text-uppercase text-dark text-sm font-weight-bolder">Stok</th>
                                     </tr>
@@ -77,7 +78,7 @@
                                         @empty
                                             <tr>
                                                 <td colspan="4" class="text-center py-2">
-                                                    <p class="text-secondary text-sm mb-0">Tidak ada data barang</p>
+                                                    <p class="text-secondary text-sm mb-0">Tidak ada data bhp</p>
                                                 </td>
                                             </tr>
                                         @endforelse

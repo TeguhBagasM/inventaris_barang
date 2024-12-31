@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Bhp;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
 
 class BhpController extends Controller
@@ -13,7 +14,7 @@ class BhpController extends Controller
     public function index()
     {
         $title = "Kelola BHP";
-        $bhps = Bhp::latest()->paginate(10);
+        $bhps = Bhp::all();
         return view('pages.bhp.index', compact('bhps', 'title'));
     }
 
@@ -114,5 +115,13 @@ class BhpController extends Controller
     
             return redirect()->route('bhp.index');
         }
+    }
+    public function cetak()
+    {
+        $bhp = Bhp::all();
+        $pdf = Pdf::loadView('pages.pdf.cetak-bhp', [
+            'bhp' => $bhp
+        ]);
+        return $pdf->stream('laporan-bhp-'.date('Y-m-d').'.pdf');
     }
 }
