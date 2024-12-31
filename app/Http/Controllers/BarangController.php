@@ -23,30 +23,31 @@ class BarangController extends Controller
     public function index()
     {
         $title = 'Kelola Asset';
-        return view('pages.barang.kelola-barang', compact('title'));
+        $barangs = Barang::all();
+        return view('pages.barang.kelola-barang', compact('title', 'barangs'));
     }
 
-    public function getData()
-    {
-        $barang = Barang::with('ruang');
+    // public function getData()
+    // {
+    //     $barang = Barang::with('ruang');
         
-        return DataTables::of($barang)
-            ->addIndexColumn()
-            ->addColumn('gambar', function($row){
-                return '<img src="'.asset($row->gambar).'" alt="'.$row->nama.'" 
-                        class="card-img" style="object-fit: cover;max-width: 50px; max-height: 50px;">';
-            })
-            ->addColumn('action', function($row){
-                $actionBtn = '
-                    <a href="'.route('barang.edit', $row->id).'" class="btn bg-gradient-dark btn-sm"><i class="fa-solid fa-pencil" style="font-size: 14px;"></i></a>
-                    <a href="'.route('barang.show', $row->id).'" class="btn bg-gradient-info btn-sm"><i class="fa-solid fa-eye" style="font-size: 14px;"></i></a>
-                    <button onclick="deleteBarang('.$row->id.')" class="btn bg-gradient-danger btn-sm"><i class="fa-solid fa-trash-alt" style="font-size: 14px;"></i></button>
-                ';
-                return $actionBtn;
-            })
-            ->rawColumns(['action', 'gambar'])
-            ->make(true);
-    }
+    //     return DataTables::of($barang)
+    //         ->addIndexColumn()
+    //         ->addColumn('gambar', function($row){
+    //             return '<img src="'.asset($row->gambar).'" alt="'.$row->nama.'" 
+    //                     class="card-img" style="object-fit: cover;max-width: 50px; max-height: 50px;">';
+    //         })
+    //         ->addColumn('action', function($row){
+    //             $actionBtn = '
+    //                 <a href="'.route('barang.edit', $row->id).'" class="btn bg-gradient-dark btn-sm"><i class="fa-solid fa-pencil" style="font-size: 14px;"></i></a>
+    //                 <a href="'.route('barang.show', $row->id).'" class="btn bg-gradient-info btn-sm"><i class="fa-solid fa-eye" style="font-size: 14px;"></i></a>
+    //                 <button onclick="deleteBarang('.$row->id.')" class="btn bg-gradient-danger btn-sm"><i class="fa-solid fa-trash-alt" style="font-size: 14px;"></i></button>
+    //             ';
+    //             return $actionBtn;
+    //         })
+    //         ->rawColumns(['action', 'gambar'])
+    //         ->make(true);
+    // }
     
     public function cetak()
     {
@@ -251,39 +252,15 @@ class BarangController extends Controller
      */
     public function destroy(Barang $barang)
     {
-        try {
-            if ($barang->gambar) {
-                Log::info('Attempting to delete image: ' . $barang->gambar);
-                
-                $paths = [
-                    'images/' . $barang->gambar,
-                    $barang->gambar,
-                    'public/images/' . $barang->gambar
-                ];
-    
-                foreach ($paths as $path) {
-                    if (Storage::disk('public')->exists($path)) {
-                        Storage::disk('public')->delete($path);
-                        Log::info('Image deleted successfully: ' . $path);
-                        break;
-                    }
-                }
-            }
-    
-            $barang->delete();
-    
-            return response()->json([
-                'success' => true,
-                'message' => 'Barang berhasil dihapus.'
-            ]);
-    
-        } catch (\Exception $e) {
-            Log::error('Error deleting barang: ' . $e->getMessage());
-            
-            return response()->json([
-                'success' => false,
-                'message' => 'Gagal menghapus Barang. ' . $e->getMessage()
-            ], 500);
+        if ($barang->gambar) {
+            Storage::disk('public')->delete($barang->gambar);
         }
+        
+        $barang->delete();
+
+        return response()->json([
+            'message' => 'Barang berhasil dihapus!',
+            'success' => true
+        ]);
     }
 }
