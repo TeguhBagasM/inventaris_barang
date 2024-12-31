@@ -90,7 +90,6 @@
             });
         @endif
 
-        // Function untuk konfirmasi delete
         function confirmDelete(id) {
             Swal.fire({
                 title: 'Apakah Anda yakin?',

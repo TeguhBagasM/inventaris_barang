@@ -7,7 +7,7 @@
                     <div class="card-header pb-0">
                         <div class="d-flex justify-content-between">
                             <div>
-                                <h4 class="">Kelola BHP</h4>
+                                <h4 class="">Pendataan BHP</h4>
                             </div>
                         </div>
 
@@ -28,10 +28,11 @@
                                         <th class="text-uppercase text-dark text-sm font-weight-bolder">Nama BHP</th>
                                         <th class="text-uppercase text-dark text-sm font-weight-bolder">Spesifikasi</th>
                                         <th class="text-uppercase text-dark text-sm font-weight-bolder">Stok</th>
+                                        <th class="text-uppercase text-dark text-sm font-weight-bolder">Aksi</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @forelse ($bhps as $bhp)
+                                    @foreach ($bhps as $bhp)
                                         <tr class="ps-2">
                                             <td>
                                                 <div class="d-flex px-2 py-1">
@@ -45,6 +46,7 @@
                                                         {{ $bhp->nama }}</h6>
                                                 </div>
                                             </td>
+                                            
                                             <td>
                                                 <div class="d-flex px-2 py-1">
                                                     <h6 class="text-secondary text-sm font-weight-bold ps-2">
@@ -61,27 +63,22 @@
                                                 <a href="{{ route('bhp.edit', $bhp->id) }}"
                                                     class="btn bg-gradient-dark btn-sm"><i class="fa-solid fa-pencil" style="font-size: 14px"></i></a>
 
-                                                <button type="button" 
-                                                    class="btn btn-sm bg-gradient-danger"
-                                                    onclick="confirmDelete('{{ $bhp->id }}')">
-                                                    <i class="fa-solid fa-trash" style="font-size: 14px"></i>
-                                                </button>
-
                                                 <form id="delete-form-{{ $bhp->id }}"
                                                     action="{{ route('bhp.destroy', $bhp->id) }}" method="POST"
                                                     style="display: none;">
                                                     @csrf
                                                     @method('DELETE')
                                                 </form>
+                                                <button onclick="deletebhp({{ $bhp->id }})" 
+                                                    class="btn btn-sm bg-gradient-danger">
+                                                    <i class="fa-solid fa-trash" style="font-size: 14px"></i>
+                                                </button>
+
+                                                <a href="{{ route('bhp.show', $bhp->id) }}"
+                                                    class="btn btn-sm bg-gradient-info"><i class="fa-solid fa-eye" style="font-size: 14px"></i></a>
                                             </td>
                                         </tr>
-                                        @empty
-                                            <tr>
-                                                <td colspan="4" class="text-center py-2">
-                                                    <p class="text-secondary text-sm mb-0">Tidak ada data bhp</p>
-                                                </td>
-                                            </tr>
-                                        @endforelse
+                                    @endforeach
                                 </tbody>
                             </table>
                         </div>
@@ -90,20 +87,23 @@
             </div>
         </div>
     </div>
-    @push('scripts')
-    <script>
-        @if(Session::has('status'))
-            Swal.fire({
-                icon: '{{ Session::get("status") }}',
-                title: '{{ Session::get("status") == "success" ? "Berhasil!" : "Oops..." }}',
-                text: '{{ Session::get("message") }}',
-                showConfirmButton: false,
-                timer: 3000
-            });
-        @endif
 
-        // Function untuk konfirmasi delete
-        function confirmDelete(id) {
+    @push('scripts')
+    <script type="text/javascript">
+        $(document).ready(function() {
+            // Show SweetAlert for flash messages
+            @if(Session::has('status'))
+                Swal.fire({
+                    icon: '{{ Session::get("status") }}',
+                    title: '{{ Session::get("status") == "success" ? "Berhasil!" : "Oops..." }}',
+                    text: '{{ Session::get("message") }}',
+                    showConfirmButton: false,
+                    timer: 3000
+                });
+            @endif
+        });
+
+        function deletebhp(id) {
             Swal.fire({
                 title: 'Apakah Anda yakin?',
                 text: "Data yang dihapus tidak dapat dikembalikan!",
