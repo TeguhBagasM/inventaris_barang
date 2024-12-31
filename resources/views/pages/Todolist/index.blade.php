@@ -27,7 +27,7 @@
                                 </button>
                             </div>
                             <div class="table-responsive p-0">
-                                <table class="table align-items-center mb-0">
+                                <table class="table align-items-center mb-0" id="datatables">
                                     <thead>
                                         <tr>
                                             <th width="5%" class="text-center">#</th>
