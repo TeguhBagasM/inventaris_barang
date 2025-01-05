@@ -105,7 +105,7 @@
                                                             </div>
                                                             <div class="modal-footer">
                                                                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
-                                                                <button type="submit" class="btn btn-primary">Simpan</button>
+                                                                <button type="submit" class="btn bg-gradient-success">Simpan</button>
                                                             </div>
                                                         </form>
                                                     </div>
@@ -194,7 +194,7 @@
             title: '{{ Session::get("status") == "success" ? "Berhasil!" : "Oops..." }}',
             text: '{{ Session::get("message") }}',
             showConfirmButton: false,
-            timer: 3000
+            timer: 2000
         });
     @endif
 

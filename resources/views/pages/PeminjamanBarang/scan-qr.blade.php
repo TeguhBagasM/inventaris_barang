@@ -86,7 +86,7 @@
                     title: "Berhasil!",
                     text: data.message,
                     showConfirmButton: false,
-                    timer: 3000,
+                    timer: 2000,
                 }).then(() => {
                     window.location.href = '{{ route("log.peminjaman") }}';
                 });

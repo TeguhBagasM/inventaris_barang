@@ -61,10 +61,12 @@
                                             </td>
                                             <td>
                                                 <div class="d-flex px-2 py-1">
-                                                    <h6 class="text-secondary text-sm font-weight-bold ps-2 
-                                                        {{ $ruang->kondisi == 'Baik' ? 'text-success' : 
-                                                           ($ruang->kondisi == 'Rusak Ringan' ? 'text-warning' : 'text-danger') }}">
-                                                        {{ $ruang->kondisi }}</h6>
+                                                    <h6 class="text-white font-weight-bold ps-2">
+                                                        <span class="{{ $ruang->kondisi == 'Baik' ? 'badge bg-success' : 
+                                                                       ($ruang->kondisi == 'Rusak Ringan' ? 'badge bg-warning' : 'badge bg-danger') }}">
+                                                            {{ $ruang->kondisi }}
+                                                        </span>
+                                                    </h6>
                                                 </div>
                                             </td>
                                             <td>
@@ -108,7 +110,7 @@
                 title: '{{ Session::get("status") == "success" ? "Berhasil!" : "Oops..." }}',
                 text: '{{ Session::get("message") }}',
                 showConfirmButton: false,
-                timer: 3000
+                timer: 2000
             });
         @endif
 

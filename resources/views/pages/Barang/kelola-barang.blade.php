@@ -91,14 +91,13 @@
     @push('scripts')
     <script type="text/javascript">
         $(document).ready(function() {
-            // Show SweetAlert for flash messages
             @if(Session::has('status'))
                 Swal.fire({
                     icon: '{{ Session::get("status") }}',
                     title: '{{ Session::get("status") == "success" ? "Berhasil!" : "Oops..." }}',
                     text: '{{ Session::get("message") }}',
                     showConfirmButton: false,
-                    timer: 3000
+                    timer: 2000
                 });
             @endif
         });
@@ -135,7 +134,7 @@
                         title: 'Berhasil!',
                         text: data.message || 'Barang berhasil dihapus',
                         showConfirmButton: false,
-                        timer: 3000
+                        timer: 2000
                     }).then(() => {
                         window.location.reload();
                     });
@@ -146,7 +145,7 @@
                         title: 'Oops...',
                         text: error.message || 'Gagal menghapus barang',
                         showConfirmButton: false,
-                        timer: 3000
+                        timer: 2000
                     });
                 });
             }

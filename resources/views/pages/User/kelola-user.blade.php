@@ -98,7 +98,7 @@
                 title: '{{ Session::get("status") == "success" ? "Berhasil!" : "Oops..." }}',
                 text: '{{ Session::get("message") }}',
                 showConfirmButton: false,
-                timer: 3000
+                timer: 2000
             });
         @endif
 

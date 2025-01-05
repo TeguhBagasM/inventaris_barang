@@ -30,7 +30,7 @@
                                        value="{{ request('tanggal_peminjaman') }}">
                             </div>
                             <div class="col-md-4 align-self-end mt-4">
-                                <button type="submit" class="btn btn-primary me-2">Filter</button>
+                                <button type="submit" class="btn bg-gradient-success me-2">Filter</button>
                                 <a href="{{ route('log.peminjaman') }}" class="btn btn-secondary">Reset</a>
                             </div>
                         </form>
@@ -51,7 +51,7 @@
                                        value="{{ request('tanggal_peminjaman') }}">
                             </div>
                             <div class="col-md-4 align-self-end mt-4">
-                                <button type="submit" class="btn btn-primary me-2">Filter</button>
+                                <button type="submit" class="btn bg-gradient-success me-2">Filter</button>
                                 <a href="{{ route('log.peminjaman') }}" class="btn btn-secondary">Reset</a>
                             </div>
                         </form>
@@ -120,7 +120,7 @@
                 title: '{{ Session::get("status") == "success" ? "Berhasil!" : "Oops..." }}',
                 text: '{{ Session::get("message") }}',
                 showConfirmButton: false,
-                timer: 3000
+                timer: 2000
             });
         @endif
         function konfirmasiPeminjaman(id) {
@@ -149,7 +149,7 @@
                         title: 'Berhasil!',
                         text: data.message,
                         showConfirmButton: false,
-                        timer: 3000
+                        timer: 2000
                     }).then(() => {
                         location.reload();
                     });

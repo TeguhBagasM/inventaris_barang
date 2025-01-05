@@ -91,14 +91,13 @@
     @push('scripts')
     <script type="text/javascript">
         $(document).ready(function() {
-            // Show SweetAlert for flash messages
             @if(Session::has('status'))
                 Swal.fire({
                     icon: '{{ Session::get("status") }}',
                     title: '{{ Session::get("status") == "success" ? "Berhasil!" : "Oops..." }}',
                     text: '{{ Session::get("message") }}',
                     showConfirmButton: false,
-                    timer: 3000
+                    timer: 2000
                 });
             @endif
         });

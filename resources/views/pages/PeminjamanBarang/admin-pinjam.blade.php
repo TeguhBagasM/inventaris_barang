@@ -89,7 +89,7 @@
                                         <textarea class="form-control" id="keterangan" name="keterangan" rows="3"></textarea>
                                     </div>
                                     <div class="col-12 mt-3">
-                                        <button type="button" id="submitPeminjaman" class="btn btn-primary w-100" disabled>
+                                        <button type="button" id="submitPeminjaman" class="btn bg-gradient-success w-100" disabled>
                                             Submit Peminjaman
                                         </button>
                                     </div>
