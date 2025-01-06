@@ -58,8 +58,8 @@
                                     <input type="number" class="form-control" min="1" id="jumlah" name="jumlah" required>
                                 </div>
                                 <div class="col-md-4 align-self-end">
-                                    <button type="button" id="tambahBarang" class="btn btn-success">
-                                        <i class="fas fa-plus"></i> Tambah Barang
+                                    <button type="button" id="tambahBarang" class="btn bg-gradient-success">
+                                        <i class="fas fa-plus"></i> Tambah Asset
                                     </button>
                                 </div>
                             </div>
@@ -86,7 +86,7 @@
 
                             <div class="col-12 mt-3">
                                 <button type="button" id="submitPeminjaman" class="btn bg-gradient-success w-100" disabled>
-                                    Submit Peminjaman
+                                    Ajukan Peminjaman
                                 </button>
                             </div>
                         </form>
@@ -171,7 +171,7 @@
                                     <td>${barang.jumlah}</td>
                                     <td>
                                         <button type="button" class="btn btn-danger btn-sm hapus-barang" data-id="${barang.barang_id}">
-                                            <i class="fas fa-trash" style="font-size: 14px;"></i> Hapus
+                                            <i class="fas fa-trash" style="font-size: 14px;"></i>
                                         </button>
                                     </td>
                                 </tr>

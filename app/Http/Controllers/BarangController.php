@@ -118,7 +118,7 @@ class BarangController extends Controller
             $barang->save();
     
             session()->flash('status', 'success');
-            session()->flash('message', 'Barang berhasil ditambahkan.');
+            session()->flash('message', 'Asset berhasil ditambahkan.');
     
             return redirect()->route('barang.index');
     
@@ -233,7 +233,7 @@ class BarangController extends Controller
             $barang->save();
 
             session()->flash('status', 'success');
-            session()->flash('message', 'Barang berhasil diperbarui.');
+            session()->flash('message', 'Asset berhasil diperbarui.');
 
             return redirect()->route('barang.index');
 
@@ -259,7 +259,7 @@ class BarangController extends Controller
         $barang->delete();
 
         return response()->json([
-            'message' => 'Barang berhasil dihapus!',
+            'message' => 'Asset berhasil dihapus!',
             'success' => true
         ]);
     }

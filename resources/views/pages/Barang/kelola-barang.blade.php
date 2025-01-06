@@ -105,7 +105,7 @@
         function deleteBarang(id) {
         Swal.fire({
             title: 'Apakah Anda yakin?',
-            text: "Barang yang dihapus tidak dapat dikembalikan!",
+            text: "Asset yang dihapus tidak dapat dikembalikan!",
             icon: 'warning',
             showCancelButton: true,
             confirmButtonColor: '#3085d6',
@@ -132,7 +132,7 @@
                     Swal.fire({
                         icon: 'success',
                         title: 'Berhasil!',
-                        text: data.message || 'Barang berhasil dihapus',
+                        text: data.message || 'Asset berhasil dihapus',
                         showConfirmButton: false,
                         timer: 2000
                     }).then(() => {
@@ -143,7 +143,7 @@
                     Swal.fire({
                         icon: 'error',
                         title: 'Oops...',
-                        text: error.message || 'Gagal menghapus barang',
+                        text: error.message || 'Gagal menghapus Asset',
                         showConfirmButton: false,
                         timer: 2000
                     });

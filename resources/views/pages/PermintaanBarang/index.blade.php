@@ -60,7 +60,7 @@
                                     <input type="number" class="form-control" min="1" id="jumlah" name="jumlah" required>
                                 </div>
                                 <div class="col-md-4 align-self-end">
-                                    <button type="button" id="tambahBhp" class="btn btn-success">
+                                    <button type="button" id="tambahBhp" class="btn bg-gradient-success">
                                         <i class="fas fa-plus"></i> Tambah BHP
                                     </button>
                                 </div>
@@ -172,7 +172,7 @@
                             <td>${bhp.jumlah}</td>
                             <td>
                                 <button type="button" class="btn btn-danger btn-sm hapus-bhp" data-id="${bhp.bhp_id}">
-                                    <i class="fas fa-trash" style="font-size: 14px;"></i> Hapus
+                                    <i class="fas fa-trash" style="font-size: 14px;"></i>
                                 </button>
                             </td>
                         </tr>

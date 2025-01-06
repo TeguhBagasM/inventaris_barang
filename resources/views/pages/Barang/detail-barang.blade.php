@@ -102,7 +102,7 @@
                     </div>
                     
                     <div class="card-footer text-center py-3">
-                        <a href="{{ url()->previous() }}" class="btn btn-info">
+                        <a href="{{ url()->previous() }}" class="btn btn-danger">
                             <i class="fas fa-arrow-left me-2"></i>Kembali
                         </a>
                     </div>

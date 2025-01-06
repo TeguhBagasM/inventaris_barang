@@ -21,7 +21,7 @@
         <li class="nav-item">
           <a class="nav-link {{ $title == 'Peminjaman Barang' ? 'active' : '' }}" href="/peminjaman">
             <div class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
-              <i class="fas fa-tools text-dark"></i>
+              <i class="fas fa-desktop text-dark"></i>
             </div>
             <span class="nav-link-text ms-1">Peminjam Barang</span>
           </a>
@@ -38,7 +38,7 @@
         <li class="nav-item">
           <a class="nav-link {{ $title == 'Peminjaman Asset' ? 'active' : '' }}" href="/peminjaman">
             <div class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
-              <i class="fas fa-tools text-dark"></i>
+              <i class="fas fa-desktop text-dark"></i>
             </div>
             <span class="nav-link-text ms-1">Peminjam Asset</span>
           </a>
@@ -46,7 +46,7 @@
         <li class="nav-item">
           <a class="nav-link {{ $title == 'Permintaan Barang' ? 'active' : '' }}" href="/permintaan">
             <div class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
-              <i class="fas fa-tools text-dark"></i>
+              <i class="fas fa-ruler-combined text-dark"></i>
             </div>
             <span class="nav-link-text ms-1">Permintaan Barang</span>
           </a>
@@ -54,7 +54,7 @@
         <li class="nav-item">
           <a class="nav-link {{ $title == 'Data Peminjaman' ? 'active' : '' }}" href="/detailPeminjaman">
             <div class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
-              <i class="fas fa-list-alt text-dark"></i>
+              <i class="fas fa-file-signature text-dark"></i>
             </div>
             <span class="nav-link-text ms-1">Data Peminjaman</span>
           </a>
@@ -62,7 +62,7 @@
         <li class="nav-item">
           <a class="nav-link {{ $title == 'Data Permintaan' ? 'active' : '' }}" href="/detailPemintaan">
             <div class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
-              <i class="fas fa-list-alt text-dark"></i>
+              <i class="fas fa-file text-dark"></i>
             </div>
             <span class="nav-link-text ms-1">Data Permintaan</span>
           </a>
@@ -206,15 +206,17 @@
             @endphp
   
             @if (auth()->user()->level == 'admin')
-            <p class="text-xs font-weight-bold">Mulai kelola semua data dan pantau aktivitas mereka dengan efisien.</p>
+            <p class="text-xs font-weight-bold">Mulai kelola semua data dan pantau aktivitas mereka dengan mudah.</p>
             @elseif(auth()->user()->level == 'petugas 1')
-            <p class="text-xs font-weight-bold">Mulai kelola data asset dan pantau aktivitas peminjaman dengan efisien.</p>
+            <p class="text-xs font-weight-bold">Mulai kelola data asset dengan mudah disini.</p>
             @elseif(auth()->user()->level == 'petugas 2')
-            <p class="text-xs font-weight-bold">Mulai kelola peminjaman dan pantau aktivitas peminjaman dengan efisien.</p>
+            <p class="text-xs font-weight-bold">Mulai kelola peminjaman dan pengembalian barang dengan mudah disini.</p>
             @elseif(auth()->user()->level == 'petugas 3')
-            <p class="text-xs font-weight-bold">Mulai kelola data barang habis pakai dan pantau aktivitas peminjaman dengan efisien.</p>
+            <p class="text-xs font-weight-bold">Mulai kelola data barang habis pakai dengan mudah disini.</p>
+            @elseif(auth()->user()->level == 'guru')
+            <p class="text-xs font-weight-bold">Mulai ajukan peminjaman asset dan permintaan barang dengan mudah disini.</p>
             @else
-            <p class="text-xs font-weight-bold">Mulai pinjam barang dan kelola barang pinjaman Anda dengan mudah.</p>
+            <p class="text-xs font-weight-bold">Mulai ajukan permintaan asset dengan mudah disini.</p>
             @endif
           </div>
         </div>

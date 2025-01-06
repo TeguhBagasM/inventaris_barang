@@ -11,11 +11,6 @@
                             </div>
                         </div>
                         <hr class="bg-dark px-auto">
-                        @if (Session::has('status'))
-                            <div class="alert alert-success text-white opacity-5" role="alert">
-                                {{ Session::get('message') }}
-                            </div>
-                        @endif
                     </div>
                     <div class="card-body px-0 pt-0 pb-2">
                         <div class="table-responsive p-0">
@@ -59,7 +54,7 @@
                                                             <span class="badge bg-secondary">Diajukan</span>
                                                             @break
                                                         @case('disetujui')
-                                                            <span class="badge bg-success">Disetujui</span>
+                                                            <span class="badge bg-gradient-success">Disetujui</span>
                                                             @break
                                                         @case('ditolak')
                                                             <span class="badge bg-danger">Ditolak</span>
