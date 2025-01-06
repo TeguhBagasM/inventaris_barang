@@ -40,10 +40,10 @@
                         </div> --}}
 
                         <div class="d-flex justify-content-between">
-                            <a href="{{ route('log.permintaan') }}" class="btn btn-secondary">
+                            <a href="{{ route('log.permintaan') }}" class="btn btn-danger">
                                 <i class="fas fa-arrow-left me-2"></i>Kembali
                             </a>
-                            <button type="submit" class="btn btn-danger">
+                            <button type="submit" class="btn bg-gradient-success">
                                 <i class="fas fa-times-circle me-2"></i>Tolak permintaan
                             </button>
                         </div>

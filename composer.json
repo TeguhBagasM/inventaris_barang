@@ -11,7 +11,6 @@
         "laravel/breeze": "^2.1",
         "laravel/framework": "^11.9",
         "laravel/tinker": "^2.9",
-        "simplesoftwareio/simple-qrcode": "^4.2",
         "yajra/laravel-datatables": "11.0"
     },
     "require-dev": {

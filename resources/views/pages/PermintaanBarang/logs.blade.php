@@ -77,9 +77,9 @@
                                                     @if ($log->status == 'diajukan')
                                                         <span class="badge bg-secondary">Menunggu Konfirmasi</span>
                                                     @elseif ($log->status == 'disetujui')
-                                                        <span class="badge bg-success">Disetujui</span>
+                                                        <span class="badge bg-gradient-success">Disetujui</span>
                                                     @else
-                                                        <span class="badge bg-danger">Ditolak</span>
+                                                        <span class="badge bg-gradient-danger">Ditolak</span>
                                                     @endif
                                                 </td>
                                                 <td>

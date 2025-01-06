@@ -48,7 +48,7 @@
                                 @enderror
                             </div>
                             <a href="{{ route('user.index') }}" class="btn bg-gradient-danger">Kembali</a>
-                            <button type="submit" class="btn btn-success float-end">Simpan</button>
+                            <button type="submit" class="btn bg-gradient-success float-end">Simpan</button>
                         </form>
                     </div>
                 </div>

@@ -88,7 +88,7 @@
 
                             <div class="col-12 mt-3">
                                 <button type="button" id="submitPermintaan" class="btn bg-gradient-success w-100" disabled>
-                                    Submit Permintaan
+                                    Ajukan Permintaan
                                 </button>
                             </div>
                         </form>
