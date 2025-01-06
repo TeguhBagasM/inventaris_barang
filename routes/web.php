@@ -45,6 +45,15 @@ Route::middleware('auth')->group(function () {
         Route::put('/peminjaman/{id}/konfirmasi', [PeminjamanController::class, 'konfirmasiPeminjaman'])->name('peminjaman.konfirmasi');
         Route::get('/peminjaman/{id}/konfirmasi-tolak', [PeminjamanController::class, 'konfirmasiTolak'])->name('peminjaman.konfirmasi-tolak');
         Route::put('/peminjaman/{id}/tolak', [PeminjamanController::class, 'tolakPeminjaman'])->name('peminjaman.tolak');
+        Route::get('/admin-peminjam', [PeminjamanController::class, 'indexAdmin'])->name('admin.pinjam');
+        Route::post('/admin-pinjam', [PeminjamanController::class, 'pinjamAdmin'])->name('admin-pinjam');
+        Route::get('/admin-permintaan', [PermintaanController::class, 'indexAdmin'])->name('admin.minta');
+        Route::post('/admin-minta', [PermintaanController::class, 'mintaAdmin'])->name('admin-minta');
+        Route::get('/log-permintaan', [PermintaanController::class, 'log'])->name('log.permintaan');
+        Route::get('/permintaan/{id}/konfirmasi-tolak', [PermintaanController::class, 'konfirmasiTolak'])->name('permintaan.konfirmasi-tolak');
+        Route::put('permintaan/{id}/konfirmasi', [PermintaanController::class, 'konfirmasi'])->name('permintaan.konfirmasi');
+        Route::put('permintaan/{id}/tolak', [PermintaanController::class, 'tolak'])->name('permintaan.tolak');
+        Route::get('/cetak-permintaan', [PermintaanController::class, 'cetakPermintaan'])->name('permintaan.cetak');
     });
 
     Route::middleware(['can.access.todolist'])->group(function() {
@@ -63,15 +72,6 @@ Route::middleware('auth')->group(function () {
         Route::get('gedung/{gedung}/tambah-ruang', [RuangController::class, 'createFromGedung'])->name('ruang.create-from-gedung');
         Route::post('gedung/{gedung}/tambah-ruang', [RuangController::class, 'storeFromGedung'])->name('ruang.store-from-gedung');
         Route::resource('kategori', KategoriController::class);
-        Route::get('/admin-peminjam', [PeminjamanController::class, 'indexAdmin'])->name('admin.pinjam');
-        Route::post('/admin-pinjam', [PeminjamanController::class, 'pinjamAdmin'])->name('admin-pinjam');
-        Route::get('/admin-permintaan', [PermintaanController::class, 'indexAdmin'])->name('admin.minta');
-        Route::post('/admin-minta', [PermintaanController::class, 'mintaAdmin'])->name('admin-minta');
-        Route::get('/log-permintaan', [PermintaanController::class, 'log'])->name('log.permintaan');
-        Route::get('/permintaan/{id}/konfirmasi-tolak', [PermintaanController::class, 'konfirmasiTolak'])->name('permintaan.konfirmasi-tolak');
-        Route::put('permintaan/{id}/konfirmasi', [PermintaanController::class, 'konfirmasi'])->name('permintaan.konfirmasi');
-        Route::put('permintaan/{id}/tolak', [PermintaanController::class, 'tolak'])->name('permintaan.tolak');
-        Route::get('/cetak-permintaan', [PermintaanController::class, 'cetakPermintaan'])->name('permintaan.cetak');
     });
 
     Route::middleware('guru')->group(function() {

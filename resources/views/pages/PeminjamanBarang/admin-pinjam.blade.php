@@ -7,7 +7,7 @@
                     <div class="card-header pb-0">
                         <div class="d-flex justify-content-between">
                             <div>
-                                <h4 class="">Peminjaman Barang</h4>
+                                <h4 class="">Peminjaman Asset</h4>
                             </div>
                         </div>
                         <hr class="bg-dark px-auto">
@@ -49,9 +49,9 @@
                                     </div>
                                     <div class="row">
                                         <div class="col-md-4 mb-3">
-                                            <label for="barang_id" class="form-label text-sm required-label">Barang</label>
+                                            <label for="barang_id" class="form-label text-sm required-label">Asset</label>
                                             <select class="form-select select2-barang" id="barang_id" name="barang_id" required>
-                                                <option value="">Pilih Barang</option>
+                                                <option value="">Pilih Asset</option>
                                                 @foreach ($barangs as $barang)
                                                     <option value="{{ $barang->id }}" data-nama="{{ $barang->nama }}">
                                                         {{ $barang->nama }}
@@ -64,8 +64,8 @@
                                             <input type="number" class="form-control" min="1" id="jumlah" name="jumlah" required>
                                         </div>
                                         <div class="col-md-4 align-self-end">
-                                            <button type="button" id="tambahBarang" class="btn btn-success">
-                                                <i class="fas fa-plus"></i> Tambah Barang
+                                            <button type="button" id="tambahBarang" class="btn bg-gradient-success">
+                                                <i class="fas fa-plus"></i> Tambah Asset
                                             </button>
                                         </div>
                                     </div>
@@ -115,7 +115,7 @@
                     });
         
                     $('.select2-barang').select2({
-                        placeholder: 'Pilih Barang',
+                        placeholder: 'Pilih Asset',
                         allowClear: true,
                         width: '100%',
                         theme: 'bootstrap-5',
@@ -139,7 +139,7 @@
                             Swal.fire({
                                 icon: 'error',
                                 title: 'Oops...',
-                                text: 'Pilih barang dan masukkan jumlah yang valid.',
+                                text: 'Pilih asset dan masukkan jumlah yang valid.',
                             });
                             return;
                         }
@@ -147,7 +147,7 @@
                             Swal.fire({
                                 icon: 'error',
                                 title: 'Oops...',
-                                text: `Jumlah barang "${barangNama}" melebihi stok tersedia (${stokBarang}).`,
+                                text: `Jumlah asset "${barangNama}" melebihi stok tersedia (${stokBarang}).`,
                             });
                             return;
                         }                               
@@ -157,7 +157,7 @@
                             Swal.fire({
                                 icon: 'error',
                                 title: 'Oops...',
-                                text: 'Barang sudah ada di daftar peminjaman.',
+                                text: 'asset sudah ada di daftar peminjaman.',
                             });
                             return;
                         }
