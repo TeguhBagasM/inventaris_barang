@@ -10,7 +10,6 @@ use App\Models\DetailPeminjaman;
 use Illuminate\Support\Facades\DB;
 use App\Models\User;
 use Barryvdh\DomPDF\Facade\Pdf;
-// use SimpleSoftwareIO\QrCode\Facades\QrCode;
 use Endroid\QrCode\QrCode;
 use Endroid\QrCode\Writer\PngWriter;
 use Endroid\QrCode\Encoding\Encoding;

@@ -4,7 +4,7 @@
     <div class="container-fluid py-4">
         @if (auth()->user()->level != 'siswa' && auth()->user()->level != 'guru')
             <div class="row">
-                <div class="col-xl-3 col-sm-6 mb-xl-0 mb-4">
+                <div class="col-xl-3 col-sm-6 mb-xl-2 mb-4">
                     <div class="card">
                         <div class="card-body p-3">
                             <div class="row">
@@ -23,7 +23,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-xl-3 col-sm-6 mb-xl-0 mb-4">
+                <div class="col-xl-3 col-sm-6 mb-xl-2 mb-4">
                     <div class="card">
                         <div class="card-body p-3">
                             <div class="row">
@@ -42,7 +42,26 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-xl-3 col-sm-6 mb-xl-0 mb-4">
+                <div class="col-xl-3 col-sm-6 mb-xl-2 mb-4">
+                    <div class="card">
+                        <div class="card-body p-3">
+                            <div class="row">
+                                <div class="col-8">
+                                    <div class="numbers">
+                                        <p class="text-sm mb-0 text-capitalize font-weight-bold">Jumlah Gedung
+                                        <h5 class="font-weight-bolder mb-0">{{ $jumlahGedung }}</h5>
+                                    </div>
+                                </div>
+                                <div class="col-4 text-end">
+                                    <div class="icon icon-shape bg-blue shadow text-center border-radius-md">
+                                        <i class="fas fa-map-marker-alt text-lg opacity-10" aria-hidden="true"></i>
+                                    </div>
+                                </div>                                
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xl-3 col-sm-6 mb-xl-2 mb-4">
                     <div class="card">
                         <div class="card-body p-3">
                             <div class="row">
@@ -50,6 +69,63 @@
                                     <div class="numbers">
                                         <p class="text-sm mb-0 text-capitalize font-weight-bold">Jumlah Ruangan</p>
                                         <h5 class="font-weight-bolder mb-0">{{ $jumlahRuang }}</h5>
+                                    </div>
+                                </div>
+                                <div class="col-4 text-end">
+                                    <div class="icon icon-shape bg-blue shadow text-center border-radius-md">
+                                        <i class="fas fa-map-marker-alt text-lg opacity-10" aria-hidden="true"></i>
+                                    </div>
+                                </div>                                
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xl-3 col-sm-6 mb-xl-2 mb-4">
+                    <div class="card">
+                        <div class="card-body p-3">
+                            <div class="row">
+                                <div class="col-8">
+                                    <div class="numbers">
+                                        <p class="text-sm mb-0 text-capitalize font-weight-bold">Jumlah User</p>
+                                        <h5 class="font-weight-bolder mb-0">{{ $jumlahUser }}</h5>
+                                    </div>
+                                </div>
+                                <div class="col-4 text-end">
+                                    <div class="icon icon-shape bg-blue shadow text-center border-radius-md">
+                                        <i class="fas fa-map-marker-alt text-lg opacity-10" aria-hidden="true"></i>
+                                    </div>
+                                </div>                                
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xl-3 col-sm-6 mb-xl-2 mb-4">
+                    <div class="card">
+                        <div class="card-body p-3">
+                            <div class="row">
+                                <div class="col-8">
+                                    <div class="numbers">
+                                        <p class="text-sm mb-0 text-capitalize font-weight-bold">Jumlah Tugas</p>
+                                        <h5 class="font-weight-bolder mb-0">{{ $jumlahTugas }}</h5>
+                                    </div>
+                                </div>
+                                <div class="col-4 text-end">
+                                    <div class="icon icon-shape bg-blue shadow text-center border-radius-md">
+                                        <i class="fas fa-map-marker-alt text-lg opacity-10" aria-hidden="true"></i>
+                                    </div>
+                                </div>                                
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xl-3 col-sm-6 mb-xl-2 mb-4">
+                    <div class="card">
+                        <div class="card-body p-3">
+                            <div class="row">
+                                <div class="col-8">
+                                    <div class="numbers">
+                                        <p class="text-sm mb-0 text-capitalize font-weight-bold">Barang Keluar</p>
+                                        <h5 class="font-weight-bolder mb-0">{{ $jumlahDiminta }}</h5>
                                     </div>
                                 </div>
                                 <div class="col-4 text-end">

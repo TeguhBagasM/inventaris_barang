@@ -137,25 +137,25 @@ class BarangController extends Controller
     }
 
     public function show(Barang $barang)
-{
-    $barang->load('kategori', 'ruang');
-    $title = 'Detail Asset';
+    {
+        $barang->load('kategori', 'ruang');
+        $title = 'Detail Asset';
 
-    $detail = Peminjaman::with(['user', 'detailPeminjamans' => function($query) use ($barang) {
-        $query->where('barang_id', $barang->id);
-    }])
-    ->whereHas('detailPeminjamans', function($query) use ($barang) {
-        $query->where('barang_id', $barang->id);
-    })
-    ->select('peminjamans.user_id')
-    ->selectRaw('SUM(detail_peminjamans.jumlah) as total_peminjaman')
-    ->join('detail_peminjamans', 'peminjamans.id', '=', 'detail_peminjamans.peminjaman_id')
-    ->where('detail_peminjamans.barang_id', $barang->id)
-    ->groupBy('peminjamans.user_id')
-    ->get();
+        $detail = Peminjaman::with(['user', 'detailPeminjamans' => function($query) use ($barang) {
+            $query->where('barang_id', $barang->id);
+        }])
+        ->whereHas('detailPeminjamans', function($query) use ($barang) {
+            $query->where('barang_id', $barang->id);
+        })
+        ->select('peminjamans.user_id')
+        ->selectRaw('SUM(detail_peminjamans.jumlah) as total_peminjaman')
+        ->join('detail_peminjamans', 'peminjamans.id', '=', 'detail_peminjamans.peminjaman_id')
+        ->where('detail_peminjamans.barang_id', $barang->id)
+        ->groupBy('peminjamans.user_id')
+        ->get();
 
-    return view('pages.Barang.detail-barang', compact('barang', 'title', 'detail'));
-}
+        return view('pages.Barang.detail-barang', compact('barang', 'title', 'detail'));
+    }
 
 
     /**

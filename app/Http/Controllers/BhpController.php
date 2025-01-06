@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\BarangKeluar;
 use App\Models\Bhp;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
@@ -55,9 +56,26 @@ class BhpController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(Bhp $bhp)
     {
-        //
+        $bhp->load(['detailBarangKeluars.barangKeluar.user']);
+        
+        $detail = BarangKeluar::with(['user', 'detailBarangKeluars' => function($query) use ($bhp) {
+            $query->where('bhp_id', $bhp->id);
+        }])
+        ->whereHas('detailBarangKeluars', function($query) use ($bhp) {
+            $query->where('bhp_id', $bhp->id);
+        })
+        ->select('barang_keluars.user_id')
+        ->selectRaw('SUM(detail_barang_keluars.jumlah) as total_pengeluaran')
+        ->join('detail_barang_keluars', 'barang_keluars.id', '=', 'detail_barang_keluars.barang_keluar_id')
+        ->where('detail_barang_keluars.bhp_id', $bhp->id)
+        ->groupBy('barang_keluars.user_id')
+        ->get();
+
+        $title = 'Detail BHP';
+
+        return view('pages.Bhp.show', compact('bhp', 'title', 'detail'));
     }
 
     /**

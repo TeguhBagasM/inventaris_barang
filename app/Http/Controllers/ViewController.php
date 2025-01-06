@@ -4,9 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use App\Models\Barang;
+use App\Models\BarangKeluar;
 use App\Models\Bhp;
-use App\Models\Kategori;
-use Illuminate\Http\Request;
+// use App\Models\Kategori;
+// use Illuminate\Http\Request;
 use App\Models\DetailPeminjaman;
 use App\Models\Gedung;
 use App\Models\Ruang;
@@ -24,6 +25,9 @@ class ViewController extends Controller
         $jumlahBhp = Bhp::count();
         $jumlahRuang = Ruang::count();
         $jumlahGedung = Gedung::count();
+        $jumlahUser = User::count();
+        $jumlahTugas = ToDoList::where('status', 'pending')->count();
+        $jumlahDiminta = BarangKeluar::where('status', 'disetujui')->count();
         $jumlahPeminjam = DetailPeminjaman::whereNull('tanggal_kembali')->count();
 
         $kategoriData = DB::table('kategoris')
@@ -63,6 +67,9 @@ class ViewController extends Controller
             'jumlahBhp', 
             'jumlahRuang', 
             'jumlahGedung', 
+            'jumlahUser', 
+            'jumlahDiminta', 
+            'jumlahTugas', 
             'jumlahPeminjam',
             'kategoriData',
             'monthlyLoans',

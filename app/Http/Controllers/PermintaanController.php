@@ -10,6 +10,7 @@ use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
 
 class PermintaanController extends Controller
@@ -209,7 +210,9 @@ class PermintaanController extends Controller
         try {
             DB::beginTransaction();
             
-            $barangKeluar = BarangKeluar::with('detailBarangKeluars.bhp')->findOrFail($id);
+            $barangKeluar = BarangKeluar::with(['detailBarangKeluars.bhp' => function($query) {
+                $query->lockForUpdate(); 
+            }])->findOrFail($id);
             
             if ($barangKeluar->status !== 'diajukan') {
                 return response()->json([
@@ -217,34 +220,38 @@ class PermintaanController extends Controller
                     'message' => 'Status permintaan tidak valid untuk dikonfirmasi'
                 ], 422);
             }
-
+    
             foreach ($barangKeluar->detailBarangKeluars as $detail) {
-                if ($detail->jumlah > $detail->bhp->stok) {
+                $bhp = Bhp::lockForUpdate()->find($detail->bhp_id);
+                
+                if ($detail->jumlah > $bhp->stok) {
+                    DB::rollBack();
                     return response()->json([
                         'status' => false,
-                        'message' => "Stok {$detail->bhp->nama} tidak mencukupi"
+                        'message' => "Stok {$bhp->nama} tidak mencukupi"
                     ], 422);
                 }
             }
-
+    
             foreach ($barangKeluar->detailBarangKeluars as $detail) {
-                $bhp = $detail->bhp;
-                $bhp->stok -= $detail->jumlah;
+                $bhp = Bhp::find($detail->bhp_id);
+                $bhp->stok = $bhp->stok - $detail->jumlah;
                 $bhp->save();
             }
-
+    
             $barangKeluar->status = 'disetujui';
             $barangKeluar->save();
-
+    
             DB::commit();
-
+    
             return response()->json([
                 'status' => true,
                 'message' => 'Permintaan BHP berhasil dikonfirmasi'
             ]);
-
+    
         } catch (\Exception $e) {
             DB::rollback();
+            Log::error('Error in konfirmasi barang keluar: ' . $e->getMessage());
             return response()->json([
                 'status' => false,
                 'message' => 'Terjadi kesalahan saat mengkonfirmasi permintaan'
