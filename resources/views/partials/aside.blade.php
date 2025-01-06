@@ -92,7 +92,7 @@
           </a>
         </li>
         <li class="nav-item">
-          <a class="nav-link {{ $title == 'Logs Permintaan' ? 'active' : '' }}" href="/log-peminjaman">
+          <a class="nav-link {{ $title == 'Logs Permintaan' ? 'active' : '' }}" href="/log-permintaan">
             <div class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
               <i class="fas fa-history text-dark"></i>
             </div>
@@ -200,7 +200,7 @@
         <div class="full-background" style="background-image: url('../assets/img/curved-images/white-curved.jpg')"></div>
         <div class="card-body text-start p-3 w-100">
           <div class="docs-info">
-            <h6 class="text-white up mb-0">Hello, {{ auth()->user()->name }}</h6>
+            <h6 class="text-white up mb-0 text-capitalize">Halo, {{ auth()->user()->level }}</h6>
             @php
             $level = auth()->user()->level;
             @endphp

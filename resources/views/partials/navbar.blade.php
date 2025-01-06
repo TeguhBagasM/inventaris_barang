@@ -20,7 +20,7 @@
                 <li class="nav-item dropdown">
                     <a href="#" class="nav-link text-body font-weight-bold px-0 dropdown-toggle"
                         id="navbarDropdownProfile" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                        <i class="fa-solid fa-user me-sm-1" style="font-size: 20px"></i>
+                        <i class="fa-solid fa-user me-sm-2" style="font-size: 20px"></i> {{ auth()->user()->name }}
                     </a>
                     <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdownProfile">
                         <li>
