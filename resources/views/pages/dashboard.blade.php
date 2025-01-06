@@ -29,13 +29,13 @@
                             <div class="row">
                                 <div class="col-8">
                                     <div class="numbers">
-                                        <p class="text-sm mb-0 text-capitalize font-weight-bold">Jumlah Kategori</p>
-                                        <h5 class="font-weight-bolder mb-0">{{ $jumlahKategori }}</h5>
+                                        <p class="text-sm mb-0 text-capitalize font-weight-bold">Jumlah BHP</p>
+                                        <h5 class="font-weight-bolder mb-0">{{ $jumlahBhp }}</h5>
                                     </div>
                                 </div>
                                 <div class="col-4 text-end">
                                     <div class="icon icon-shape bg-blue shadow text-center border-radius-md">
-                                        <i class="fas fa-tags text-lg opacity-10" aria-hidden="true"></i>
+                                        <i class="fas fa-box-open text-lg opacity-10" aria-hidden="true"></i>
                                     </div>
                                 </div>                                
                             </div>
@@ -87,7 +87,7 @@
     <div class="col-lg-6 mb-lg-0 mb-4">
         <div class="card z-index-2">
             <div class="card-header pb-0">
-                <h6>Distribusi Barang per Kategori</h6>
+                <h6>Distribusi Asset per Kategori</h6>
             </div>
             <div class="card-body p-3">
                 <div class="chart">
@@ -116,11 +116,6 @@
     <div class="card z-index-2">
         <div class="card-header pb-0">
             <h6>Tugas Selanjutnya</h6>
-            @if (Session::has('status'))
-            <div class="alert alert-success text-white opacity-5" role="alert">
-                {{ Session::get('message') }}
-            </div>
-            @endif
         </div>
             <div class="card-body px-0 pt-2 pb-2">
                 <form action="{{ route('todolist.updateStatus') }}" method="POST" id="todoForm">
@@ -191,7 +186,7 @@
     <div class="col-12">
         <div class="card z-index-2">
             <div class="card-header pb-0">
-                <h6>Distribusi Barang per Ruangan</h6>
+                <h6>Distribusi Asset per Ruangan</h6>
             </div>
             <div class="card-body p-3">
                 <div class="chart">
@@ -454,6 +449,16 @@ document.addEventListener('DOMContentLoaded', function() {
                 });
             });
         });
+
+        @if(Session::has('status'))
+                Swal.fire({
+                    icon: '{{ Session::get("status") }}',
+                    title: '{{ Session::get("status") == "success" ? "Berhasil!" : "Oops..." }}',
+                    text: '{{ Session::get("message") }}',
+                    showConfirmButton: false,
+                    timer: 2000
+                });
+        @endif
 </script>
 @endpush
 @endsection

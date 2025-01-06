@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use App\Models\Barang;
+use App\Models\Bhp;
 use App\Models\Kategori;
 use Illuminate\Http\Request;
 use App\Models\DetailPeminjaman;
@@ -20,7 +21,7 @@ class ViewController extends Controller
         $title = 'Dashboard';
 
         $jumlahBarang = Barang::count();
-        $jumlahKategori = Kategori::count();
+        $jumlahBhp = Bhp::count();
         $jumlahRuang = Ruang::count();
         $jumlahGedung = Gedung::count();
         $jumlahPeminjam = DetailPeminjaman::whereNull('tanggal_kembali')->count();
@@ -59,7 +60,7 @@ class ViewController extends Controller
         return view('pages.dashboard', compact(
             'title', 
             'jumlahBarang', 
-            'jumlahKategori', 
+            'jumlahBhp', 
             'jumlahRuang', 
             'jumlahGedung', 
             'jumlahPeminjam',

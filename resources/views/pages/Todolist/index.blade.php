@@ -55,10 +55,10 @@
                                                     <h6 class="text-secondary text-sm font-weight-bold ps-2">{{ $todo->deskripsi }}</h6>
                                                 </td>
                                                 <td>
-                                                    <span class="badge bg-{{ $todo->prioritas === 'Tinggi' ? 'danger' : 'info' }}">{{ $todo->prioritas }}</span>
+                                                    <span class="badge bg-gradient-{{ $todo->prioritas === 'Tinggi' ? 'danger' : 'info' }}">{{ $todo->prioritas }}</span>
                                                 </td>
                                                 <td>
-                                                    <span class="badge bg-{{ $todo->status === 'selesai' ? 'success' : 'warning' }}">{{ $todo->status }}</span>
+                                                    <span class="badge bg-gradient-{{ $todo->status === 'selesai' ? 'success' : 'warning' }}">{{ $todo->status }}</span>
                                                 </td>
                                                 <td>
                                                     <h6 class="text-secondary text-sm font-weight-bold ps-2">{{ $todo->user->level ?? 'Tidak Diketahui' }}</h6>
