@@ -30,7 +30,7 @@
                                 </div>
                                 <div class="col-md-4 align-self-end mt-4">
                                     <button type="submit" class="btn bg-gradient-success me-2">Filter</button>
-                                    <a href="{{ route('log.permintaan') }}" class="btn btn-secondary">Reset</a>
+                                    <a href="{{ route('log.permintaan') }}" class="btn bg-gradient-orange text-white">Reset</a>
                                 </div>
                             </form>
                             <div class="text-center py-5">

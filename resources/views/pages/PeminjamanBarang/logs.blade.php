@@ -7,14 +7,14 @@
                     <div class="card-header pb-0">
                         <div class="d-flex justify-content-between">
                             <div>
-                                <h4>Logs Peminjaman Barang</h4>
+                                <h4>Logs Peminjaman Asset</h4>
                             </div>
                             <div>
                                 <a href="{{ route('scan-qr') }}" class="mt-2 text-white btn bg-gradient-info me-2">
                                     <i class="fas fa-qrcode me-2"></i> Scan QR
                                 </a>
                                 <a href="{{ route('admin.pinjam') }}" class="mt-2 text-white btn bg-gradient-success me-2">
-                                    <i class="fas fa-plus me-2"></i> Peminjam
+                                    <i class="fas fa-plus me-2"></i> Peminjaman Baru
                                 </a>
                                 <a href="{{ route('peminjaman.cetak') }}" class="mt-2 text-white btn bg-info" target="_blank"><i class="fas fa-print me-2"></i>Cetak</a>
                             </div>
@@ -61,7 +61,7 @@
                                     <tr class="text-center">
                                         <th>No</th>
                                         <th>Peminjam</th>
-                                        <th>Jumlah Barang</th>
+                                        <th>Jumlah Asset</th>
                                         <th>Tanggal Pinjam</th>
                                         <th>Status</th>
                                         <th>Aksi</th>

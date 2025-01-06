@@ -74,7 +74,7 @@
                                         <table class="table table-striped" id="barangDipinjamTable">
                                             <thead>
                                                 <tr>
-                                                    <th>Barang</th>
+                                                    <th>Asset</th>
                                                     <th>Jumlah</th>
                                                     <th>Aksi</th>
                                                 </tr>
@@ -90,7 +90,7 @@
                                     </div>
                                     <div class="col-12 mt-3">
                                         <button type="button" id="submitPeminjaman" class="btn bg-gradient-success w-100" disabled>
-                                            Submit Peminjaman
+                                            Ajukan Peminjaman
                                         </button>
                                     </div>
                                 </form>
@@ -191,7 +191,7 @@
                                     <td>${barang.jumlah}</td>
                                     <td>
                                         <button type="button" class="btn btn-danger btn-sm hapus-barang" data-id="${barang.barang_id}">
-                                            <i class="fas fa-trash" style="font-size: 14px;"></i> Hapus
+                                            <i class="fas fa-trash" style="font-size: 14px;"></i>
                                         </button>
                                     </td>
                                 </tr>

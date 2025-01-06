@@ -30,7 +30,7 @@
                                         <tr>
                                             <th class="text-uppercase text-dark text-sm font-weight-bolder">No</th>
                                             <th class="text-uppercase text-dark text-sm font-weight-bolder">Tanggal Peminjaman</th>
-                                            <th class="text-uppercase text-dark text-sm font-weight-bolder">Total Barang</th>
+                                            <th class="text-uppercase text-dark text-sm font-weight-bolder">Total</th>
                                             <th class="text-uppercase text-dark text-sm font-weight-bolder">Status</th>
                                             <th class="text-uppercase text-dark text-sm font-weight-bolder">Aksi</th>
                                         </tr>
@@ -50,7 +50,7 @@
                                                 </td>
                                                 <td>
                                                     <h6 class="text-secondary text-sm font-weight-bold ps-2">
-                                                        {{ $peminjaman->detailPeminjamans->sum('jumlah') }} Barang
+                                                        {{ $peminjaman->detailPeminjamans->sum('jumlah') }} Asset
                                                     </h6>
                                                 </td>
                                                 <td>
