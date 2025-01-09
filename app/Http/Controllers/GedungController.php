@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Gedung;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
@@ -29,6 +30,13 @@ class GedungController extends Controller
         $title = 'Detail Gedung';
         $gedung = Gedung::with('ruangs')->findOrFail($id);
         return view('pages.gedung.show', compact('gedung', 'title'));
+    }
+
+    public function cetak()
+    {
+        $gedung = Gedung::with('ruangs')->get();
+        $pdf = Pdf::loadView('pages.gedung.cetak-gedung', compact('gedung'));
+        return $pdf->stream('laporan-gedung.pdf');
     }
 
 

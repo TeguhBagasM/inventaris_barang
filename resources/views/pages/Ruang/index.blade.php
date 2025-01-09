@@ -16,6 +16,7 @@
                             <a href="{{ route('ruang.create') }}">
                                 <div class="mt-2 text-white btn bg-gradient-success">Tambah Ruang</div>
                             </a>
+                            <a href="{{ route('ruang.cetak') }}" class="mt-2 text-white btn bg-info" target="_blank"><i class="fas fa-print me-2"></i>Cetak</a>
                         </div>
                     </div>
                     <div class="card-body px-0 pt-0 pb-2">
@@ -62,7 +63,7 @@
                                             <td>
                                                 <div class="d-flex px-2 py-1">
                                                     <h6 class="text-white font-weight-bold ps-2">
-                                                        <span class="{{ $ruang->kondisi == 'Baik' ? 'badge bg-success' : 
+                                                        <span class="{{ $ruang->kondisi == 'Baik' ? 'badge bg-gradient-success' : 
                                                                        ($ruang->kondisi == 'Rusak Ringan' ? 'badge bg-warning' : 'badge bg-danger') }}">
                                                             {{ $ruang->kondisi }}
                                                         </span>

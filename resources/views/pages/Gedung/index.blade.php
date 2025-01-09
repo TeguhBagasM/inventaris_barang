@@ -16,6 +16,7 @@
                             <a href="{{ route('gedung.create') }}">
                                 <div class="mt-2 text-white btn bg-gradient-success">Tambah Gedung</div>
                             </a>
+                            <a href="{{ route('gedung.cetak') }}" class="mt-2 text-white btn bg-info" target="_blank"><i class="fas fa-print me-2"></i>Cetak</a>
                         </div>
                     </div>
                     <div class="card-body px-0 pt-0 pb-2">

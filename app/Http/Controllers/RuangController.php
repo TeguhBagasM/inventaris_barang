@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Gedung;
 use App\Models\Ruang;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
 
 class RuangController extends Controller
@@ -137,5 +138,11 @@ class RuangController extends Controller
         }
 
         return redirect()->route('ruang.index');
+    }
+    public function cetak()
+    {
+        $ruang = Ruang::with('gedung')->get();
+        $pdf = Pdf::loadView('pages.ruang.cetak-ruangan', compact('ruang'));
+        return $pdf->stream('laporan-ruang.pdf');
     }
 }

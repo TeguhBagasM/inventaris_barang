@@ -71,6 +71,8 @@ Route::middleware('auth')->group(function () {
         Route::resource('ruang', RuangController::class);
         Route::get('gedung/{gedung}/tambah-ruang', [RuangController::class, 'createFromGedung'])->name('ruang.create-from-gedung');
         Route::post('gedung/{gedung}/tambah-ruang', [RuangController::class, 'storeFromGedung'])->name('ruang.store-from-gedung');
+        Route::get('/cetak-gedung', [GedungController::class, 'cetak'])->name('gedung.cetak');
+        Route::get('/cetak-ruang', [RuangController::class, 'cetak'])->name('ruang.cetak');
         Route::resource('kategori', KategoriController::class);
     });
 
