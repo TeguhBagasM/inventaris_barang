@@ -27,7 +27,7 @@ class GedungController extends Controller
     public function show($id)
     {
         $title = 'Detail Gedung';
-        $gedung = Gedung::findOrFail($id);
+        $gedung = Gedung::with('ruangs')->findOrFail($id);
         return view('pages.gedung.show', compact('gedung', 'title'));
     }
 

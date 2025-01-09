@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>Laporan Barang</title>
+    <title>Laporan Asset</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -90,7 +90,7 @@
         <hr>
     </div>
     <div class="title">
-        <h3>Laporan Barang</h3>
+        <h3>Laporan Asset</h3>
     </div>
     <table>
         <thead>
@@ -125,7 +125,7 @@
     </div>
 
     <div class="page-number">
-        <div style="float: left">SIMANIS - Laporan Barang</div>
+        <div style="float: left">SIMANIS - Laporan Asset</div>
         <div style="float: right">{{ date('d - m - Y') }} &nbsp;&nbsp;&nbsp; {{ date('H:i') }}</div>
     </div> 
 </body>
