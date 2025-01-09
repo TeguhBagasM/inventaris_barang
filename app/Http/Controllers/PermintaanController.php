@@ -19,7 +19,7 @@ class PermintaanController extends Controller
     {
         $title = 'Permintaan Barang';
         $bhps = Bhp::where('stok', '>', 0)->get();
-        return view('pages.PermintaanBarang.index', compact('title', 'bhps'));
+        return view('pages.permintaanBarang.index', compact('title', 'bhps'));
     }
 
     public function indexAdmin()
@@ -27,7 +27,7 @@ class PermintaanController extends Controller
         $title = 'Permintaan Barang';
         $bhps = Bhp::where('stok', '>', 0)->get();
         $users = User::whereIn('level', ['guru'])->get();
-        return view('pages.PermintaanBarang.admin-permintaan', compact('bhps', 'users', 'title'));
+        return view('pages.permintaanBarang.admin-permintaan', compact('bhps', 'users', 'title'));
     }
 
     public function store(Request $request)
@@ -203,7 +203,7 @@ class PermintaanController extends Controller
             $log->total_jumlah = $log->detailBarangKeluars->isEmpty() ? 0 : $log->detailBarangKeluars->sum('jumlah');
         }
 
-        return view('pages.PermintaanBarang.logs', compact('title', 'logs'));
+        return view('pages.permintaanBarang.logs', compact('title', 'logs'));
     }
     public function konfirmasi($id)
     {
@@ -304,7 +304,7 @@ class PermintaanController extends Controller
     {
         $title = 'Form Tolak Permintaan';
         $permintaan = BarangKeluar::findOrFail($id);
-        return view('pages.PermintaanBarang.konfirmasi-tolak', compact('title', 'permintaan'));
+        return view('pages.permintaanBarang.konfirmasi-tolak', compact('title', 'permintaan'));
     }
 
     public function detailPermintaan()

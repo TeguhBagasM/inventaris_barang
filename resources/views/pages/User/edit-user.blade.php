@@ -43,12 +43,20 @@
                                 @enderror
                             </div>
                             <div class="mb-3">
-                                <label for="password" class="form-label text-sm required-label">Password (Biarkan kosong jika tidak berubah)</label>
-                                <input type="password" class="form-control @error('password') is-invalid @enderror" id="password" name="password">
-                                @error('password')
-                                        <div class="invalid-feedback">{{ $message }}</div>
+                                <label for="current_password" class="form-label text-sm required-label">Password Lama</label>
+                                <input type="password" class="form-control @error('current_password') is-invalid @enderror" id="current_password" name="current_password">
+                                @error('current_password')
+                                    <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
                             </div>
+                            <div class="mb-3">
+                                <label for="password" class="form-label text-sm required-label">Password Baru (Biarkan kosong jika tidak berubah)</label>
+                                <input type="password" class="form-control @error('password') is-invalid @enderror" id="password" name="password">
+                                @error('password')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
+                            
                             <a href="{{ route('user.index') }}" class="btn bg-gradient-danger">Kembali</a>
                             <button type="submit" class="btn bg-gradient-success float-end">Simpan</button>
                         </form>

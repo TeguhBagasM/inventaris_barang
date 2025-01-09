@@ -6,6 +6,15 @@
                 <div class="card mb-4">
                     <div class="card-header pb-0">
                         <h4 class="">Tambah User</h4>
+                        @if ($errors->any())
+                            <div class="alert alert-danger">
+                                <ul>
+                                    @foreach ($errors->all() as $error)
+                                        <li>{{ $error }}</li>
+                                    @endforeach
+                                </ul>
+                            </div>
+                        @endif
                         <hr class="bg-dark px-auto">
                     </div>
                     <div class="card-body px-0 pt-0 pb-2 ps-4 me-4">
