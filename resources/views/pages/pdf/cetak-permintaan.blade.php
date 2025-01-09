@@ -51,9 +51,6 @@
         table, th, td {
             border: 1px solid black;
         }
-        th {
-            background: lightblue;
-        }
         th, td {
             padding: 8px;
             text-align: center;
@@ -98,6 +95,7 @@
     <table>
         <thead>
             <tr>
+                <th>No</th>
                 <th>Permintaan oleh</th>
                 <th>Barang</th>
                 <th>Jumlah</th>
@@ -108,6 +106,7 @@
         <tbody>
             @foreach($barangKeluar as $permintaan)
     <tr>
+        <td>{{ $loop->iteration }}</td>
         <td>{{ $permintaan->user->name }}</td>
         <td>
             @if($permintaan->detailBarangKeluars->isNotEmpty())

@@ -95,8 +95,9 @@
     <table>
         <thead>
             <tr>
-                <th>Nama Gedung</th>
+                <th>No</th>
                 <th>Nama Ruangan</th>
+                <th>Gedung</th>
                 <th>Ukuran</th>
                 <th>Kondisi</th>
                 <th>Peruntukkan</th>
@@ -106,8 +107,9 @@
         <tbody>
             @foreach($ruang as $item)
             <tr>
-                <td>{{ $item->gedung->nama_gedung }}</td>
+                <td>{{ $loop->iteration }}</td>
                 <td>{{ $item->nama_ruang }}</td>
+                <td>{{ $item->gedung->nama_gedung }}</td>
                 <td>{{ $item->ukuran }}</td>
                 <td>{{ $item->kondisi }}</td>
                 <td>{{ $item->peruntukkan }}</td>

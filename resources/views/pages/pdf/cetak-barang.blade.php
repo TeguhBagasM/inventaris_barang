@@ -95,6 +95,7 @@
     <table>
         <thead>
             <tr>
+                <th>No</th>
                 <th>Nama</th>
                 <th>Serial No.</th>
                 <th>Stok</th>
@@ -106,6 +107,7 @@
         <tbody>
             @foreach($barang as $item)
             <tr>
+                <td>{{ $loop->iteration }}</td>
                 <td>{{ $item->nama }}</td>
                 <td>{{ $item->serial_number }}</td>
                 <td>{{ $item->stok }}</td>

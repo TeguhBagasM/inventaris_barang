@@ -51,9 +51,6 @@
         table, th, td {
             border: 1px solid black;
         }
-        th {
-            background: lightblue;
-        }
         th, td {
             padding: 8px;
             text-align: center;
@@ -98,6 +95,7 @@
     <table>
         <thead>
             <tr>
+                <th>No</th>
                 <th>Peminjam</th>
                 <th>Barang</th>
                 <th>Jumlah</th>
@@ -108,6 +106,7 @@
         <tbody>
             @foreach($peminjaman as $pinjam)
             <tr>
+                <td>{{ $loop->iteration }}</td>
                 <td>{{ $pinjam->user->name }}</td>
                 <td>
                     @foreach($pinjam->detailPeminjamans as $detail)
