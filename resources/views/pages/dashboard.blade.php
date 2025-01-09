@@ -161,7 +161,7 @@
     @elseif (auth()->user()->level == 'petugas 1')
         <div class="row">
             <!-- Jumlah Asset -->
-            <div class="col-xl-3 col-sm-6 mb-xl-2 mb-4">
+            <div class="col-xl-4 col-sm-6 mb-xl-2 mb-4">
                 <div class="card">
                     <div class="card-body p-3">
                         <div class="row">
@@ -181,7 +181,7 @@
                 </div>
             </div>
             <!-- Asset Dipinjam -->
-            <div class="col-xl-3 col-sm-6 mb-xl-2 mb-4">
+            <div class="col-xl-4 col-sm-6 mb-xl-2 mb-4">
                 <div class="card">
                     <div class="card-body p-3">
                         <div class="row">
@@ -201,7 +201,7 @@
                 </div>
             </div>
             <!-- Jumlah Tugas -->
-            <div class="col-xl-3 col-sm-6 mb-xl-2 mb-4">
+            <div class="col-xl-4 col-sm-6 mb-xl-2 mb-4">
                 <div class="card">
                     <div class="card-body p-3">
                         <div class="row">
@@ -223,28 +223,8 @@
         </div>
     @elseif (auth()->user()->level == 'petugas 2')
         <div class="row">
-            <!-- Jumlah Tugas -->
-            <div class="col-xl-3 col-sm-6 mb-xl-2 mb-4">
-                <div class="card">
-                    <div class="card-body p-3">
-                        <div class="row">
-                            <div class="col-8">
-                                <div class="numbers">
-                                    <p class="text-sm mb-0 text-capitalize font-weight-bold">Jumlah Tugas</p>
-                                    <h5 class="font-weight-bolder mb-0">{{ $jumlahTugas }}</h5>
-                                </div>
-                            </div>
-                            <div class="col-4 text-end">
-                                <div class="icon icon-shape bg-blue shadow text-center border-radius-md">
-                                    <i class="fas fa-tasks text-lg opacity-10" aria-hidden="true"></i>
-                                </div>
-                            </div>                                
-                        </div>
-                    </div>
-                </div>
-            </div>
             <!-- Asset Dipinjam -->
-            <div class="col-xl-3 col-sm-6 mb-xl-2 mb-4">
+            <div class="col-xl-4 col-sm-6 mb-xl-2 mb-4">
                 <div class="card">
                     <div class="card-body p-3">
                         <div class="row">
@@ -264,50 +244,7 @@
                 </div>
             </div>
             <!-- Barang Keluar -->
-            <div class="col-xl-3 col-sm-6 mb-xl-2 mb-4">
-                <div class="card">
-                    <div class="card-body p-3">
-                        <div class="row">
-                            <div class="col-8">
-                                <div class="numbers">
-                                    <p class="text-sm mb-0 text-capitalize font-weight-bold">Barang Keluar</p>
-                                    <h5 class="font-weight-bolder mb-0">{{ $jumlahDiminta }}</h5>
-                                </div>
-                            </div>
-                            <div class="col-4 text-end">
-                                <div class="icon icon-shape bg-blue shadow text-center border-radius-md">
-                                    <i class="fas fa-dolly text-lg opacity-10" aria-hidden="true"></i>
-                                </div>
-                            </div>                                
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    @elseif (auth()->user()->level == 'petugas 3')
-        <div class="row">
-            <!-- Jumlah BHP -->
-            <div class="col-xl-3 col-sm-6 mb-xl-2 mb-4">
-                <div class="card">
-                    <div class="card-body p-3">
-                        <div class="row">
-                            <div class="col-8">
-                                <div class="numbers">
-                                    <p class="text-sm mb-0 text-capitalize font-weight-bold">Jumlah BHP</p>
-                                    <h5 class="font-weight-bolder mb-0">{{ $jumlahBhp }}</h5>
-                                </div>
-                            </div>
-                            <div class="col-4 text-end">
-                                <div class="icon icon-shape bg-blue shadow text-center border-radius-md">
-                                    <i class="fas fa-box-open text-lg opacity-10" aria-hidden="true"></i>
-                                </div>
-                            </div>                                
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <!-- Barang Keluar -->
-            <div class="col-xl-3 col-sm-6 mb-xl-2 mb-4">
+            <div class="col-xl-4 col-sm-6 mb-xl-2 mb-4">
                 <div class="card">
                     <div class="card-body p-3">
                         <div class="row">
@@ -327,7 +264,71 @@
                 </div>
             </div>
             <!-- Jumlah Tugas -->
-            <div class="col-xl-3 col-sm-6 mb-xl-2 mb-4">
+            <div class="col-xl-4 col-sm-6 mb-xl-2 mb-4">
+                <div class="card">
+                    <div class="card-body p-3">
+                        <div class="row">
+                            <div class="col-8">
+                                <div class="numbers">
+                                    <p class="text-sm mb-0 text-capitalize font-weight-bold">Jumlah Tugas</p>
+                                    <h5 class="font-weight-bolder mb-0">{{ $jumlahTugas }}</h5>
+                                </div>
+                            </div>
+                            <div class="col-4 text-end">
+                                <div class="icon icon-shape bg-blue shadow text-center border-radius-md">
+                                    <i class="fas fa-tasks text-lg opacity-10" aria-hidden="true"></i>
+                                </div>
+                            </div>                                
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+    @elseif (auth()->user()->level == 'petugas 3')
+        <div class="row">
+            <!-- Jumlah BHP -->
+            <div class="col-xl-4 col-sm-6 mb-xl-2 mb-4">
+                <div class="card">
+                    <div class="card-body p-3">
+                        <div class="row">
+                            <div class="col-8">
+                                <div class="numbers">
+                                    <p class="text-sm mb-0 text-capitalize font-weight-bold">Jumlah BHP</p>
+                                    <h5 class="font-weight-bolder mb-0">{{ $jumlahBhp }}</h5>
+                                </div>
+                            </div>
+                            <div class="col-4 text-end">
+                                <div class="icon icon-shape bg-blue shadow text-center border-radius-md">
+                                    <i class="fas fa-box-open text-lg opacity-10" aria-hidden="true"></i>
+                                </div>
+                            </div>                                
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Barang Keluar -->
+            <div class="col-xl-4 col-sm-6 mb-xl-2 mb-4">
+                <div class="card">
+                    <div class="card-body p-3">
+                        <div class="row">
+                            <div class="col-8">
+                                <div class="numbers">
+                                    <p class="text-sm mb-0 text-capitalize font-weight-bold">Barang Keluar</p>
+                                    <h5 class="font-weight-bolder mb-0">{{ $jumlahDiminta }}</h5>
+                                </div>
+                            </div>
+                            <div class="col-4 text-end">
+                                <div class="icon icon-shape bg-blue shadow text-center border-radius-md">
+                                    <i class="fas fa-dolly text-lg opacity-10" aria-hidden="true"></i>
+                                </div>
+                            </div>                                
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Jumlah Tugas -->
+            <div class="col-xl-4 col-sm-6 mb-xl-2 mb-4">
                 <div class="card">
                     <div class="card-body p-3">
                         <div class="row">
@@ -356,7 +357,7 @@
                             <div class="col-lg-6">
                                 <div class="d-flex flex-column h-100 my-auto mt-5 mx-3">
                                     <p class="mb-1 pt-3 text-bold">SMK Negeri 2 Cimahi</p>
-                                    <h5 class="font-weight-bolder">Inventaris Barang</h5>
+                                    <h5 class="font-weight-bolder">Selamat Datang</h5>
                                     <p class="mb-6">Aplikasi ini memungkinkan pengguna untuk mengelola stok barang dengan mudah, 
                                         memantau pergerakan barang, dan menghasilkan laporan inventaris secara real-time.</p>
                                 </div>
@@ -377,6 +378,7 @@
             </div>
         </div>
     @endif
+@if (auth()->user()->level != 'siswa' && auth()->user()->level != 'guru')
 <div class="row mt-4">
     <div class="col-lg-6 mb-lg-0 mb-4">
         <div class="card z-index-2">
@@ -491,7 +493,7 @@
     </div>
 </div>
 </div>
-
+@endif
 @push('scripts')
 <script>
 var categoryData = @json($kategoriData);
