@@ -59,7 +59,11 @@ class GedungController extends Controller
                 $fileName = Str::slug($request->nama_gedung) . '-' . $timestamp . '.' . 
                         $gambar->getClientOriginalExtension();
                 
-                $path = $gambar->storeAs('gedung-images', $fileName, 'public');
+                $path = $request->file('gambar')->storeAs('gedung-images', $fileName, 'public');
+                
+                Log::info('Upload path: ' . $path);
+                Log::info('Storage URL: ' . Storage::url($path));
+                
                 $validated['gambar'] = $path;
             }
 
@@ -68,16 +72,15 @@ class GedungController extends Controller
             if ($gedung) {
                 session()->flash('status', 'success');
                 session()->flash('message', 'Gedung berhasil ditambahkan!');
-            }
-            else {
-                session()->flash('status', 'success');
-                session()->flash('message', 'Gedung menambahkan gedung, Silakan coba lagi.');
+            } else {
+                session()->flash('status', 'error');
+                session()->flash('message', 'Gagal menambahkan gedung, Silakan coba lagi.');
             }
             return redirect()->route('gedung.index');
 
         } catch (\Exception $e) {
-            if (isset($fileName) && Storage::disk('public')->exists('gedung-images/' . $fileName)) {
-                Storage::disk('public')->delete('gedung-images/' . $fileName);
+            if (isset($path)) {
+                Storage::disk('public')->delete($path);
             }
 
             Log::error('Error creating gedung: ' . $e->getMessage());
@@ -108,30 +111,34 @@ class GedungController extends Controller
         ]);
     
         try {
+            // Handle file upload
             if ($request->hasFile('gambar') && $request->file('gambar')->isValid()) {
-                if ($gedung->gambar) {
+                // Delete old image if exists
+                if ($gedung->gambar && Storage::disk('public')->exists($gedung->gambar)) {
                     Storage::disk('public')->delete($gedung->gambar);
                 }
                 
-                $gambar = $request->file('gambar');
                 $timestamp = date('dmYHis');
                 $fileName = Str::slug($request->nama_gedung) . '-' . $timestamp . '.' . 
-                           $gambar->getClientOriginalExtension();
+                           $request->file('gambar')->getClientOriginalExtension();
                 
-                $path = $gambar->storeAs('gedung-images', $fileName, 'public');
+                // Store new image
+                $path = $request->file('gambar')->storeAs('gedung-images', $fileName, 'public');
+                
+                // Add logging for debugging
+                Log::info('Update path: ' . $path);
+                Log::info('Storage URL: ' . Storage::url($path));
+                
                 $validated['gambar'] = $path;
             }
+            // Handle rename if only name changed
             elseif ($gedung->nama_gedung !== $request->nama_gedung && $gedung->gambar) {
                 $oldPath = $gedung->gambar;
-                $extension = pathinfo($oldPath, PATHINFO_EXTENSION);
-                
-                $oldNameParts = explode('-', pathinfo($oldPath, PATHINFO_FILENAME));
-                $timestamp = count($oldNameParts) > 1 ? end($oldNameParts) : date('dmYHis');
-                
-                $newFileName = Str::slug($request->nama_gedung) . '-' . $timestamp . '.' . $extension;
-                $newPath = 'gedung-images/' . $newFileName;
-                
                 if (Storage::disk('public')->exists($oldPath)) {
+                    $extension = pathinfo($oldPath, PATHINFO_EXTENSION);
+                    $timestamp = date('dmYHis');
+                    $newPath = 'gedung-images/' . Str::slug($request->nama_gedung) . '-' . $timestamp . '.' . $extension;
+                    
                     Storage::disk('public')->move($oldPath, $newPath);
                     $validated['gambar'] = $newPath;
                 }
@@ -143,8 +150,7 @@ class GedungController extends Controller
                 session()->flash('status', 'success');
                 session()->flash('message', 'Gedung berhasil diperbarui.');
             } else {
-                session()->flash('status', 'error');
-                session()->flash('message', 'Gagal memperbarui gedung. Silakan coba lagi.');
+                throw new \Exception('Gagal memperbarui gedung');
             }
     
             return redirect()->route('gedung.index');
