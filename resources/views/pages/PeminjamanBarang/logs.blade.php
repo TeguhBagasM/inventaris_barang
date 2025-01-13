@@ -6,12 +6,10 @@
             <div class="card mb-4">
                 <div class="card-header pb-0">
                     <div class="row">
-                        <!-- Logs Peminjaman Asset -->
-                        <div class="col-12 col-md-6 order-1 order-md-1">
+                        <div class="col-12 col-md-10 col-lg-8 order-1 order-md-1">
                             <h4>Logs Peminjaman Asset</h4>
                         </div>
 
-                        <!-- Tombol Aksi -->
                         <div class="col-12 col-md-6 d-flex flex-column flex-md-row justify-content-md-end align-items-start align-items-md-center order-2 order-md-2 mt-3 mt-md-0">
                             <a href="{{ route('scan-qr') }}" class="btn bg-gradient-info text-white mb-2 mb-md-0 me-md-2">
                                 <i class="fas fa-qrcode me-2"></i> Scan QR
