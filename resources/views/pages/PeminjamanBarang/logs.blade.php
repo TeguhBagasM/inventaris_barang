@@ -6,7 +6,7 @@
             <div class="card mb-4">
                 <div class="card-header pb-0">
                     <div class="row">
-                        <div class="col-12 col-md-10 col-lg-8 order-1 order-md-1">
+                        <div class="col-12 col-md-6 order-1 order-md-1">
                             <h4>Logs Peminjaman Asset</h4>
                         </div>
 

@@ -1,25 +1,26 @@
 @extends('index')
 @section('content')
-    <div class="container-fluid py-4">
-        <div class="row">
-            <div class="col-12">
-                <div class="card mb-4">
-                    <div class="card-header pb-0">
-                        <div class="d-flex justify-content-between">
-                            <div>
-                                <h4>Logs Permintaan BHP</h4>
-                            </div>
-                            <div>
-                                <a href="{{ route('admin.minta') }}" class="mt-2 text-white btn bg-gradient-success me-2">
-                                    <i class="fas fa-plus me-2"></i> Permintaan Baru
-                                </a>
-                                <a href="{{ route('permintaan.cetak') }}" class="mt-2 text-white btn bg-info" target="_blank">
-                                    <i class="fas fa-print me-2"></i>Cetak
-                                </a>
-                            </div>
+<div class="container-fluid py-4">
+    <div class="row">
+        <div class="col-12">
+            <div class="card mb-4">
+                <div class="card-header pb-0">
+                    <div class="row">
+                        <div class="col-12 col-md-6 order-1 order-md-1">
+                            <h4>Logs Permintaan BHP</h4>
                         </div>
-                        <hr class="bg-dark px-auto">
+
+                        <div class="col-12 col-md-6 d-flex flex-column flex-md-row justify-content-md-end align-items-start align-items-md-center order-2 order-md-2 mt-3 mt-md-0">
+                            <a href="{{ route('admin.minta') }}" class="btn bg-gradient-success text-white mb-2 mb-md-0 me-md-2">
+                                <i class="fas fa-plus me-2"></i> Permintaan Baru
+                            </a>
+                            <a href="{{ route('permintaan.cetak') }}" class="btn bg-info text-white mb-2 mb-md-0 me-md-2" target="_blank">
+                                <i class="fas fa-print me-2"></i> Cetak
+                            </a>
+                        </div>
                     </div>
+                    <hr class="bg-dark px-auto">
+                </div>
                     <div class="card-body px-0 pt-0 pb-2">
                         @if($logs->isEmpty())
                             <form action="{{ route('log.permintaan') }}" method="GET" class="row mb-4 ms-4">
