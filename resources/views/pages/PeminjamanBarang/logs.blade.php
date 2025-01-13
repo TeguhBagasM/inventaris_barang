@@ -72,7 +72,7 @@
                                 </thead>
                                 <tbody>
                                     @foreach ($logs as $log)
-                                        <tr>
+                                        <tr class="text-center">
                                             <td>{{ $loop->iteration }}</td>
                                             <td>{{ $log->user->name }}</td>
                                             <td>{{ $log->total_jumlah }}</td>                                        
