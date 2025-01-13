@@ -25,7 +25,7 @@ class PeminjamanController extends Controller
     {
         $title = 'Peminjaman Asset';
         $barangs = Barang::where('stok', '>', 0)->get();
-        return view('pages.PeminjamanBarang.peminjaman', compact('title', 'barangs'));
+        return view('pages.peminjamanBarang.peminjaman', compact('title', 'barangs'));
     }
 
     public function indexAdmin()
@@ -33,7 +33,7 @@ class PeminjamanController extends Controller
         $title = 'Peminjaman Asset';
         $barangs = Barang::where('stok', '>', 0)->get();
         $users = User::whereIn('level', ['siswa', 'guru'])->get();
-        return view('pages.PeminjamanBarang.admin-pinjam', compact('barangs', 'users', 'title'));
+        return view('pages.peminjamanBarang.admin-pinjam', compact('barangs', 'users', 'title'));
     }
 
     public function pinjamAdmin(Request $request)
@@ -464,7 +464,7 @@ class PeminjamanController extends Controller
     {
         $title = 'Form Tolak Peminjaman';
         $peminjaman = Peminjaman::findOrFail($id);
-        return view('pages.PeminjamanBarang.konfirmasi-tolak', compact('title', 'peminjaman'));
+        return view('pages.peminjamanBarang.konfirmasi-tolak', compact('title', 'peminjaman'));
     }
     
     public function tolakPeminjaman(Request $request, $id)
