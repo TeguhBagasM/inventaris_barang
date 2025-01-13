@@ -97,14 +97,16 @@
                                                 @elseif ($log->status == 'dipinjam')
                                                 <a href="{{ route('pengembalian.form', $log->id) }}"
                                                    class="btn bg-gradient-orange text-white btn-sm ps-3 pe-3"><i class="fas fa-undo-alt me-2" style="font-size: 11px"></i>Kembalikan</a>
-                                                <a href="{{ route('cetak.bukti', ['id' => $log->id]) }}"
+                                                   <a href="{{ route('cetak.bukti', ['id' => $log->id]) }}"
                                                       class="text-white btn btn-info btn-sm ps-3 pe-3" target="_blank"><i class="fas fa-print me-2" style="font-size: 11px"></i>Cetak</a>
                                                 @else
-                                                <button type="button" 
-                                                    class="btn btn-sm bg-gradient-danger"
-                                                    onclick="confirmDelete('{{ $log->id }}')">
+                                                <button type="button" class="btn btn-sm bg-gradient-danger" onclick="confirmDelete('{{ $log->id }}')">
                                                     <i class="fa-solid fa-trash" style="font-size: 14px"></i>
                                                 </button>
+                                                <form id="delete-form-{{ $log->id }}" action="{{ route('peminjaman.destroy', $log->id) }}" method="POST" style="display: none;">
+                                                    @csrf
+                                                    @method('DELETE')
+                                                </form>
                                                 @endif
                                             </td>
                                         </tr>

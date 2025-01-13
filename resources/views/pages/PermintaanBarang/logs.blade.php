@@ -91,6 +91,14 @@
                                                         </a>
                                                         <a href="{{ route('permintaan.konfirmasi-tolak', $log->id) }}"
                                                             class="btn bg-gradient-danger text-white btn-sm ps-3 pe-3"><i class="fas fa-times-circle me-2" style="font-size: 11px"></i>Tolak</a>
+                                                    @else
+                                                    <button type="button" class="btn btn-sm bg-gradient-danger" onclick="confirmDelete('{{ $log->id }}')">
+                                                        <i class="fa-solid fa-trash" style="font-size: 14px"></i>
+                                                    </button>
+                                                    <form id="delete-form-{{ $log->id }}" action="{{ route('permintaan.destroy', $log->id) }}" method="POST" style="display: none;">
+                                                        @csrf
+                                                        @method('DELETE')
+                                                    </form>
                                                     @endif
                                                 </td>
                                             </tr>

@@ -238,6 +238,23 @@ class PeminjamanController extends Controller
         }
     }
     
+    public function destroy($id)
+    {
+        try {
+            $peminjaman = Peminjaman::findOrFail($id);
+            
+            $peminjaman->detailPeminjamans()->delete();
+            
+            $peminjaman->delete();
+            session()->flash('status', 'success');
+            session()->flash('message', 'Data Peminjaman berhasil dihapus.');
+            return redirect()->route('log.peminjaman');
+        } catch (\Exception $e) {
+            session()->flash('status', 'error');
+            session()->flash('message', 'Terjadi kesalahan saat menghapus data.');
+            return redirect()->route('log.peminjaman');
+        }
+    }
 
     public function detail()
     {

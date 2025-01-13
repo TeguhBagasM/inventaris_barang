@@ -41,6 +41,7 @@ Route::middleware('auth')->group(function () {
         Route::get('/cetak-logs', [PeminjamanController::class, 'cetak'])->name('peminjaman.cetak');
         Route::get('/cetak-bukti/{id}', [PeminjamanController::class, 'cetakBukti'])->name('cetak.bukti');
         Route::get('/scan-qr', [PeminjamanController::class, 'scanQR'])->name('scan-qr');
+        Route::delete('/delete-pinjam/{id}', [PeminjamanController::class, 'destroy'])->name('peminjaman.destroy');
         Route::post('/process-qr', [PeminjamanController::class, 'processQR'])->name('process-qr');
         Route::put('/peminjaman/{id}/konfirmasi', [PeminjamanController::class, 'konfirmasiPeminjaman'])->name('peminjaman.konfirmasi');
         Route::get('/peminjaman/{id}/konfirmasi-tolak', [PeminjamanController::class, 'konfirmasiTolak'])->name('peminjaman.konfirmasi-tolak');
