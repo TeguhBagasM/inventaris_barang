@@ -99,6 +99,12 @@
                                                    class="btn bg-gradient-orange text-white btn-sm ps-3 pe-3"><i class="fas fa-undo-alt me-2" style="font-size: 11px"></i>Kembalikan</a>
                                                 <a href="{{ route('cetak.bukti', ['id' => $log->id]) }}"
                                                       class="text-white btn btn-info btn-sm ps-3 pe-3" target="_blank"><i class="fas fa-print me-2" style="font-size: 11px"></i>Cetak</a>
+                                                @else
+                                                <button type="button" 
+                                                    class="btn btn-sm bg-gradient-danger"
+                                                    onclick="confirmDelete('{{ $log->id }}')">
+                                                    <i class="fa-solid fa-trash" style="font-size: 14px"></i>
+                                                </button>
                                                 @endif
                                             </td>
                                         </tr>
@@ -167,6 +173,22 @@
             }
         });
     }
+    function confirmDelete(id) {
+            Swal.fire({
+                title: 'Apakah Anda yakin?',
+                text: "Data yang dihapus tidak dapat dikembalikan!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Ya, hapus!',
+                cancelButtonText: 'Batal'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    document.getElementById('delete-form-' + id).submit();
+                }
+            });
+        }
 
     </script>
     @endpush
