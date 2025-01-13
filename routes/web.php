@@ -80,7 +80,7 @@ Route::middleware('auth')->group(function () {
         Route::get('/permintaan', [PermintaanController::class, 'index'])->name('permintaan.index');
         Route::post('/permintaan', [PermintaanController::class, 'store'])->name('permintaan.store');
         Route::get('/detailPemintaan', [PermintaanController::class, 'detailPermintaan'])->name('permintaan.detail');
-        Route::get('/permintaan-barang/{barangKeluar}', [PermintaanController::class, 'detailSpesifik'])->name('permintaan.detail.spesifik');
+        Route::get('/permintaan/{barangKeluar}/detail', [PermintaanController::class, 'detailSpesifik'])->name('permintaan.detail.spesifik');
     });
 
     Route::middleware(['can.access.pinjam'])->group(function() {

@@ -321,10 +321,11 @@ class PermintaanController extends Controller
     public function detailSpesifik(BarangKeluar $barangKeluar)
     {
         $title = "Detail Spesifik Permintaan";
-        if ($barangKeluar->user_id !== Auth::id()) {
+        if ($barangKeluar->user_id != Auth::id()) {  
+            Log::info('Access Denied for user: ' . Auth::id());
             abort(403);
         }
-    
+
         return view('pages.permintaanBarang.detailSpesifik', compact('barangKeluar', 'title'));
     }
     public function cetakPermintaan()
