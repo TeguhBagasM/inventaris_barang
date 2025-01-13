@@ -317,7 +317,23 @@ class PermintaanController extends Controller
     
         return view('pages.permintaanBarang.detailPermintaan', compact('title', 'details'));
     }
-    
+    public function destroy($id)
+    {
+        try {
+            $barangKeluar = BarangKeluar::findOrFail($id);
+            
+            $barangKeluar->detailBarangKeluars()->delete();
+            
+            $barangKeluar->delete();
+            session()->flash('status', 'success');
+            session()->flash('message', 'Data Permintaan berhasil dihapus');
+            return redirect()->route('log.permintaan');
+        } catch (\Exception $e) {
+            session()->flash('status', 'error');
+            session()->flash('message', 'Terjadi kesalahan saat menghapus data pengajuan barang');
+            return redirect()->route('log.permintaan');
+        }
+    }
     public function detailSpesifik(BarangKeluar $barangKeluar)
     {
         $title = "Detail Spesifik Permintaan";
