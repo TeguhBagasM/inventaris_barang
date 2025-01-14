@@ -4,21 +4,30 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="csrf-token" content="{{ csrf_token() }}">
-
+    
         <title>Inventaris | Profile</title>
         <link rel="icon" type="image/png" href="{{ asset('assets/img/logo-smk.png') }}">
+        
         <!-- Fonts -->
         <link rel="preconnect" href="https://fonts.bunny.net">
         <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
-
+    
+        <!-- Manual CSS Include -->
+        @php
+            $manifestPath = public_path('build/manifest.json');
+            $manifest = json_decode(file_get_contents($manifestPath), true);
+            $cssFile = $manifest['resources/css/app.css']['file'] ?? null;
+        @endphp
+    
+        @if($cssFile)
+            <link rel="stylesheet" href="{{ asset('build/' . $cssFile) }}">
+        @else
+            <link rel="stylesheet" href="{{ asset('build/assets/app--BHREhfG.css') }}">
+        @endif
+        
         <!-- Scripts -->
         @vite(['resources/css/app.css', 'resources/js/app.js'])
-        <!-- Fallback jika vite gagal -->
-        @if (!app()->environment('local'))
-            <link href="{{ asset('build/assets/app.css') }}" rel="stylesheet">
-            <script src="{{ asset('build/assets/app.js') }}" defer></script>
-        @endif
-    </head>
+    </head>    
     <body class="font-sans antialiased">
         <div class="min-h-screen bg-gray-100">
             @include('layouts.navigation')
