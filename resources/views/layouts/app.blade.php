@@ -13,6 +13,11 @@
 
         <!-- Scripts -->
         @vite(['resources/css/app.css', 'resources/js/app.js'])
+        <!-- Fallback jika vite gagal -->
+        @if (!app()->environment('local'))
+            <link href="{{ asset('build/assets/app.css') }}" rel="stylesheet">
+            <script src="{{ asset('build/assets/app.js') }}" defer></script>
+        @endif
     </head>
     <body class="font-sans antialiased">
         <div class="min-h-screen bg-gray-100">
