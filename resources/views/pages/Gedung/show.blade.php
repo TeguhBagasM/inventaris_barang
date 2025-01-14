@@ -14,7 +14,7 @@
                         <div class="row g-4">
                             <div class="col-md-4">
                                 <div class="position-relative">
-                                    <img src="{{ $gedung->gambar ? asset('storage/'.$gedung->gambar) : asset('assets/img/no-image.jpg') }}"
+                                    <img src="{{ $gedung->gambar ? asset($gedung->gambar) : asset('assets/img/no-image.jpg') }}"
                                         class="img-fluid rounded shadow-sm"
                                         alt="{{ $gedung->nama_gedung }}"
                                         style="width: 100%; height: 250px; object-fit: cover;">

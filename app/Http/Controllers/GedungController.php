@@ -59,25 +59,21 @@ class GedungController extends Controller
                 $newName = Str::slug($request->nama_gedung) . '-' . $timestamp . '.' .
                            $request->file('gambar')->getClientOriginalExtension();
     
-                // Simpan gambar ke storage public/images
-                Storage::disk('public')->putFileAs('images', $request->file('gambar'), $newName);
+                Storage::disk('public')->putFileAs('gedung-images', $request->file('gambar'), $newName);
     
-                $sourcePath = storage_path('app/public/images/' . $newName);
-                $destinationPath = public_path('storage/images/' . $newName);
+                $sourcePath = storage_path('app/public/gedung-images/' . $newName);
+                $destinationPath = public_path('storage/gedung-images/' . $newName);
     
-                // Cek dan buat folder jika belum ada
-                if (!file_exists(public_path('storage/images'))) {
-                    mkdir(public_path('storage/images'), 0755, true);
+                if (!file_exists(public_path('storage/gedung-images'))) {
+                    mkdir(public_path('storage/gedung-images'), 0755, true);
                 }
     
-                // Salin file dari storage ke public
                 copy($sourcePath, $destinationPath);
     
-                $imagePath = 'storage/images/' . $newName;
+                $imagePath = 'storage/gedung-images/' . $newName;
             }
     
-            // Simpan data gedung
-            $gedung = new Gedung([
+            Gedung::create([
                 'nama_gedung' => $request->nama_gedung,
                 'luas_gedung' => $request->luas_gedung,
                 'tahun_perolehan' => $request->tahun_perolehan,
@@ -87,17 +83,13 @@ class GedungController extends Controller
                 'keterangan' => $request->keterangan,
             ]);
     
-            $gedung->save();
-    
             session()->flash('status', 'success');
             session()->flash('message', 'Gedung berhasil ditambahkan.');
     
             return redirect()->route('gedung.index');
-    
         } catch (\Exception $e) {
-            // Hapus gambar jika ada kesalahan
-            if (isset($newName) && Storage::disk('public')->exists('images/' . $newName)) {
-                Storage::disk('public')->delete('images/' . $newName);
+            if (isset($newName) && Storage::disk('public')->exists('gedung-images/' . $newName)) {
+                Storage::disk('public')->delete('gedung-images/' . $newName);
             }
     
             Log::error('Error creating gedung: ' . $e->getMessage());
@@ -107,7 +99,7 @@ class GedungController extends Controller
     
             return redirect()->back()->withInput();
         }
-    }
+    }    
         
 
     public function edit(Gedung $gedung)
@@ -118,70 +110,62 @@ class GedungController extends Controller
 
     public function update(Request $request, Gedung $gedung)
     {
-        $validated = $request->validate([
+        $request->validate([
             'nama_gedung' => 'required|string|max:255',
             'luas_gedung' => 'required|numeric',
             'tahun_perolehan' => 'required|digits:4',
             'nilai_bangunan' => 'required|numeric',
             'peruntukkan' => 'required|string|max:255',
-            'gambar' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
-            'keterangan' => 'nullable|string'
+            'gambar' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'keterangan' => 'nullable|string',
         ]);
     
         try {
-            // Handle file upload
+            $updateData = $request->except('gambar');
+    
             if ($request->hasFile('gambar') && $request->file('gambar')->isValid()) {
-                // Delete old image if exists
-                if ($gedung->gambar && Storage::disk('public')->exists($gedung->gambar)) {
-                    Storage::disk('public')->delete($gedung->gambar);
+                if ($gedung->gambar) {
+                    Storage::disk('public')->delete(str_replace('storage/', '', $gedung->gambar));
+    
+                    if (file_exists(public_path($gedung->gambar))) {
+                        unlink(public_path($gedung->gambar));
+                    }
                 }
-                
+    
                 $timestamp = date('dmYHis');
-                $fileName = Str::slug($request->nama_gedung) . '-' . $timestamp . '.' . 
+                $newName = Str::slug($request->nama_gedung) . '-' . $timestamp . '.' .
                            $request->file('gambar')->getClientOriginalExtension();
-                
-                // Store new image
-                $path = $request->file('gambar')->storeAs('gedung-images', $fileName, 'public');
-                
-                // Add logging for debugging
-                Log::info('Update path: ' . $path);
-                Log::info('Storage URL: ' . Storage::url($path));
-                
-                $validated['gambar'] = $path;
-            }
-            // Handle rename if only name changed
-            elseif ($gedung->nama_gedung !== $request->nama_gedung && $gedung->gambar) {
-                $oldPath = $gedung->gambar;
-                if (Storage::disk('public')->exists($oldPath)) {
-                    $extension = pathinfo($oldPath, PATHINFO_EXTENSION);
-                    $timestamp = date('dmYHis');
-                    $newPath = 'gedung-images/' . Str::slug($request->nama_gedung) . '-' . $timestamp . '.' . $extension;
-                    
-                    Storage::disk('public')->move($oldPath, $newPath);
-                    $validated['gambar'] = $newPath;
+    
+                Storage::disk('public')->putFileAs('gedung-images', $request->file('gambar'), $newName);
+    
+                $sourcePath = storage_path('app/public/gedung-images/' . $newName);
+                $destinationPath = public_path('storage/gedung-images/' . $newName);
+    
+                if (!file_exists(public_path('storage/gedung-images'))) {
+                    mkdir(public_path('storage/gedung-images'), 0755, true);
                 }
+    
+                copy($sourcePath, $destinationPath);
+    
+                $updateData['gambar'] = 'storage/gedung-images/' . $newName;
             }
     
-            $updated = $gedung->update($validated);
+            $gedung->update($updateData);
     
-            if ($updated) {
-                session()->flash('status', 'success');
-                session()->flash('message', 'Gedung berhasil diperbarui.');
-            } else {
-                throw new \Exception('Gagal memperbarui gedung');
-            }
+            session()->flash('status', 'success');
+            session()->flash('message', 'Gedung berhasil diperbarui.');
     
             return redirect()->route('gedung.index');
-    
         } catch (\Exception $e) {
             Log::error('Error updating gedung: ' . $e->getMessage());
-            
+    
             session()->flash('status', 'error');
             session()->flash('message', 'Gagal memperbarui Gedung. Silakan coba lagi.');
-            
+    
             return redirect()->back()->withInput();
         }
     }
+    
 
     public function destroy(Gedung $gedung)
     {

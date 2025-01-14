@@ -42,7 +42,7 @@
                                             </td>
                                             <td>
                                                 <div class="d-flex px-2 py-1">
-                                                    <img src="{{ $gedung->gambar ? asset('storage/'.$gedung->gambar) : asset('assets/img/no-image.jpg') }}"
+                                                    <img src="{{ $gedung->gambar ? asset($gedung->gambar) : asset('assets/img/no-image.jpg') }}"
                                                         class="card-img"
                                                         style="object-fit: cover;max-width: 100px; max-height: 100px;"
                                                         alt="Gambar Gedung">

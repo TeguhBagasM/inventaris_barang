@@ -72,7 +72,7 @@
 
                                 <div id="imagePreview" class="mb-3" style="{{ $gedung->gambar ? '' : 'display: none;' }}">
                                     @if($gedung->gambar)
-                                        <img src="{{ asset('storage/' . $gedung->gambar) }}" alt="Foto Gedung" class="rounded" 
+                                        <img src="{{ asset($gedung->gambar) }}" alt="Foto Gedung" class="rounded" 
                                              style="max-width: 100%; max-height: 200px;">
                                     @else
                                         <img src="#" alt="Preview" class="rounded" style="max-width: 100%; max-height: 200px;">
