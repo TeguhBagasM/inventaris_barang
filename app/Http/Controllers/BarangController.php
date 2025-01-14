@@ -95,9 +95,17 @@ class BarangController extends Controller
             if ($request->hasFile('image') && $request->file('image')->isValid()) {
                 $timestamp = date('dmYHis');  
                 $newName = Str::slug($request->nama) . '-' . $timestamp . '.' . 
-                          $request->file('image')->getClientOriginalExtension();
-                Storage::disk('public')->putFileAs('images', $request->file('image'), $newName);
-                $imagePath = 'images/' . $newName;
+                        $request->file('image')->getClientOriginalExtension();
+                        Storage::disk('public')->putFileAs('images', $request->file('image'), $newName);
+                    $sourcePath = storage_path('app/public/images/' . $newName);
+                    $destinationPath = public_path('storage/images/' . $newName);
+                    
+                    if (!file_exists(public_path('storage/images'))) {
+                        mkdir(public_path('storage/images'), 0755, true);
+                    }
+                    copy($sourcePath, $destinationPath);
+                    
+                    $imagePath = 'storage/images/' . $newName;
             }
     
             $barang = new Barang([
@@ -185,54 +193,67 @@ class BarangController extends Controller
             'kategori_id' => 'required|exists:kategoris,id',
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
-    
+
         try {
             $updateData = $request->except(['image', 'kategori_id']);
-    
-            // Handle file upload
+
             if ($request->hasFile('image') && $request->file('image')->isValid()) {
-                // Delete old image if exists
                 if ($barang->gambar) {
                     Storage::disk('public')->delete(str_replace('storage/', '', $barang->gambar));
+                    
+                    if (file_exists(public_path($barang->gambar))) {
+                        unlink(public_path($barang->gambar));
+                    }
                 }
                 
                 $timestamp = date('dmYHis');
                 $newName = Str::slug($request->nama) . '-' . $timestamp . '.' . 
-                          $request->file('image')->getClientOriginalExtension();
+                        $request->file('image')->getClientOriginalExtension();
                 
-                // Store new image
-                $path = $request->file('image')->storeAs('images', $newName, 'public');
+                Storage::disk('public')->putFileAs('images', $request->file('image'), $newName);
                 
-                // Add logging for debugging
-                Log::info('Update path: ' . $path);
-                Log::info('Storage URL: ' . Storage::url($path));
+                $sourcePath = storage_path('app/public/images/' . $newName);
+                $destinationPath = public_path('storage/images/' . $newName);
                 
-                $updateData['gambar'] = $path;
-            }
-            // Handle rename if only name changed
-            elseif ($barang->nama !== $request->nama && $barang->gambar) {
-                $oldPath = str_replace('storage/', '', $barang->gambar);
-                if (Storage::disk('public')->exists($oldPath)) {
-                    $extension = pathinfo($oldPath, PATHINFO_EXTENSION);
-                    $timestamp = date('dmYHis');
-                    $newPath = 'images/' . Str::slug($request->nama) . '-' . $timestamp . '.' . $extension;
-                    
-                    Storage::disk('public')->move($oldPath, $newPath);
-                    $updateData['gambar'] = $newPath;
+                if (!file_exists(public_path('storage/images'))) {
+                    mkdir(public_path('storage/images'), 0755, true);
                 }
+                
+                copy($sourcePath, $destinationPath);
+                
+                $updateData['gambar'] = 'storage/images/' . $newName;
             }
-    
+            elseif ($barang->nama !== $request->nama && $barang->gambar) {
+                $oldName = basename($barang->gambar);
+                $extension = pathinfo($oldName, PATHINFO_EXTENSION);
+                $timestamp = date('dmYHis');
+                $newName = Str::slug($request->nama) . '-' . $timestamp . '.' . $extension;
+                
+                if (Storage::disk('public')->exists('images/' . $oldName)) {
+                    Storage::disk('public')->move('images/' . $oldName, 'images/' . $newName);
+                }
+                
+                $oldPath = public_path('storage/images/' . $oldName);
+                $newPath = public_path('storage/images/' . $newName);
+                if (file_exists($oldPath)) {
+                    rename($oldPath, $newPath);
+                }
+                
+                $updateData['gambar'] = 'storage/images/' . $newName;
+            }
+
             $barang->update($updateData);
             $barang->kategori()->associate($request->kategori_id);
             $barang->save();
-    
+
             session()->flash('status', 'success');
             session()->flash('message', 'Asset berhasil diperbarui.');
-    
+
             return redirect()->route('barang.index');
-    
+
         } catch (\Exception $e) {
             Log::error('Error updating barang: ' . $e->getMessage());
+            Log::error('Stack trace: ' . $e->getTraceAsString());
             
             session()->flash('status', 'error');
             session()->flash('message', 'Gagal memperbarui Barang. Silakan coba lagi.');
@@ -246,15 +267,30 @@ class BarangController extends Controller
      */
     public function destroy(Barang $barang)
     {
-        if ($barang->gambar) {
-            Storage::disk('public')->delete($barang->gambar);
-        }
-        
-        $barang->delete();
+        try {
+            if ($barang->gambar) {
+                Storage::disk('public')->delete(str_replace('storage/', '', $barang->gambar));
+                
+                if (file_exists(public_path($barang->gambar))) {
+                    unlink(public_path($barang->gambar));
+                }
+            }
 
-        return response()->json([
-            'message' => 'Asset berhasil dihapus!',
-            'success' => true
-        ]);
+            $barang->delete();
+
+            session()->flash('status', 'success');
+            session()->flash('message', 'Asset berhasil dihapus.');
+
+            return redirect()->route('barang.index');
+
+        } catch (\Exception $e) {
+            Log::error('Error deleting barang: ' . $e->getMessage());
+            Log::error('Stack trace: ' . $e->getTraceAsString());
+            
+            session()->flash('status', 'error');
+            session()->flash('message', 'Gagal menghapus Barang. Silakan coba lagi.');
+            
+            return redirect()->back();
+        }
     }
 }

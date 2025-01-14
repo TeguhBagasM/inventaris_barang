@@ -50,7 +50,7 @@
                                             </tr>
                                             <tr>
                                                 <th class="text-uppercase text-dark text-xs font-weight-bolder">Sumber Dana</th>
-                                                <td class="text-sm">Rp {{ number_format((float)$barang->sumber_dana, 0, ',', '.') }}</td>
+                                                <td class="text-sm">{{ $barang->sumber_dana }}</td>
                                             </tr>
                                             <tr>
                                                 <th class="text-uppercase text-dark text-xs font-weight-bolder">Ruang</th>
