@@ -277,16 +277,44 @@ class PeminjamanController extends Controller
         return view('pages.peminjamanBarang.detailPeminjamanSpesifik', compact('title', 'peminjaman'));
     }
 
-    public function cetak()
+    public function cetak(Request $request)
     {
-        $peminjaman = Peminjaman::with(['user', 'detailPeminjamans.barang'])
-            ->get();
+        $query = Peminjaman::with(['user', 'detailPeminjamans.barang']);
         
+        if ($request->filled(['start_date', 'end_date'])) {
+            if ($request->filled('start_date') xor $request->filled('end_date')) {
+                return back()->with('error', 'Harap isi kedua tanggal atau kosongkan keduanya');
+            }
+            
+            if ($request->start_date > $request->end_date) {
+                return back()->with('error', 'Tanggal awal tidak boleh lebih besar dari tanggal akhir');
+            }
+    
+            $query->whereBetween('tanggal_peminjaman', [
+                $request->start_date,
+                $request->end_date
+            ]);
+        }
+        
+        $peminjaman = $query->orderBy('tanggal_peminjaman', 'desc')->get();
+        
+        if ($peminjaman->isEmpty()) {
+            return back()->with('error', 'Data peminjaman tidak ditemukan');
+        }
+    
         $pdf = Pdf::loadView('pages.pdf.cetak-peminjaman', [
-            'peminjaman' => $peminjaman
+            'peminjaman' => $peminjaman,
+            'start_date' => $request->start_date,
+            'end_date' => $request->end_date,
+            'total_peminjaman' => $peminjaman->count(),
+            'total_barang' => $peminjaman->sum(function($pinjam) {
+                return $pinjam->detailPeminjamans->sum('jumlah');
+            })
         ]);
-        return $pdf->stream('laporan-peminjaman-'.date('Y-m-d').'.pdf');
+        
+        return $pdf->stream('laporan-peminjaman-'.Carbon::now()->format('Y-m-d').'.pdf');
     }
+    
 
     public function cetakBukti($id)
     {

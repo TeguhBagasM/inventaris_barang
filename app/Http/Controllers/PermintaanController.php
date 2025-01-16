@@ -7,6 +7,7 @@ use App\Models\Bhp;
 use App\Models\DetailBarangKeluar;
 use App\Models\User;
 use Barryvdh\DomPDF\Facade\Pdf;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -344,19 +345,42 @@ class PermintaanController extends Controller
 
         return view('pages.permintaanBarang.detailSpesifik', compact('barangKeluar', 'title'));
     }
-    public function cetakPermintaan()
+
+    public function cetakPermintaan(Request $request)
     {
-        $barangKeluar = BarangKeluar::with(['user', 'detailBarangKeluars.bhp'])->get();
+        $query = BarangKeluar::with(['user', 'detailBarangKeluars.bhp']);
+        
+        if ($request->filled(['start_date', 'end_date'])) {
+            if ($request->filled('start_date') xor $request->filled('end_date')) {
+                return back()->with('error', 'Harap isi kedua tanggal atau kosongkan keduanya');
+            }
+            
+            if ($request->start_date > $request->end_date) {
+                return back()->with('error', 'Tanggal awal tidak boleh lebih besar dari tanggal akhir');
+            }
+    
+            $query->whereBetween('created_at', [
+                $request->start_date . ' 00:00:00',
+                $request->end_date . ' 23:59:59'
+            ]);
+        }
+        
+        $barangKeluar = $query->orderBy('created_at', 'desc')->get();
         
         if ($barangKeluar->isEmpty()) {
-            abort(404, 'Data permintaan barang tidak ditemukan.');
+            return back()->with('error', 'Data permintaan barang tidak ditemukan');
         }
-
+    
         $pdf = Pdf::loadView('pages.pdf.cetak-permintaan', [
-            'barangKeluar' => $barangKeluar
+            'barangKeluar' => $barangKeluar,
+            'start_date' => $request->start_date,
+            'end_date' => $request->end_date,
+            'total_permintaan' => $barangKeluar->count(),
+            'total_barang' => $barangKeluar->sum(function($keluar) {
+                return $keluar->detailBarangKeluars->sum('jumlah');
+            })
         ]);
         
-        return $pdf->stream('laporan-permintaan-'.date('Y-m-d').'.pdf');
+        return $pdf->stream('laporan-permintaan-'.Carbon::now()->format('Y-m-d').'.pdf');
     }
-
 }

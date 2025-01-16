@@ -4,22 +4,38 @@
     <div class="row">
         <div class="col-12">
             <div class="card mb-4">
-                <div class="card-header pb-0">
-                    <div class="row">
-                        <div class="col-12 col-md-6 order-1 order-md-1">
-                            <h4>Logs Permintaan BHP</h4>
+                <div class="card-header pb-2">
+                    <div class="row align-items-center">
+                        <!-- Heading -->
+                        <div class="col-12 col-md-6">
+                            <h4 class="mb-0">Logs Permintaan BHP</h4>
                         </div>
-
-                        <div class="col-12 col-md-6 d-flex flex-column flex-md-row justify-content-md-end align-items-start align-items-md-center order-2 order-md-2 mt-3 mt-md-0">
-                            <a href="{{ route('admin.minta') }}" class="btn bg-gradient-success text-white mb-2 mb-md-0 me-md-2">
+                
+                        <!-- Actions (Permintaan Baru) -->
+                        <div class="col-12 col-md-6 mt-3 mt-md-0 d-flex flex-wrap justify-content-md-end gap-2">
+                            <a href="{{ route('admin.minta') }}" class="btn bg-gradient-success text-white">
                                 <i class="fas fa-plus me-2"></i> Permintaan Baru
-                            </a>
-                            <a href="{{ route('permintaan.cetak') }}" class="btn bg-info text-white mb-2 mb-md-0 me-md-2" target="_blank">
-                                <i class="fas fa-print me-2"></i> Cetak
                             </a>
                         </div>
                     </div>
-                    <hr class="bg-dark px-auto">
+                </div>
+                
+                <!-- Filter Tanggal -->
+                <div class="card-body py-3">
+                    <form action="{{ route('permintaan.cetak') }}" method="GET" class="row g-2 align-items-center" target="_blank">
+                        <div class="col-12 col-md-2 d-flex align-items-center">
+                            <input type="date" name="start_date" id="start_date" class="form-control">
+                        </div>
+                        <div class="col-12 col-md-2 d-flex align-items-center">
+                            <input type="date" name="end_date" id="end_date" class="form-control">
+                        </div>
+                        <div class="col-12 col-md-2 d-flex align-items-end">
+                            <button type="submit" class="btn bg-gradient-info text-white mt-3">
+                                <i class="fas fa-print me-2"></i> Cetak
+                            </button>
+                        </div>
+                    </form>
+                    <hr class="bg-dark mt-3">
                 </div>
                     <div class="card-body px-0 pt-0 pb-2">
                         @if($logs->isEmpty())

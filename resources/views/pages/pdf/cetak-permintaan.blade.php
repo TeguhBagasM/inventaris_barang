@@ -90,7 +90,10 @@
         <hr>
     </div>
     <div class="title">
-        <h3>Laporan Permintaan Barang</h3>
+        <h3>Laporan Permintaan BHP</h3>
+        @if($start_date && $end_date)
+            <p>Periode: {{ \Carbon\Carbon::parse($start_date)->translatedFormat('d F Y') }} - {{ \Carbon\Carbon::parse($end_date)->translatedFormat('d F Y') }}</p>
+        @endif
     </div>
     <table>
         <thead>
