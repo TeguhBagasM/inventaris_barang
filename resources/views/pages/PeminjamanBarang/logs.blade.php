@@ -74,7 +74,7 @@
                                     @foreach ($logs as $log)
                                         <tr class="text-center">
                                             <td>{{ $loop->iteration }}</td>
-                                            <td>{{ $log->user->name }}</td>
+                                            <td>{{ $log->user->name ? $log->user->name : 'Tidak diketahui' }}</td>
                                             <td>{{ $log->total_jumlah }}</td>                                        
                                             <td>{{ \Carbon\Carbon::parse($log->tanggal_peminjaman)->translatedFormat('l, d M Y') }}</td>
                                             <td>
