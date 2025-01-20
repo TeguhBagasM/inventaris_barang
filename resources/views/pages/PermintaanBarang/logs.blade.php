@@ -204,6 +204,22 @@
                 }
             });
         }
+        dateInputs.forEach(input => {
+            input.addEventListener('focus', (e) => {
+                e.target.type = 'date';
+            });
+            
+            input.addEventListener('blur', (e) => {
+                if (!e.target.value) {
+                    e.target.type = 'text';
+                }
+            });
+        });
+
+        document.getElementById('start_date').type = 'text';
+        document.getElementById('start_date').placeholder = 'Mulai dari';
+        document.getElementById('end_date').type = 'text';
+        document.getElementById('end_date').placeholder = 'Sampai';
     </script>
     @endpush
     <style>
