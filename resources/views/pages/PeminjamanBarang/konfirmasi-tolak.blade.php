@@ -4,8 +4,8 @@
     <div class="row justify-content-center">
         <div class="col-md-6">
             <div class="card shadow-lg border-0">
-                <div class="card-header bg-gradient-info text-white">
-                    <h4 class="mb-0">Konfirmasi Penolakan Peminjaman</h4>
+                <div class="card-header bg-gradient-info">
+                    <h4 class="mb-0 text-white">Konfirmasi Penolakan Peminjaman</h4>
                 </div>
                 <div class="card-body">
                     <form action="{{ route('peminjaman.tolak', $peminjaman->id) }}" method="POST">

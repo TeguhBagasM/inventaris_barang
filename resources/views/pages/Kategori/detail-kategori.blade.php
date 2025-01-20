@@ -7,14 +7,13 @@
                 <div class="card-header pb-0">
                     <div class="d-flex justify-content-between align-items-center mb-3">
                         <h4 class="mb-0">Detail Kategori: {{ $kategori->nama }}</h4>
-                        <a href="{{ route('kategori.index') }}" class="btn btn-info">
+                        <a href="{{ route('kategori.index') }}" class="btn btn-danger">
                             <i class="fas fa-arrow-left me-2"></i>Kembali
                         </a>
                     </div>
                 </div>
 
                 <div class="card-body">
-                    <!-- Informasi Kategori -->
                     <div class="row mb-4">
                         <div class="col-md-6">
                             <div class="card">
@@ -31,7 +30,6 @@
                         </div>
                     </div>
 
-                    <!-- Daftar Barang -->
                     <div class="card">
                         <div class="card-header">
                             <h5 class="mb-0">Daftar Barang dalam Kategori</h5>

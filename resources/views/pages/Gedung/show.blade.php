@@ -102,7 +102,7 @@
                                             <tr>
                                                 <th class="text-uppercase text-dark text-xs font-weight-bolder">Peruntukkan</th>
                                                 <td class="text-sm">
-                                                    <span class="badge badge-sm bg-gradient-primary">{{ $gedung->peruntukkan }}</span>
+                                                    {{ $gedung->peruntukkan }}
                                                 </td>
                                             </tr>
                                             <tr>
