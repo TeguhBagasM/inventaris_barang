@@ -204,6 +204,8 @@
                 }
             });
         }
+        const dateInputs = document.querySelectorAll('input[type="date"]');
+
         dateInputs.forEach(input => {
             input.addEventListener('focus', (e) => {
                 e.target.type = 'date';
