@@ -19,11 +19,11 @@
   
         @if (auth()->user()->level == 'siswa')
         <li class="nav-item">
-          <a class="nav-link {{ $title == 'Peminjaman Barang' ? 'active' : '' }}" href="/peminjaman">
+          <a class="nav-link {{ $title == 'Peminjaman Asset' ? 'active' : '' }}" href="/peminjaman">
             <div class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
               <i class="fas fa-desktop text-dark"></i>
             </div>
-            <span class="nav-link-text ms-1">Peminjam Barang</span>
+            <span class="nav-link-text ms-1">Peminjam Asset</span>
           </a>
         </li>
         <li class="nav-item">
