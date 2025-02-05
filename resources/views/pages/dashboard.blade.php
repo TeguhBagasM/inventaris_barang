@@ -160,7 +160,6 @@
         </div>
     @elseif (auth()->user()->level == 'petugas 1')
         <div class="row">
-            <!-- Jumlah Asset -->
             <div class="col-xl-4 col-sm-6 mb-xl-2 mb-4">
                 <div class="card">
                     <div class="card-body p-3">
@@ -180,7 +179,6 @@
                     </div>
                 </div>
             </div>
-            <!-- Asset Dipinjam -->
             <div class="col-xl-4 col-sm-6 mb-xl-2 mb-4">
                 <div class="card">
                     <div class="card-body p-3">
@@ -200,7 +198,6 @@
                     </div>
                 </div>
             </div>
-            <!-- Jumlah Tugas -->
             <div class="col-xl-4 col-sm-6 mb-xl-2 mb-4">
                 <div class="card">
                     <div class="card-body p-3">
@@ -223,7 +220,6 @@
         </div>
     @elseif (auth()->user()->level == 'petugas 2')
         <div class="row">
-            <!-- Asset Dipinjam -->
             <div class="col-xl-4 col-sm-6 mb-xl-2 mb-4">
                 <div class="card">
                     <div class="card-body p-3">
@@ -243,7 +239,6 @@
                     </div>
                 </div>
             </div>
-            <!-- Barang Keluar -->
             <div class="col-xl-4 col-sm-6 mb-xl-2 mb-4">
                 <div class="card">
                     <div class="card-body p-3">
@@ -263,7 +258,6 @@
                     </div>
                 </div>
             </div>
-            <!-- Jumlah Tugas -->
             <div class="col-xl-4 col-sm-6 mb-xl-2 mb-4">
                 <div class="card">
                     <div class="card-body p-3">
@@ -287,7 +281,6 @@
         
     @elseif (auth()->user()->level == 'petugas 3')
         <div class="row">
-            <!-- Jumlah BHP -->
             <div class="col-xl-4 col-sm-6 mb-xl-2 mb-4">
                 <div class="card">
                     <div class="card-body p-3">
@@ -307,7 +300,6 @@
                     </div>
                 </div>
             </div>
-            <!-- Barang Keluar -->
             <div class="col-xl-4 col-sm-6 mb-xl-2 mb-4">
                 <div class="card">
                     <div class="card-body p-3">
@@ -327,7 +319,6 @@
                     </div>
                 </div>
             </div>
-            <!-- Jumlah Tugas -->
             <div class="col-xl-4 col-sm-6 mb-xl-2 mb-4">
                 <div class="card">
                     <div class="card-body p-3">
