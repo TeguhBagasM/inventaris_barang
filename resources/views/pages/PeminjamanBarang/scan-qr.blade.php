@@ -39,10 +39,9 @@
     let isProcessing = false;
     let lastScannedCode = null;
     let lastScanTime = 0;
-    const SCAN_COOLDOWN = 3000; // 3 detik cooldown antara scan
+    const SCAN_COOLDOWN = 3000; 
 
     function onScanSuccess(decodedText, decodedResult) {
-        // Cek jika sedang memproses atau kode yang sama di-scan dalam waktu cooldown
         const currentTime = Date.now();
         if (isProcessing || (decodedText === lastScannedCode && currentTime - lastScanTime < SCAN_COOLDOWN)) {
             return;
@@ -52,10 +51,8 @@
         lastScannedCode = decodedText;
         lastScanTime = currentTime;
 
-        // Tampilkan loading
         document.getElementById("loading").style.display = "block";
 
-        // Kirim ke backend
         fetch('{{ route("process-qr") }}', {
             method: "POST",
             headers: {
@@ -74,11 +71,9 @@
         })
         .then((data) => {
             document.getElementById("loading").style.display = "none";
-            // Stop scanner setelah berhasil
             html5QrcodeScanner.clear();
 
             if (data.redirect_url) {
-                // Redirect ke form pengembalian
                 window.location.href = data.redirect_url;
             } else {
                 Swal.fire({
@@ -106,7 +101,6 @@
     }
 
     function onScanFailure(error) {
-        // handle scan failure, usually better to ignore and keep scanning.
         console.warn(`Code scan error = ${error}`);
     }
 
@@ -120,10 +114,8 @@
         /* verbose= */ false
     );
 
-    // Render scanner
     html5QrcodeScanner.render(onScanSuccess, onScanFailure);
 
-    // Cleanup pada saat komponen di-unmount
     window.addEventListener("beforeunload", () => {
         if (html5QrcodeScanner) {
             html5QrcodeScanner.clear();
