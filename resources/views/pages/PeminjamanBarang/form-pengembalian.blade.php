@@ -16,7 +16,6 @@
                 </div>
 
                 <div class="card-body">
-                    <!-- Informasi Peminjaman -->
                     <div class="row mb-4">
                         <div class="col-md-6">
                             <div class="card bg-gradient-info shadow-info">
@@ -32,7 +31,6 @@
                         </div>
                     </div>
 
-                    <!-- Form Pengembalian -->
                     <form action="{{ route('pengembalian.process', $peminjaman->id) }}" method="POST">
                         @csrf
                         <div class="table-responsive">
