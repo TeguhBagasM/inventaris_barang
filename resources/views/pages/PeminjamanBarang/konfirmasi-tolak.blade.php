@@ -29,16 +29,6 @@
                                 </div>
                             @enderror
                         </div>
-
-                        {{-- <div class="alert alert-warning" role="alert">
-                            <i class="fas fa-exclamation-triangle me-2"></i>
-                            Anda akan menolak peminjaman dengan detail:
-                            <ul class="mb-0 mt-2">
-                                <li>Tanggal Peminjaman: {{ \Carbon\Carbon::parse($peminjaman->tanggal_peminjaman)->translatedFormat('l, d F Y') }}</li>
-                                <li>Total Barang: {{ $peminjaman->detailPeminjamans->sum('jumlah') }} Barang</li>
-                            </ul>
-                        </div> --}}
-
                         <div class="d-flex justify-content-between">
                             <a href="{{ route('log.peminjaman') }}" class="btn btn-secondary">
                                 <i class="fas fa-arrow-left me-2"></i>Kembali
